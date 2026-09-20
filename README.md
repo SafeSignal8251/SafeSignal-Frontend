@@ -6,7 +6,7 @@ SafeSignal es una plataforma web de seguridad ciudadana que permite reportar inc
 * [Tecnologías](#tecnologías)
 * [Validación](#validación)
 * [Equipo](#equipo)
-#Descripción
+# Descripción
 SafeSignal es un startup tecnológico orientado a mejorar la seguridad personal durante los desplazamientos urbanos. La plataforma combina Inteligencia Artificial, dispositivos IoT, geolocalización y mapas interactivos para facilitar la prevención y respuesta ante situaciones de peligro.
 
 La solución permite activar alertas de emergencia, compartir la ubicación en tiempo real con contactos de confianza, identificar zonas de riesgo, consultar mapas de seguridad y recibir recomendaciones de rutas seguras. Asimismo, SafeSignal contempla herramientas de administración para gestionar información, usuarios, reportes y estadísticas relacionadas con la seguridad.
@@ -38,7 +38,7 @@ Para evaluar la propuesta y mejorar la experiencia de usuario, se realizaron dif
 * Auditoría UX/UI.
 * Validación de prototipos.
 Los resultados de las evaluaciones permitieron realizar mejoras en aspectos como la jerarquía visual del botón SOS, filtros del mapa de riesgo, confirmaciones visuales y claridad de las interacciones.
-# Eequipo
+# Equipo
 Proyecto desarrollado para el curso Arquitectura de Aplicaciones Web por:
 * Aramburu Dias, Adrian 
 * Caballero Loayza, Gonzalo Fabian
