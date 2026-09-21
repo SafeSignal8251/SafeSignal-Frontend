@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Control — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row">
+          <div>
+            <h1 class="page-title">Panel de Control</h1>
+            <p class="page-subtitle">Estás activo en la seguridad de tu zona</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <a href="notificaciones.html" class="top-nav__icon" style="border:1px solid var(--border);background:white;" title="Notificaciones"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C6.5 2 4.7 4 4.7 6.5C4.7 10 3 11.5 3 12.5C3 13 3.4 13.3 4 13.3H14C14.6 13.3 15 13 15 12.5C15 11.5 13.3 10 13.3 6.5C13.3 4 11.5 2 9 2Z" stroke="var(--navy)" stroke-width="1.4"/><path d="M7.3 15.3C7.6 16 8.2 16.5 9 16.5C9.8 16.5 10.4 16 10.7 15.3" stroke="var(--navy)" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+            <button class="btn-sos" id="btnActivarMonitoreo"><span class="dot-pulse"></span>Activar Monitoreo</button>
+          </div>
+        </div>
+
+        <div class="anomaly-banner" id="anomalyBanner">
+          <div class="anomaly-banner__head">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="var(--warning)"/><path d="M8 4.5V8.5M8 10.5V11" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <h4>Posible situación inusual detectada</h4>
+            <span class="badge badge--yellow anomaly-banner__badge">Análisis activo</span>
+          </div>
+          <div class="anomaly-banner__grid">
+            <div><strong>Ubicación:</strong> Calle Las Gardenias 450, Miraflores</div>
+            <div><strong>Hora:</strong> 14:25 PM</div>
+            <div style="grid-column:1/-1;"><strong>Motivo:</strong> Patrón de movimiento inusual detectado</div>
+          </div>
+          <div class="anomaly-actions">
+            <button class="btn-act-red" id="btnActivarSOS"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="vertical-align:-2px;margin-right:4px;"><path d="M1 5.5H3.2L6 3V10L3.2 7.5H1V5.5Z" fill="white"/><path d="M8.3 4.3C9 5 9 8 8.3 8.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M2 2L11 11" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>Alarma silenciosa</button>
+            <button class="btn-act-ghost" id="btnEstoyBien">Estoy bien</button>
+            <button class="btn-act-ghost" id="btnCompartirUbicacion">Compartir ubicación</button>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div>
+            <div class="map-dark" id="dashMap">
+              <div id="dashMapLeaflet" style="position:absolute;inset:0;"></div>
+              <div class="map-zoom-controls">
+                <button type="button" title="Acercar" onclick="zoomDashMap(1)">+</button>
+                <button type="button" title="Alejar" onclick="zoomDashMap(-1)">−</button>
+                <button type="button" title="Recentrar" onclick="recenterDashMap()">⟳</button>
+              </div>
+              <div class="map-dark__legend">
+                <div class="map-dark__legend-title">Vista en Tiempo Real</div>
+                <div class="map-dark__legend-row"><span class="legend-item legend-item--green">● Seguro</span><span class="legend-item legend-item--yellow">● Advertencia</span><span class="legend-item legend-item--red">● Peligro</span></div>
+              </div>
+            </div>
+            <div class="stat-box-row">
+              <div class="stat-box"><div class="stat-box__num">12</div><div class="stat-box__label">Incidentes hoy</div><div class="stat-box__delta stat-box__delta--down">+3 vs ayer</div></div>
+              <div class="stat-box"><div class="stat-box__num">4.2 min</div><div class="stat-box__label">Tiempo respuesta</div><div class="stat-box__delta stat-box__delta--up">−17% este mes</div></div>
+              <div class="stat-box"><div class="stat-box__num">98%</div><div class="stat-box__label">Rutas seguras</div><div class="stat-box__delta stat-box__delta--up">+2% este mes</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="sidebar-right-card">
+              <h4>Zona Segura</h4>
+              <p class="sidebar-right-card__text">Tu seguridad en esta zona presenta las condiciones registradas en los últimos reportes.</p>
+              <div class="zone-status"><div class="alert-dot alert-dot--green"></div><span class="zone-status__label">Zona actualmente segura</span></div>
+            </div>
+            <div class="sidebar-right-card">
+              <h4>Alertas Prioritarias</h4>
+              <div class="priority-alert"><div class="alert-dot alert-dot--red priority-alert__dot"></div><div><div class="priority-alert__title">Robo a mano armada</div><div class="priority-alert__meta">Av. Javier Prado · Hace 15 min</div></div></div>
+              <div class="priority-alert"><div class="alert-dot alert-dot--yellow priority-alert__dot"></div><div><div class="priority-alert__title">Intento de acoso</div><div class="priority-alert__meta">Las Begonias 450 · Hace 42 min</div></div></div>
+              <a href="historial-alertas.html" class="sidebar-right-card__link">Ver todos los incidentes →</a>
+            </div>
+            <div class="sidebar-right-card sidebar-right-card--navy">
+              <h4>Modo Seguro Activado</h4>
+              <p class="sidebar-right-card__text">Cobertura activa en 340 km de Lima. Monitoreo 24/7 y contactos ilimitados.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions-row">
+          <a href="contactos.html" class="quick-action-card"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="6" r="3" stroke="var(--navy)" stroke-width="1.5"/><path d="M2 17C2 14 4.7 12 8 12M14 12V18M11 15H17" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="quick-action-card__title">Contactos</div><div class="quick-action-card__meta">3 configurados</div></div></a>
+          <a href="dispositivos-iot.html" class="quick-action-card"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="14" rx="2" stroke="var(--navy)" stroke-width="1.5"/><path d="M8 6H12M8 9.5H12M8 13H10" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="quick-action-card__title">Dispositivos</div><div class="quick-action-card__meta">1 configurado</div></div></a>
+          <a href="seguimiento.html" class="quick-action-card"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="var(--navy)" stroke-width="1.5"/><path d="M10 6V10L13 13" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="quick-action-card__title">Seguimiento</div><div class="quick-action-card__meta">Activar modo</div></div></a>
+          <a href="reporte-incidente.html" class="quick-action-card"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L17 16H3L10 3Z" stroke="var(--navy)" stroke-width="1.5" fill="none"/><path d="M10 9V12M10 14V14.5" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="quick-action-card__title">Reportar</div><div class="quick-action-card__meta">Nuevo incidente</div></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: confirmar activación de alerta SOS -->
+  <div class="modal-overlay" id="sosConfirmModal" style="display:none;">
+    <div class="modal modal--sos">
+      <div class="modal__header modal__header--danger">
+        <div class="modal__header-title"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1L2 4.5V9C2 12.5 5 16 9 17C13 16 16 12.5 16 9V4.5L9 1Z" stroke="white" stroke-width="1.4"/></svg>¿Confirmar activación de Alerta SOS?</div>
+        <span class="badge-pill badge-pill--white">ALERTA CRÍTICA</span>
+      </div>
+      <div class="modal__countdown"><span>Activación automática en <strong id="sosCountdown">5</strong> segundos si no se cancela</span><div class="modal__countdown-bar"><div class="modal__countdown-fill" id="sosCountdownFill"></div></div></div>
+      <div class="modal__body">
+        <div class="modal__info-grid">
+          <div><span class="modal__info-label">Fecha y Hora exacta:</span><br><strong id="sosDateTime">16 de Junio, 2026 · 14:25:32 PM (PET)</strong></div>
+          <div><span class="modal__info-label">Ubicación GPS capturada:</span><br><strong>Calle Las Gardenias 450, Miraflores, Lima</strong><div class="notify-meta mono">-12.1221, -77.0289 · Precisión GPS: ±3m</div></div>
+          <div><span class="modal__info-label">Inspector / Patrulla asignada:</span><br><strong>Código AT-402 (Serenazgo Miraflores)</strong></div>
+          <div><span class="modal__info-label">Estado del Sensor:</span><br><strong class="text-warning">Desviación de ruta / Aceleración inusual</strong></div>
+        </div>
+        <div class="modal__section-label" style="display:flex;justify-content:space-between;align-items:center;">PROTOCOLO DE NOTIFICACIÓN INMEDIATA <span class="text-success" style="font-weight:600;font-size:11.5px;">● Red de contactos lista</span></div>
+        <div class="notify-row"><div class="notify-avatar">MA</div><div class="notify-info"><strong>María Álvarez</strong> (Madre)<div class="notify-meta">Enlace SMS + WhatsApp con tracking en vivo preparado</div></div><span class="badge-pill badge-pill--blue">SMS + WA</span></div>
+        <div class="notify-row"><div class="notify-avatar">CR</div><div class="notify-info"><strong>Carlos Ramírez</strong> (Hermano)<div class="notify-meta">Notificación Push prioritaria + SMS con coordenadas</div></div><span class="badge-pill badge-pill--purple">PUSH + SMS</span></div>
+        <div class="notify-row"><div class="notify-avatar">LT</div><div class="notify-info"><strong>Lucía Ríos</strong> (Amiga)<div class="notify-meta">Notificación SMS</div></div><span class="badge-pill" style="background:#f1f5f9;color:var(--muted);">SMS</span></div>
+        <div class="notify-row"><div class="notify-avatar">105</div><div class="notify-info"><strong>Central de Serenazgo Miraflores</strong> (Cuadrante 4)<div class="notify-meta">Canal oficial de despacho de emergencia en espera de confirmación</div></div><span class="badge-pill badge-pill--red">DESPACHO 24/7</span></div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-secondary" id="sosCancelBtn">Cancelar / Fue un error</button>
+        <button class="btn-danger" id="sosConfirmBtn">¡SÍ, ENVIAR SOS AHORA!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: alerta activa / cancelación -->
+  <div class="modal-overlay" id="cancelAlertModal" style="display:none;">
+    <div class="modal">
+      <div class="modal__header modal__header--navy"><div class="modal__header-title">¿Deseas cancelar la alerta de emergencia activa?</div></div>
+      <div class="modal__body">
+        <p class="modal__text">Al confirmar, el sistema cambiará el estado de la alerta de <strong class="text-danger">'Activa'</strong> a <strong class="text-success">'Cancelada'</strong> y notificará a tus contactos y a Serenazgo que la situación está bajo control.</p>
+        <div class="modal__section-label">MOTIVO DE CANCELACIÓN (OPCIONAL)</div>
+        <label class="radio-row"><input type="radio" name="cancelMotivo" checked> Situación bajo control</label>
+        <label class="radio-row"><input type="radio" name="cancelMotivo"> Activación accidental / Falsa alarma</label>
+        <label class="radio-row"><input type="radio" name="cancelMotivo"> Ayuda recibida en el lugar</label>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-secondary" onclick="closeModal('cancelAlertModal')">Mantener alerta activa</button>
+        <button class="btn-success" id="cancelAlertConfirmBtn">Confirmar Cancelación de Alerta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: compartir ubicación -->
+  <div class="modal-overlay" id="shareLocationModal" style="display:none;">
+    <div class="modal modal--sos">
+      <div class="modal__header modal__header--navy"><div class="modal__header-title"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L14 14L8 11L2 14L8 1Z" stroke="white" stroke-width="1.4"/></svg>Compartir Ubicación en Tiempo Real</div></div>
+      <div class="modal__body">
+        <div class="notif-banner notif-banner--info" style="align-items:flex-start;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="8" cy="8" r="7" stroke="#1d4ed8" stroke-width="1.4"/><path d="M8 7.2V11.5M8 5V5.2" stroke="#1d4ed8" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div><strong style="display:block;margin-bottom:2px;">¿Deseas confirmar el inicio del uso de tu ubicación?</strong>El sistema iniciará de inmediato la transmisión encriptada punto a punto de tus coordenadas geográficas, velocidad y nivel de batería a tus contactos de confianza configurados.</div>
+        </div>
+
+        <div class="modal__section-label">PUNTO DE PARTIDA DETECTADO</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--bg);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
+          <div><strong style="font-size:13px;color:var(--navy);">Calle Las Gardenias 450, Miraflores</strong><div class="notify-meta">Lima, Perú · Precisión estimada: ±2.5 metros</div></div>
+          <div style="text-align:right;flex-shrink:0;"><div class="mono" style="font-size:11px;color:var(--muted);">Lat: -12.1221 · Lon: -77.0289</div><a href="#" onclick="event.preventDefault();showToast('Ubicación recalibrada');" style="font-size:11.5px;font-weight:600;color:var(--accent);">↻ Recalibrar</a></div>
+        </div>
+
+        <div class="modal__section-label" style="display:flex;justify-content:space-between;align-items:center;">CONTACTOS DE CONFIANZA DESTINATARIOS <span class="badge badge--green">3 registrados</span></div>
+        <div class="notify-row"><div class="notify-avatar">MA</div><div class="notify-info"><strong>María Álvarez</strong> <span class="badge badge--gray" style="font-size:10px;">Madre · SOS #1</span><div class="notify-meta">+51 987 654 321 · WhatsApp activo</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+        <div class="notify-row"><div class="notify-avatar">CR</div><div class="notify-info"><strong>Carlos Ramírez</strong> <span class="badge badge--gray" style="font-size:10px;">Hermano · SOS #2</span><div class="notify-meta">+51 912 345 678 · SMS Prioritario</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+        <div class="notify-row"><div class="notify-avatar" style="background:#dcfce7;color:#166534;">SM</div><div class="notify-info"><strong>Serenazgo Miraflores</strong> <span class="badge badge--gray" style="font-size:10px;">Cuadrante 4 · Alianza</span><div class="notify-meta">Central de Monitoreo Municipal</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+
+        <div class="form-row-2" style="margin-top:16px;">
+          <div class="form-group" style="margin-bottom:0;"><label class="form-label">Duración del enlace</label><select class="form-select"><option>60 minutos (Recomendado)</option><option>30 minutos</option><option>120 minutos</option><option>Hasta que finalice manualmente</option></select></div>
+          <div class="form-group" style="margin-bottom:0;"><label class="form-label">Geocerca de protección</label><select class="form-select"><option>Alerta por desvío (&gt; 500 m)</option><option>Alerta por desvío (&gt; 200 m)</option><option>Sin geocerca</option></select></div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-secondary" onclick="closeModal('shareLocationModal')">Cancelar</button>
+        <a href="contactos.html" class="btn-secondary" style="text-decoration:none;">Configurar más contactos</a>
+        <button class="btn-primary" id="shareLocationConfirmBtn">Confirmar e Iniciar Transmisión</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="logoutModal" style="display:none;">
+    <div class="modal modal--center">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;">● Cubre: US05 - Cerrar sesión</div>
+      <div style="width:52px;height:52px;border-radius:14px;background:#fff0f0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M9 4H5C3.9 4 3 4.9 3 6V16C3 17.1 3.9 18 5 18H9M15.5 14.5L19 11L15.5 7.5M19 11H8" stroke="var(--sos)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="modal__title">¿Cerrar sesión de SafeSignal?</div>
+      <div class="modal__body">Tu sesión actual se finalizará de forma segura en este equipo. No podrás acceder a tus rutas, contactos de emergencia ni funciones privadas sin volver a autenticarte.</div>
+      <div class="notify-row" style="text-align:left;background:var(--bg);border-radius:10px;padding:10px 14px;border-bottom:none;margin-bottom:16px;">
+        <div class="notify-avatar" id="logoutModalAvatar">S</div>
+        <div class="notify-info"><strong id="logoutModalName">sebastiancuray08</strong><div class="notify-meta" id="logoutModalRole">Lima, PE · Conexión protegida</div></div>
+        <span class="text-success" style="font-size:11.5px;font-weight:600;">● Activa</span>
+      </div>
+      <div class="modal__footer modal__footer--stack">
+        <button class="btn-secondary" onclick="closeModal('logoutModal')">Cancelar</button>
+        <button class="btn-danger" id="confirmLogout">Sí, cerrar sesión</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px;">Para emergencias inmediatas sin autenticación, el botón SOS rápido permanecerá disponible en la pantalla de bienvenida.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/dashboard.js"></script>
+  <script>
+    var DASH_CENTER = [-12.1211, -77.0295];
+    var dashMap = L.map('dashMapLeaflet', { zoomControl: false }).setView(DASH_CENTER, 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(dashMap);
+    L.circle([-12.1155, -77.0125], { radius: 300, color: '#f59e0b', weight: 1.5, fillColor: '#f59e0b', fillOpacity: .25 }).addTo(dashMap);
+    L.circle([-12.1280, -77.0320], { radius: 350, color: '#22c55e', weight: 1.5, fillColor: '#22c55e', fillOpacity: .22 }).addTo(dashMap);
+    L.circle([-12.1140, -77.0080], { radius: 300, color: '#ef4444', weight: 1.5, dashArray: '6 4', fillColor: '#ef4444', fillOpacity: .2 }).addTo(dashMap);
+    [[-12.1183, -77.0243, '#f59e0b', 'Advertencia'], [-12.1245, -77.0270, '#ef4444', 'Peligro'], [-12.1319, -77.0303, '#22c55e', 'Seguro']].forEach(function (p) {
+      L.circleMarker([p[0], p[1]], { radius: 7, color: 'white', weight: 2, fillColor: p[2], fillOpacity: 1 }).addTo(dashMap).bindTooltip(p[3]);
+    });
+    L.circleMarker(DASH_CENTER, { radius: 8, color: 'white', weight: 3, fillColor: '#1A3A5C', fillOpacity: 1 }).addTo(dashMap).bindTooltip('Estás aquí');
+    function zoomDashMap(d) { if (d > 0) dashMap.zoomIn(); else dashMap.zoomOut(); }
+    function recenterDashMap() { dashMap.setView(DASH_CENTER, 14); }
+  </script>
+</body>
+</html>

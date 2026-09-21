@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Riesgo y Rutas Seguras — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/mapa.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content" style="display:flex;flex-direction:column;">
+      <div class="map-page-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+        <div>
+          <h1 class="page-title">Mapa de Riesgo y Rutas Seguras</h1>
+          <p class="page-subtitle">Monitorea zonas de peligro en tiempo real, planifica trayectos asistidos y evita puntos críticos.</p>
+        </div>
+        
+      </div>
+
+      <div class="route-banner route-banner--warning" id="warningBanner" style="display:none;">
+        <div class="route-banner__row">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#b45309"/><path d="M8 4.5V8.5M8 10.5V11" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="route-banner__title">Advertencia de trayecto detectada</span>
+          <span class="badge badge--yellow">Recomendación activa</span>
+        </div>
+        <p class="route-banner__text">La ruta convencional cruza una zona con <strong>incidentes violentos recientes</strong>. SafeSignal ha calculado una Ruta Segura alternativa que añade solo 3 minutos pero garantiza patrullaje continuo y cobertura de cámaras.</p>
+        <div class="route-banner__actions">
+          <button class="btn-primary" style="width:auto;" onclick="aceptarRuta()">Aceptar Ruta Segura</button>
+          <button class="btn-secondary" onclick="showToast('Mostrando ruta con desvío…')">Ver desvío</button>
+        </div>
+      </div>
+
+      <div class="route-banner route-banner--success" id="successBanner" style="display:none;">
+        <div class="route-banner__row">
+          <span class="route-banner__check">✓</span>
+          <span class="route-banner__title" id="successBannerTitle">Ruta óptima seleccionada: Circuito de Playas / Salaverry</span>
+        </div>
+        <div class="route-banner__pills"><span class="badge badge--green">Listo para iniciar recorrido</span><span class="badge badge--blue">Bypass de riesgo aplicado (+3 min)</span></div>
+        <p class="route-banner__text">Ruta asistida confirmada: el trayecto esquiva por completo la zona crítica de Surquillo y Av. Angamos. Cobertura al 100% de Serenazgo Interdistrital y 18 cámaras LPR en línea.</p>
+        <div class="route-banner__actions"><button class="btn-secondary" onclick="modificarDestino()">Modificar Destino</button></div>
+      </div>
+
+      <div class="map-toolbar" id="mapFilterBar">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="map-filter-btn active" onclick="filterMap(this,'all')">Todos los incidentes (18)</button>
+          <button class="map-filter-btn" onclick="filterMap(this,'recientes')">Últimas 6 horas</button>
+          <button class="map-filter-btn" onclick="filterMap(this,'robo')">Solo Robo / Asalto</button>
+        </div>
+      </div>
+      <div class="map-toolbar" id="routeInfoBar" style="display:none;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <span class="badge badge--green">● Ruta Segura Activa</span>
+          <span class="badge badge--navy">18 Cámaras en trazado</span>
+          <span class="badge badge--navy">Puntos de auxilio (3)</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0;height:520px;">
+        <div id="mapOuter" class="map-view" style="flex:1;">
+          <div id="map" style="position:absolute;inset:0;"></div>
+          <div class="map-zoom-controls">
+            <button onclick="zoomMap(1)" title="Acercar">+</button>
+            <button onclick="zoomMap(-1)" title="Alejar">−</button>
+            <button onclick="recenterMap()" title="Recentrar">⟳</button>
+          </div>
+          <div class="map-legend-float">
+            <div class="map-legend-float__title">Nivel de Riesgo en Tiempo Real</div>
+            <div class="map-legend-float__row"><span class="legend-item legend-item--green">● Seguro</span><span class="legend-item legend-item--yellow">● Advertencia</span><span class="legend-item legend-item--red">● Peligro</span><span class="legend-item" style="color:#60a5fa;">● Tú</span></div>
+          </div>
+          <div class="map-status-float" id="mapStatusFloat">
+            <div class="map-status-float__title">Monitoreo en vivo</div>
+            <div class="map-status-float__text">Cobertura activa en tu radio · Ingresa un destino para trazar ruta</div>
+          </div>
+        </div>
+        <div class="map-side-panel">
+          <div id="routeSearchPanel">
+            <div class="card mb-8">
+              <div class="page-header__row mb-8"><h4 class="card-title-sm">Calcular Ruta Segura</h4><span class="badge badge--green">GPS Activo</span></div>
+              <div class="form-group"><label class="form-label">Punto de origen</label><input class="form-input" value="Av. Larco 740, Miraflores"></div>
+              <div class="form-group" style="margin-bottom:10px;"><label class="form-label">Destino asistido</label><input class="form-input" id="destInput" value="Av. Javier Prado Este 2400, San Borja"></div>
+              <button class="btn-primary" onclick="buscarRutas()">Buscar Rutas Seguras</button>
+            </div>
+            <div class="card mb-8" id="planCard" style="text-align:center;padding:22px 18px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--soft-bg);color:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5L7 3L13 5L18 3V15L13 17L7 15L2 17V5Z" stroke="var(--navy)" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 3V15M13 5V17" stroke="var(--navy)" stroke-width="1.2"/></svg></div>
+              <h4 class="card-title-sm mb-8">Planifica tu trayecto protegido</h4>
+              <p class="page-subtitle mb-8">Ingresa un punto de origen y un destino para calcular rutas asistidas evitando zonas de riesgo y puntos ciegos en tiempo real.</p>
+              <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;"><span class="alert-dot alert-dot--green"></span>Monitoreo preventivo disponible<span class="badge badge--green">Listo</span></div>
+            </div>
+            <div class="card mb-8" id="comparativaCard" style="display:none;">
+              <div class="page-header__row mb-8"><h4 class="card-title-sm">Comparativa de Rutas</h4><span class="page-subtitle">2 calculadas</span></div>
+              <div class="report-item selected mb-8" onclick="selectRouteOption(this)"
+                data-route-name="Vía Circuito de Playas / Salaverry" data-time="21 min" data-dist="6.4 km" data-zonas="0 zonas críticas" data-safety="98">
+                <div class="page-header__row"><strong class="text-sm" style="color:var(--navy);">Vía Circuito de Playas / Salaverry</strong><span class="badge badge--green">Recomendada</span></div>
+                <p class="page-subtitle">⏱ 21 min · 📍 6.4 km · 0 zonas rojas</p>
+              </div>
+              <div class="report-item" onclick="selectRouteOption(this)"
+                data-route-name="Vía Expresa / Angamos" data-time="18 min" data-dist="5.8 km" data-zonas="2 zonas críticas" data-safety="64">
+                <div class="page-header__row"><strong class="text-sm" style="color:var(--navy);">Vía Expresa / Angamos</strong><span class="badge badge--red">Riesgo Alto</span></div>
+                <p class="page-subtitle">⏱ 18 min (-3 min) · 📍 5.8 km · ⚠ Cruza 2 zonas rojas</p>
+              </div>
+              <button class="btn-secondary" onclick="aceptarRuta()">Aceptar Ruta Segura</button>
+            </div>
+            <h4 class="card-title-sm mb-8">Incidentes en tu Radio</h4>
+            <div class="map-incident-item">
+              <div class="page-header__row" style="margin-bottom:3px;"><span class="text-sm" style="font-weight:600;">Robo agravado con arma</span><span class="badge badge--red">Alto</span></div>
+              <div class="page-subtitle">Calle Las Begonias · San Isidro · Hace 15 min</div>
+            </div>
+            <div class="map-incident-item">
+              <div class="page-header__row" style="margin-bottom:3px;"><span class="text-sm" style="font-weight:600;">Arrebato de pertenencias</span><span class="badge badge--yellow">Medio</span></div>
+              <div class="page-subtitle">Av. Angamos con Petit Thouars · Hace 42 min</div>
+            </div>
+            <div class="map-incident-item">
+              <div class="page-header__row" style="margin-bottom:3px;"><span class="text-sm" style="font-weight:600;">Patrullaje preventivo vecinal</span><span class="badge badge--blue">Corredor activo</span></div>
+              <div class="page-subtitle">Parque Kennedy · Miraflores · Hace 1 hora</div>
+            </div>
+            <a href="incidentes.html" class="sidebar-right-card__link">Ver reporte comunitario completo →</a>
+          </div>
+
+          <div id="routeSelectedPanel" style="display:none;">
+            <div class="card mb-8">
+              <div class="page-header__row mb-8"><span class="badge badge--navy">Ruta seleccionada</span><span class="badge badge--green" id="routeSelectedSafety">98% Seguro</span></div>
+              <h4 class="card-title-sm mb-8" id="routeSelectedName">Vía Circuito de Playas / Salaverry</h4>
+              <p class="page-subtitle mb-8" id="routeSelectedStats">⏱ 21 min · 📍 6.4 km · 0 zonas críticas</p>
+              <div class="route-bypass-note"><span>Bypass preventivo sobre Angamos</span><strong>+3 min</strong></div>
+            </div>
+            <div class="card mb-8">
+              <h4 class="card-title-sm mb-8">Itinerario asistido</h4>
+              <ol class="itinerary-list">
+                <li><span class="itinerary-list__num">1</span><div><strong>Av. Larco hacia Malecón de la Reserva</strong><div class="page-subtitle">1.2 km · Corredor turístico monitoreado 24/7</div></div></li>
+                <li><span class="itinerary-list__num">2</span><div><strong>Circuito de Playas / Balta a Salaverry</strong><div class="page-subtitle">3.8 km · Patrullaje costero continuo</div></div></li>
+                <li><span class="itinerary-list__num">3</span><div><strong>Conexión Javier Prado Este a San Borja</strong><div class="page-subtitle">1.4 km · 4 cámaras LPR activas y base de auxilio</div></div></li>
+              </ol>
+            </div>
+            <div class="card mb-8">
+              <h4 class="card-title-sm mb-8">Protocolos de protección activa</h4>
+              <div class="protocol-toggle-row"><div><strong class="text-sm">Compartir trayecto en tiempo real</strong><div class="page-subtitle">Con 3 contactos de emergencia configurados</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+              <div class="protocol-toggle-row"><div><strong class="text-sm">Alerta por desvío de ruta (&gt;150m)</strong><div class="page-subtitle">Notificación acústica y reporte automático</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+              <div class="protocol-toggle-row"><div><strong class="text-sm">Verificación de llegada a destino</strong><div class="page-subtitle">Confirmación con check de seguridad por PIN</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label></div>
+            </div>
+            <button class="btn-secondary mb-8" style="display:block;text-align:center;" onclick="guardarRuta()">Guardar esta ruta</button>
+            <a href="seguimiento.html" class="btn-primary" style="display:block;text-align:center;text-decoration:none;">Iniciar Trayecto Seguro Ahora</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-below">
+        <div class="stat-box-row">
+          <div class="stat-box"><div class="stat-box__num">0</div><div class="stat-box__label">Puntos ciegos en ruta</div></div>
+          <div class="stat-box"><div class="stat-box__num">14</div><div class="stat-box__label">Cámaras Serenazgo activas</div></div>
+          <div class="stat-box"><div class="stat-box__num">3.2 min</div><div class="stat-box__label">Tiempo de auxilio asistido</div></div>
+        </div>
+        <div class="page-header__row mb-8" style="margin-top:16px;"><h4 class="card-title-sm" style="margin:0;">Rutas frecuentes guardadas</h4><a href="#" class="form-link" onclick="event.preventDefault();guardarRuta();">+ Guardar actual</a></div>
+        <div class="saved-route-item" id="savedRouteNew" style="display:none;">
+          <div><strong class="text-sm" style="color:var(--navy);">Casa → Oficina (Vía Segura Circuito de Playas)</strong><div class="page-subtitle">6.4 km · 98% seguro · 0 zonas rojas</div></div>
+          <span class="badge badge--green">Recién guardada</span>
+        </div>
+        <div class="saved-route-item">
+          <div><strong class="text-sm" style="color:var(--navy);">Casa → Oficina San Isidro</strong><div class="page-subtitle">4.2 km · Vía Av. Arequipa protegida</div></div>
+          <button class="btn-secondary btn-sm" onclick="usarRutaGuardada(this)">Usar ruta</button>
+        </div>
+        <div class="saved-route-item">
+          <div><strong class="text-sm" style="color:var(--navy);">Casa → Universidad (PUCP)</strong><div class="page-subtitle">8.1 km · Vía Circuito Costa Verde</div></div>
+          <button class="btn-secondary btn-sm" onclick="usarRutaGuardada(this)">Usar ruta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="saveRouteModal" style="display:none;">
+    <div class="modal modal--center">
+      <div class="page-header__row" style="align-items:flex-start;margin-bottom:4px;">
+        <div class="page-header__row" style="gap:10px;align-items:flex-start;">
+          <span class="route-banner__check" style="margin-top:1px;">✓</span>
+          <div>
+            <div class="modal__title" style="margin-bottom:2px;">¡Ruta guardada exitosamente!</div>
+            <p class="page-subtitle" style="margin:0;">Se añadió a tus rutas frecuentes y se sincronizó con tu GPS.</p>
+          </div>
+        </div>
+        <button class="modal__close" data-close-modal style="color:var(--muted);font-size:20px;">×</button>
+      </div>
+      <div class="form-group mt-16">
+        <label class="form-label">Nombre de la ruta</label>
+        <input class="form-input" id="saveRouteNameInput">
+      </div>
+      <div class="grid-2" style="gap:12px;">
+        <div class="form-group"><label class="form-label">Punto de Origen</label><input class="form-input" id="saveRouteOrigin" readonly></div>
+        <div class="form-group"><label class="form-label">Destino Asistido</label><input class="form-input" id="saveRouteDest" readonly></div>
+      </div>
+      <div class="route-bypass-note mb-16" id="saveRouteStats" style="background:#f0fdf4;color:#166534;font-weight:600;"></div>
+      <div class="modal__footer modal__footer--stack">
+        <button class="btn-primary" onclick="confirmSaveRoute()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/mapa.js"></script>
+</body>
+</html>

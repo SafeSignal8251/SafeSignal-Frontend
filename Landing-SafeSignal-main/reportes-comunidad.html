@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes de la Comunidad — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/reportes-comunidad.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row">
+          <div><h1 class="page-title">Reportes Comunitarios</h1><p class="page-subtitle">Red colaborativa de alertas ciudadanas verificadas en tiempo real para Lima Metropolitana.</p></div>
+        </div>
+
+        <div class="tab-row">
+          <button class="tab-btn active" onclick="switchReportTab(this,'all')">Todos los reportes (128)</button>
+          <button class="tab-btn" onclick="switchReportTab(this,'mine')">Mis reportes (3)</button>
+          <a href="reporte-incidente.html" class="btn-primary" style="width:auto;margin-left:auto;">+ Crear Nuevo Reporte</a>
+        </div>
+
+        <div class="filter-bar">
+          <input class="form-input search-input-md" type="text" id="filterSearch" placeholder="Buscar por calle, distrito o descripción..." oninput="applyReportFilters()">
+          <select class="form-select select-sm" id="filterTipo" onchange="applyReportFilters()">
+            <option value="all">Tipo de incidente: Todos</option>
+            <option value="robo">Robo / Hurto</option>
+            <option value="preventivo">Preventivo / Infraestructura</option>
+          </select>
+          <select class="form-select select-sm" id="filterRiesgo" onchange="applyReportFilters()">
+            <option value="all">Nivel de riesgo: Todos</option>
+            <option value="alto">Alto</option>
+            <option value="medio">Medio</option>
+            <option value="preventivo">Preventivo</option>
+          </select>
+          <div class="filter-distrito" id="filterDistritoChip"><span class="filter-distrito__text">Distrito: Miraflores, San Isidro</span><button type="button" onclick="clearDistrictFilter(this,event)" aria-label="Quitar filtro de distrito">×</button></div>
+          <select class="form-select select-sm" id="filterPeriodo" onchange="applyReportFilters()">
+            <option value="all">Todo el periodo</option>
+            <option value="hoy">Últimas 24 horas</option>
+            <option value="semana">Esta semana</option>
+          </select>
+          <label class="filter-check"><input type="checkbox" checked id="filterVerificados" onchange="applyReportFilters()"> Solo verificados</label>
+        </div>
+
+        <div class="grid-2 two-col-16">
+          <div>
+            <!-- ===== TAB: TODOS LOS REPORTES ===== -->
+            <div id="tabPanelAll">
+              <div class="page-header__row mb-8">
+                <h4 class="card-title-sm">Todos los reportes</h4>
+                <span class="sort-row">Ordenar por: <a class="sort-link active" onclick="toggleSortLink(this)">Más recientes</a> | <a class="sort-link" onclick="toggleSortLink(this)">Mayor validación</a></span>
+              </div>
+              <p class="page-subtitle mb-16">Gestiona el estado de verificación, comentarios de vecinos</p>
+
+              <div class="subtab-row">
+                <button class="subtab-pill active" data-status-filter="all" onclick="switchSubTab(this)">Todos (3)</button>
+                <button class="subtab-pill" data-status-filter="verified" onclick="switchSubTab(this)">Verificados (2)</button>
+                <button class="subtab-pill" data-status-filter="review" onclick="switchSubTab(this)">En revisión (1)</button>
+              </div>
+
+              <div id="reportsListAll" class="report-item-list">
+                <div class="report-item selected" data-status="verified" data-type="robo" data-risk="alto" data-district="miraflores" data-period="hoy" data-report-id="rep0891" data-panel="all" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--danger">● Riesgo Alto</span><span class="badge badge--blue">En Investigación Serenazgo</span><span class="mono">#REP-2026-0891</span></div>
+                  <div class="report-item__title">Robo agravado con arma de fuego a transeúnte</div>
+                  <p class="page-subtitle">Av. Angamos Este cruce con Petit Thouars, Miraflores</p>
+                  <p class="page-subtitle">Hace 25 min · Publicado por @vecino_vigilante (Nivel 4 de confianza)</p>
+                  <p class="report-item__quote">Dos sujetos en moto lineal negra sin placa interceptaron a peatón sustrayendo pertenencias y teléfono...</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 24 validaron · 💬 8 comentarios</span><span class="row-gap-8"><span class="badge badge--green">✓ 98% Veracidad</span><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Visualizando Detalle →</a></span></div>
+                </div>
+                <div class="report-item" data-status="verified" data-type="robo" data-risk="medio" data-district="sanisidro" data-period="hoy" data-report-id="rep0885" data-panel="all" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--warning">● Riesgo Medio</span><span class="badge badge--blue">Reporte Comunitario Activo</span><span class="mono">#REP-2026-0885</span></div>
+                  <div class="report-item__title">Arrebato de celular por falsos repartidores</div>
+                  <p class="page-subtitle">Calle Las Begonias 450, San Isidro</p>
+                  <p class="page-subtitle">Hace 1 hora · <strong>Publicado por ti (Reporte propio)</strong></p>
+                  <p class="report-item__quote">Falso delivery en bicicleta térmica naranja arrebató teléfono móvil mientras la persona esperaba en semáforo peatonal...</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 15 validaron · 💬 4 comentarios</span><span class="row-gap-8"><a href="editar-reporte.html" class="form-link">Editar mi reporte</a><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Ver detalle →</a></span></div>
+                </div>
+                <div class="report-item" data-status="review" data-type="preventivo" data-risk="preventivo" data-district="miraflores" data-period="hoy" data-report-id="rep0870" data-panel="all" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--moderate">● Preventivo / Infraestructura</span><span class="badge badge--green">Notificado a Municipio</span><span class="mono">#REP-2026-0870</span></div>
+                  <div class="report-item__title">Luminarias públicas apagadas y punto ciego peligroso</div>
+                  <p class="page-subtitle">Parque Tradiciones, Miraflores</p>
+                  <p class="page-subtitle">Hace 3 horas · Publicado por @seguridad_urbana</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 19 validaron · 💬 2 comentarios</span><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Ver detalle →</a></div>
+                </div>
+              </div>
+              <button class="btn-secondary" style="width:100%;margin-top:4px;" onclick="showToast('Cargando más reportes comunitarios…')">Cargar más reportes comunitarios</button>
+
+              <div class="card mt-16">
+                <div class="page-header__row mb-8"><h4 class="card-title-sm">Mis Zonas Suscritas</h4><a href="suscribir-zona.html" class="form-link">+ Suscribir nueva zona</a></div>
+                <p class="page-subtitle mb-8">Alertas automáticas en tiempo real enviadas a tu móvil y correo.</p>
+                <div class="row-gap-8" style="flex-wrap:wrap;">
+                  <span class="chip-tag" style="background:var(--soft-bg);color:var(--navy);">● Miraflores - Zona Comercial <button style="color:var(--navy);" onclick="this.closest('.chip-tag').remove()">×</button></span>
+                  <span class="chip-tag" style="background:var(--soft-bg);color:var(--navy);">● San Isidro - Centro Financiero <button style="color:var(--navy);" onclick="this.closest('.chip-tag').remove()">×</button></span>
+                  <span class="chip-tag" style="background:var(--soft-bg);color:var(--navy);">● Surquillo - Límite Principal <button style="color:var(--navy);" onclick="this.closest('.chip-tag').remove()">×</button></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== TAB: MIS REPORTES ===== -->
+            <div id="tabPanelMine" style="display:none;">
+              <div class="page-header__row mb-8">
+                <h4 class="card-title-sm">Tus reportes emitidos (3 reportes)</h4>
+                <span class="sort-row">Ordenar por: <a class="sort-link active" onclick="toggleSortLink(this)">Más recientes</a> | <a class="sort-link" onclick="toggleSortLink(this)">Mayor validación</a></span>
+              </div>
+              <p class="page-subtitle mb-16">Gestiona el estado de verificación, comentarios de vecinos y edición de tus incidentes reportados.</p>
+
+              <div class="subtab-row">
+                <button class="subtab-pill active" data-status-filter="all" onclick="switchSubTab(this)">Todos (3)</button>
+                <button class="subtab-pill" data-status-filter="verified" onclick="switchSubTab(this)">Verificados (2)</button>
+                <button class="subtab-pill" data-status-filter="review" onclick="switchSubTab(this)">En revisión (1)</button>
+              </div>
+
+              <div id="reportsListMine" class="report-item-list">
+                <div class="report-item selected" data-status="verified" data-type="robo" data-risk="medio" data-district="sanisidro" data-period="hoy" data-report-id="rep0885" data-panel="mine" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--warning">● Riesgo Medio</span><span class="badge badge--blue">Reporte Comunitario Activo</span><span class="mono">#REP-2026-0885</span></div>
+                  <div class="report-item__title">Arrebato de celular por falsos repartidores</div>
+                  <p class="page-subtitle">Calle Las Begonias 450, San Isidro</p>
+                  <p class="page-subtitle">Hace 1 hora · Publicado por ti (Reporte propio)</p>
+                  <p class="report-item__quote">Falso delivery en bicicleta térmica naranja arrebató teléfono móvil mientras la persona esperaba en semáforo peatonal. Tomó rumbo hacia Vía Expresa.</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 15 validaron · 💬 4 comentarios</span><span class="row-gap-8"><span class="badge badge--green">✓ 95% Veracidad</span><a href="editar-reporte.html" class="form-link">Editar mi reporte</a><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Visualizando Detalle →</a></span></div>
+                </div>
+                <div class="report-item" data-status="review" data-type="preventivo" data-risk="preventivo" data-district="miraflores" data-period="semana" data-report-id="rep0740" data-panel="mine" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--moderate">● Preventivo / Infraestructura</span><span class="badge badge--gray">Notificado a Serenazgo</span><span class="mono">#REP-2026-0740</span></div>
+                  <div class="report-item__title">Cámara vecinal dañada y falta de luminaria</div>
+                  <p class="page-subtitle">Parque Tradiciones, Miraflores</p>
+                  <p class="page-subtitle">Ayer, 19:30 hrs · Publicado por ti</p>
+                  <p class="report-item__quote">Poste sin iluminación y lente de domo con graffiti dificulta visión nocturna en la esquina con Av. Ricardo Palma.</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 19 validaron · 💬 3 comentarios</span><span class="row-gap-8"><span class="badge badge--blue">En verificación por Serenazgo</span><a href="editar-reporte.html" class="form-link">Editar mi reporte</a><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Ver detalle →</a></span></div>
+                </div>
+                <div class="report-item" data-status="verified" data-type="robo" data-risk="alto" data-district="miraflores" data-period="semana" data-report-id="rep0512" data-panel="mine" onclick="selectReport(this)">
+                  <span class="report-item__dot"></span>
+                  <div class="report-item__meta"><span class="status-pill status-pill--danger">● Riesgo Alto</span><span class="badge badge--green">Validado por C5 PNP</span><span class="mono">#REP-2026-0512</span></div>
+                  <div class="report-item__title">Intento de asalto con arma blanca en paradero</div>
+                  <p class="page-subtitle">Av. Angamos Este cruce con Petit Thouars, Miraflores</p>
+                  <p class="page-subtitle">Hace 3 días · Publicado por ti</p>
+                  <p class="report-item__quote">Sujeto sospechoso amedrentó a pasajeros en paradero de transporte público. Intervino patrulla de Serenazgo gracias a la alerta.</p>
+                  <div class="page-header__row mt-8"><span class="text-sm">👍 38 validaron · 💬 12 comentarios</span><span class="row-gap-8"><span class="text-stable text-sm">✓ Resuelto / Archivada</span><a href="#" class="form-link" onclick="event.preventDefault();selectReport(this.closest('.report-item'))">Ver informe final →</a></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== DETALLE: TODOS (REP-2026-0891) ===== -->
+          <div class="card" id="reportDetailAll">
+            <div class="page-header__row mb-8"><span><span class="mono text-sm" id="rdaId">#REP-2026-0891</span> <span class="page-subtitle" style="display:inline;" id="rdaDate">· 16 Jun 2026, 14:15 hrs</span></span><button class="icon-btn-sm" title="Compartir" onclick="showToast('Enlace del reporte copiado')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="12.5" cy="3.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3.5" cy="8" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12.5" cy="12.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M5.1 7.1L10.9 4.3M5.1 8.9L10.9 11.7" stroke="currentColor" stroke-width="1.2"/></svg></button></div>
+
+            <div class="radar-map mb-8" data-live-map data-lat="-12.1183" data-lng="-77.0243" data-zoom="16">
+              <img src="assets/images/mapa-referencia.jpg" alt="Punto del incidente" class="radar-map__img">
+              <div class="radar-map__ring"></div>
+              <div class="radar-map__fill"></div>
+              <div class="radar-map__pin"></div>
+              <div class="radar-map__tag" id="rdaMapTag">Punto de Asalto</div>
+            </div>
+            <p class="page-subtitle mb-16"><span class="map-caption-dot" style="background:var(--accent);"></span><span id="rdaDistrict">Cuadrante 2 · Serenazgo Miraflores</span></p>
+
+            <div class="page-header__row mb-8" style="align-items:center;"><span class="status-pill status-pill--danger" id="rdaRiskBadge">Riesgo Alto</span><span class="page-subtitle" id="rdaVerified">Verificado hace 18 min</span></div>
+            <h3 style="color:var(--navy);margin:0 0 8px;" id="rdaTitle">Robo agravado con arma de fuego a transeúnte</h3>
+            <p class="page-subtitle mb-16" id="rdaAddress">Av. Angamos Este cruce con Petit Thouars, Miraflores</p>
+
+            <div class="author-row">
+              <div class="audit-avatar" style="background:var(--navy);" id="rdaAuthorInitials">VV</div>
+              <div class="author-row__info"><strong class="text-sm" id="rdaAuthorName">@vecino_vigilante</strong> <span class="badge badge--green">DNI Verificado</span><div class="page-subtitle" id="rdaAuthorMeta">14 reportes útiles · Miembro desde 2024</div></div>
+              <a href="perfil.html" class="author-row__link">Ver perfil</a>
+            </div>
+
+            <div class="modal__section-label">Descripción del suceso</div>
+            <p class="text-sm mb-16" id="rdaDesc">Aproximadamente a las 14:10 hrs, dos sujetos masculinos en una motocicleta lineal de color negro sin placa visible amenazaron con arma de fuego a un joven peatón que transitaba frente a la botica. Le arrebataron su mochila y equipo celular de alta gama. Los atacantes huyeron a gran velocidad hacia el límite con Surquillo por la calle Los Negocios. El transeúnte se encuentra físicamente ileso pero en shock.</p>
+
+            <div class="row-gap-8 mb-16"><button class="btn-success" style="width:auto;" onclick="showToast('Gracias por validar. Reporte confirmado.')">Confirmar y Validar (24)</button><button class="btn-secondary btn-danger-outline" style="width:auto;" onclick="showToast('Inconsistencia reportada para revisión.')">Falsa Alarma (1)</button></div>
+
+            <div class="page-header__row mb-8"><span class="modal__section-label" style="margin:0;">Actualizaciones en vivo</span><span class="badge badge--blue">8 aportes</span></div>
+            <div id="rdaWitnessFeed">
+              <div class="witness-row"><div class="witness-row__head"><strong>Serenazgo Miraflores <span class="badge-pill badge-pill--blue">OFICIAL</span></strong><span class="page-subtitle">Hace 18 min</span></div><p class="page-subtitle">Unidad móvil 14 de Serenazgo y efectivo PNP acudieron al lugar. Se acordonó la zona para recojo de huellas y se ha solicitado apoyo al C4 para monitoreo de cámaras.</p></div>
+              <div class="witness-row"><div class="witness-row__head"><strong>@carlos_mira</strong><span class="page-subtitle">Hace 12 min</span></div><p class="page-subtitle">Confirmo, se escucharon los gritos desde la ventana del tercer piso. La moto continuó rumbo este a gran velocidad. Tengan cuidado al cruzar Angamos.</p></div>
+            </div>
+            <textarea class="form-input mt-8" placeholder="Escribe una actualización o aporte verificado..."></textarea>
+            <div class="page-header__row mt-8"><button class="btn-secondary" style="width:auto;" onclick="showToast('Generando PDF del reporte…')">Descargar PDF</button><button class="btn-primary" style="width:auto;" onclick="showToast('Comentario publicado correctamente.')">Publicar comentario</button></div>
+          </div>
+
+          <!-- ===== DETALLE: MIS REPORTES (REP-2026-0885) ===== -->
+          <div class="card" id="reportDetailMine" style="display:none;">
+            <div class="page-header__row mb-8"><span><span class="mono text-sm" id="rdmId">#REP-2026-0885</span> <span class="page-subtitle" style="display:inline;" id="rdmDate">· 16 Jun 2026, 14:15 hrs</span></span><button class="icon-btn-sm" title="Más opciones" onclick="showToast('Opciones del reporte')">⋮</button></div>
+
+            <div class="radar-map radar-map--solid mb-8" data-live-map data-lat="-12.0954" data-lng="-77.0428" data-zoom="16">
+              <img src="assets/images/mapa-referencia.jpg" alt="Lugar del incidente" class="radar-map__img">
+              <div class="radar-map__fill"></div>
+              <div class="radar-map__pin"></div>
+              <div class="radar-map__tag" id="rdmMapTag">Lugar del Incidente</div>
+            </div>
+            <p class="page-subtitle mb-16"><span class="map-caption-dot" style="background:#f59e0b;"></span><span id="rdmDistrict">San Isidro · Cuadrante Financiero</span></p>
+
+            <div class="page-header__row mb-8" style="align-items:center;"><span class="status-pill status-pill--warning" id="rdmRiskBadge">Riesgo Medio</span><span class="page-subtitle" id="rdmVerified">Verificado por la comunidad hace 1 hora</span></div>
+            <h3 style="color:var(--navy);margin:0 0 8px;" id="rdmTitle">Arrebato de celular por falsos repartidores</h3>
+            <p class="page-subtitle mb-16" id="rdmAddress">Calle Las Begonias 450, San Isidro</p>
+
+            <div class="author-row">
+              <div class="audit-avatar" style="background:var(--navy);">SC</div>
+              <div class="author-row__info"><strong class="text-sm">@sebastiancuray08 (Tú)</strong> <span class="badge-pill badge-pill--navy">Autor del reporte</span> <span class="badge badge--green">DNI Verificado</span><div class="page-subtitle">Reporte propio · Miembro activo</div></div>
+            </div>
+
+            <div class="modal__section-label">Descripción del suceso</div>
+            <p class="text-sm mb-16" id="rdmDesc">Falso delivery en bicicleta térmica naranja arrebató teléfono móvil mientras la persona esperaba en semáforo peatonal. Tomó rumbo hacia Vía Expresa. El atacante vestía casaca reflectiva sin placa ni logos identificables de operadora.</p>
+
+            <div class="modal__section-label">Acciones del autor</div>
+            <a href="editar-reporte.html" class="btn-secondary mb-16" style="display:flex;">✏️ Editar reporte</a>
+
+            <div class="page-header__row mb-8"><span class="modal__section-label" style="margin:0;">Actualizaciones y comentarios</span><span class="badge badge--blue">4 aportes</span></div>
+            <div id="rdmWitnessFeed">
+              <div class="witness-row"><div class="witness-row__head"><strong>Serenazgo San Isidro <span class="badge-pill badge-pill--blue">OFICIAL</span></strong><span class="page-subtitle">Hace 45 min</span></div><p class="page-subtitle">Patrullaje motorizado incrementado en eje Las Begonias. Se revisan grabaciones del centro de videovigilancia municipal.</p></div>
+              <div class="witness-row"><div class="witness-row__head"><strong>@laura_castillo13</strong><span class="page-subtitle">Hace 30 min</span></div><p class="page-subtitle">Vi la misma bicicleta cerca de Dean Valdivia hace 20 minutos. El repartidor finge mirar el GPS.</p></div>
+            </div>
+            <textarea class="form-input mt-8" placeholder="Añade una actualización a tu reporte..."></textarea>
+            <div class="page-header__row mt-8" style="justify-content:flex-end;"><button class="btn-primary" style="width:auto;" onclick="showToast('Actualización publicada como autor.')">Publicar como autor</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/live-map.js"></script>
+  <script src="assets/scripts/reportes-comunidad.js"></script>
+</body>
+</html>

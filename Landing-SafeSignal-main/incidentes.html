@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte Comunitario — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/incidentes.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="breadcrumb-row">
+          <span><a href="mapa.html" class="breadcrumb-link">← Volver al Mapa</a> <span class="breadcrumb-sep">/</span> <a href="reportes-comunidad.html" class="breadcrumb-link">Lista</a></span>
+          <button class="btn-secondary" style="width:auto;" onclick="showToast('Enlace del incidente copiado al portapapeles')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="margin-right:4px;vertical-align:-2px;"><circle cx="12.5" cy="3.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="3.5" cy="8" r="1.8" stroke="currentColor" stroke-width="1.3"/><circle cx="12.5" cy="12.5" r="1.8" stroke="currentColor" stroke-width="1.3"/><path d="M5.1 7.1L10.9 4.3M5.1 8.9L10.9 11.7" stroke="currentColor" stroke-width="1.2"/></svg>Compartir</button>
+        </div>
+
+        <div class="grid-2 two-col-16">
+          <div class="side-stack">
+            <div class="card">
+              <div class="page-header__row mb-16" style="align-items:center;">
+                <div class="row-gap-8"><span class="status-pill status-pill--critical">● Riesgo Alto</span><span class="badge badge--gray mono">#REP-2026-0891</span></div>
+                <span class="page-subtitle"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:-2px;margin-right:3px;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 4.5V8.5L10.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>16 Jun 2026, 14:15 hrs (Hace 25 min)</span>
+              </div>
+
+              <h2 style="color:var(--navy);font-size:24px;margin-bottom:12px;">Robo agravado con arma de fuego a transeúnte</h2>
+
+              <div class="row-gap-8 mb-8" style="flex-wrap:wrap;">
+                <span class="address-chip"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" fill="var(--sos)" stroke="var(--sos)" stroke-width="1.2"/><circle cx="8" cy="6" r="1.6" fill="white"/></svg>Av. Angamos Este cruce con Petit Thouars, Miraflores, Lima</span>
+              </div>
+              <div class="mb-16"><span class="badge badge--blue">Cuadrante 2 · Serenazgo Miraflores</span></div>
+
+              <div class="info-note mb-16">
+                <div class="flex-gap-10" style="align-items:center;">
+                  <div class="audit-avatar" style="background:var(--navy);">VV</div>
+                  <div><strong class="text-sm">@vecino_vigilante</strong> <span class="badge badge--green">DNI Verificado</span><div class="page-subtitle">Nivel 4 de confianza cívica · 14 reportes útiles anteriores · Miembro desde 2024</div></div>
+                </div>
+              </div>
+
+              <div class="modal__section-label">Descripción del suceso</div>
+              <p class="text-sm mb-16">Dos sujetos en moto lineal negra sin placa interceptaron a peatón sustrayendo pertenencias y teléfono celular de alta gama. Escaparon con dirección a Surquillo por calle Los Negocios a alta velocidad. El transeúnte se encuentra ileso físicamente pero en estado de shock agudo. Se alertó de inmediato a patrullero de serenazgo asignado al sector.</p>
+
+              <div class="info-note mb-8">
+                <div class="page-header__row" style="align-items:center;">
+                  <span class="text-sm"><strong id="validationCount" style="font-size:20px;color:var(--navy);">24</strong> ciudadanos validaron este incidente</span>
+                  <span class="badge badge--green">98% veracidad</span>
+                </div>
+                <p class="page-subtitle mt-8">Validado por 3 usuarios con Rango Vecinal Oro.</p>
+              </div>
+              <div class="row-gap-8">
+                <button class="btn-primary" style="width:auto;" onclick="validateIncident(this)">Validar reporte (+1)</button>
+                <button class="btn-secondary btn-outline-warn" style="width:auto;" onclick="reportInconsistency()">Denunciar inconsistencia</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="page-header__row mb-16" style="align-items:center;">
+                <div class="row-gap-8"><h4 class="card-title-sm">Feed de Testigos &amp; Actualizaciones</h4><span class="badge badge--gray">4 aportes</span></div>
+                <span class="live-tag"><span class="live-tag__dot"></span>Actualización en vivo</span>
+              </div>
+
+              <div class="comment-input-row mb-8">
+                <div class="audit-avatar" style="background:var(--navy);width:32px;height:32px;font-size:12px;">S</div>
+                <input type="text" id="witnessInput" placeholder="Añadir testimonio o información adicional sobre este hecho...">
+              </div>
+              <div class="page-header__row mb-16" style="align-items:center;">
+                <a href="#" class="form-link" onclick="event.preventDefault();showToast('Selector de foto no disponible en esta vista previa.')">📎 Adjuntar foto</a>
+                <button class="btn-primary" style="width:auto;" onclick="postWitnessComment()">Comentar</button>
+              </div>
+
+              <div id="witnessFeed">
+                <div class="witness-row"><div class="witness-row__head"><strong>@carlos_surquillo</strong> <span class="badge badge--gray">Vecino Residente</span><span class="page-subtitle" style="margin-left:auto;">Hace 15 min</span></div><p class="page-subtitle">Patrullero Serenazgo 14 llegó al punto y está revisando cámaras de la botica en la esquina de Petit Thouars. Los sospechosos doblaron por Jr. Lizardo Montero hacia Marsano.</p></div>
+                <div class="witness-row"><div class="witness-row__head"><strong>@maria_miraflores</strong> <span class="badge badge--gray">Transeúnte</span><span class="page-subtitle" style="margin-left:auto;">Hace 8 min</span></div><p class="page-subtitle">Tomar precauciones en Petit Thouars cuadra 49, el tráfico está sumamente lento por el resguardo policial y paramédicos asistiendo a la víctima.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="side-stack">
+            <div class="card">
+              <div class="page-header__row mb-8" style="align-items:flex-start;">
+                <h4 class="card-title-sm">🗺 Georreferenciación &amp; Radar</h4>
+                <span class="zone-critical-badge">ZONA<br>CRÍTICA:<br>300M</span>
+              </div>
+              <div class="radar-panel mb-8" data-live-map data-lat="-12.1183" data-lng="-77.0243" data-zoom="16">
+                <img src="assets/images/mapa-referencia.jpg" alt="Radar del incidente" class="radar-panel__img">
+                <span class="radar-panel__street radar-panel__street--h">AV. ANGAMOS ESTE</span>
+                <span class="radar-panel__street radar-panel__street--v">AV. PETIT THOUARS</span>
+                <div class="radar-panel__ring"></div>
+                <div class="radar-panel__fill"></div>
+                <div class="radar-panel__pin"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L14 12.5H2L8 1.5Z" stroke="white" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.5V9M8 10.5V11" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+                <div class="radar-panel__unit-tag">Serenazgo<br>#12</div>
+                <div class="radar-panel__zoom">
+                  <button onclick="radarZoom('in')">+</button>
+                  <button onclick="radarZoom('out')">−</button>
+                  <button onclick="radarZoom('center')">⊙</button>
+                </div>
+              </div>
+              <p class="text-sm mb-8">Ruta Segura SafeSignal ha desviado a <strong style="color:var(--accent);">18 transeúntes</strong> de esta intersección en los últimos 20 minutos.</p>
+              <p class="page-subtitle"><span class="alert-dot alert-dot--green" style="display:inline-block;vertical-align:-1px;"></span> Patrulla Serenazgo #12 a 250m <span class="mono">ETA: 1.8 min</span></p>
+            </div>
+
+            <div class="card">
+              <h4 class="card-title-sm mb-8">Diagnóstico del Sector</h4>
+              <div class="sector-risk-box">
+                <div><div class="sector-risk-box__label">Nivel de Peligrosidad<br>Cuadrante</div><div class="sector-risk-box__sub">Riesgo Crítico entre 14:00 y 20:00 hrs</div></div>
+                <div class="sector-risk-box__num">8.4<span>/10</span></div>
+              </div>
+              <p class="modal__section-label" style="margin-top:14px;">Últimos 7 días en este cuadrante:</p>
+              <div class="sector-stat-grid">
+                <div class="sector-stat"><div class="sector-stat__num">5</div><div class="sector-stat__label">Asaltos a mano armada</div></div>
+                <div class="sector-stat"><div class="sector-stat__num">2</div><div class="sector-stat__label">Arrebatos de celular</div></div>
+              </div>
+            </div>
+
+            <div class="threshold-card threshold-card--mid">
+              <div class="row-gap-8 mb-8" style="align-items:center;"><span style="color:#b45309;">⚠</span><strong class="text-sm" style="color:#b45309;text-transform:uppercase;letter-spacing:.03em;">Recomendación Preventiva Activa</strong></div>
+              <p class="text-sm mb-16">Evitar cruzar a pie por <strong>Jr. Los Negocios hacia Tomás Marsano</strong>. Se sugiere utilizar el <a href="mapa.html" class="form-link">Corredor Seguro Av. Arequipa</a> que cuenta con puestos fijos de monitoreo y patrullaje continuo.</p>
+              <button class="btn-primary" onclick="traceAlternateRoute()">Trazar ruta alternativa segura</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/live-map.js"></script>
+  <script src="assets/scripts/incidentes.js"></script>
+</body>
+</html>

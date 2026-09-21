@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte Post-Emergencia — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/reporte-post-emergencia.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row" style="margin-bottom:20px;">
+          <div><h1 style="font-size:22px;font-weight:800;color:var(--navy);">Reporte post-emergencia</h1><p style="font-size:13px;color:var(--muted);">Proporciona detalles sobre lo que ocurrió durante tu alerta SOS.</p></div>
+        </div>
+
+        <div class="card" style="padding:20px;margin-bottom:16px;border-left:4px solid var(--sos);">
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px;">Alerta correspondiente</div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy);">SOS activado el 15/06/2024 a las 14:23</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:2px;">📍 Av. Javier Prado Este 1500, Miraflores · Duración: 12 min</div>
+        </div>
+
+        <div class="form-section">
+          <h4>¿Qué ocurrió?</h4>
+          <div class="form-group"><label class="form-label">Estado del incidente</label>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="estado-btn estado-btn--active" onclick="selectEstado(this,'resuelto')">✓ Resuelto</button>
+              <button class="estado-btn" onclick="selectEstado(this,'falsa')">Falsa alarma</button>
+              <button class="estado-btn" onclick="selectEstado(this,'denuncia')">Requiere denuncia</button>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label">Descripción del incidente</label><textarea class="form-input" rows="4" placeholder="Describe qué ocurrió, cómo respondiste y cómo se resolvió la situación..." style="resize:vertical;height:auto;"></textarea></div>
+          <div class="grid-2" style="gap:14px;">
+            <div class="form-group" style="margin-bottom:0;"><label class="form-label">Tipo de incidente</label><select class="form-select"><option>Robo / Hurto</option><option>Acoso</option><option>Accidente</option><option>Vandalismo</option><option>Otro</option></select></div>
+            <div class="form-group" style="margin-bottom:0;"><label class="form-label">¿Intervinieron autoridades?</label><select class="form-select"><option>Sí, PNP</option><option>Sí, Serenazgo</option><option>Sí, Bomberos</option><option>No</option></select></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Escala de gravedad percibida</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="scale-btn" onclick="selectScale(this,1)">1</button>
+            <button class="scale-btn" onclick="selectScale(this,2)">2</button>
+            <button class="scale-btn" onclick="selectScale(this,3)">3</button>
+            <button class="scale-btn" onclick="selectScale(this,4)">4</button>
+            <button class="scale-btn scale-btn--active" onclick="selectScale(this,5)">5</button>
+            <button class="scale-btn" onclick="selectScale(this,6)">6</button>
+            <button class="scale-btn" onclick="selectScale(this,7)">7</button>
+            <button class="scale-btn" onclick="selectScale(this,8)">8</button>
+            <button class="scale-btn" onclick="selectScale(this,9)">9</button>
+            <button class="scale-btn" onclick="selectScale(this,10)">10</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px;"><span>Muy leve</span><span>Muy grave</span></div>
+        </div>
+
+        <div class="form-section">
+          <h4>Estado de tus contactos de emergencia</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="contact-status-row"><div class="contact-initials" style="width:30px;height:30px;font-size:11px;background:#dde8f5;color:var(--navy);">MA</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">María Álvarez</div><div style="font-size:11.5px;color:var(--muted);">Respondió en 2 min</div></div><select class="form-select" style="font-size:12px;width:auto;padding:5px 8px;height:auto;"><option>Llegó a apoyarme</option><option>Se mantuvo en contacto</option><option>No respondió</option></select></div>
+            <div class="contact-status-row"><div class="contact-initials" style="width:30px;height:30px;font-size:11px;background:#fef3c7;color:#92400e;">CP</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">Carlos Pérez</div><div style="font-size:11.5px;color:var(--muted);">Respondió en 8 min</div></div><select class="form-select" style="font-size:12px;width:auto;padding:5px 8px;height:auto;"><option>Se mantuvo en contacto</option><option>Llegó a apoyarme</option><option>No respondió</option></select></div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <button class="btn-secondary" onclick="window.history.back()">Cancelar</button>
+          <button class="btn-primary" style="width:auto;" onclick="submitPostReport()">Enviar reporte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="assets/scripts/reporte-post-emergencia.js"></script>
+</body>
+</html>

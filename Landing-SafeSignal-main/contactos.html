@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contactos de Confianza — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/contactos.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user"><div class="sidebar__avatar" id="sidebarAvatar">S</div><div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div></div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row">
+          <div><h1 class="page-title">Gestión de Contactos de Confianza</h1><p class="page-subtitle">Tus contactos recibirán alertas inmediatas con tu ubicación GPS en tiempo real al activar el botón SOS.</p></div>
+          <span class="badge badge--green">✓ Canal SMS &amp; WhatsApp Activo</span>
+        </div>
+
+        <div class="info-note mb-16" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div class="flex-gap-10" style="align-items:flex-start;">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:var(--navy);"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="5.2" r=".9" fill="currentColor"/></svg>
+            <div><strong class="label-strong-navy">Red SOS Personal (Máximo 5 contactos)</strong><p class="page-subtitle">En situaciones de pánico o desvío de ruta, el sistema despacha enlaces de rastreo cifrado y llamada asistida a tus contactos por orden de prioridad.</p></div>
+          </div>
+          <div class="cupos-box"><span class="page-subtitle">Cupos disponibles:</span><br><strong style="color:var(--navy);">2 de 5</strong></div>
+        </div>
+
+        <div class="grid-2 two-col-16">
+          <div>
+            <div class="page-header__row mb-12"><h4 class="card-title-sm section-label-caps">Contactos Registrados (3)</h4><span class="page-subtitle">Prioridad descendente de notificación</span></div>
+            <div id="contactsList">
+              <div class="card mb-8" data-name="María Álvarez" data-phone="+51 993 456 789" data-relation="Familiar directo" data-priority="1">
+                <div class="flex-gap-10" style="align-items:center;justify-content:space-between;">
+                  <div class="flex-gap-10" style="align-items:center;">
+                    <div class="contact-initials">MA</div>
+                    <div>
+                      <div class="flex-gap-10" style="align-items:center;"><strong style="color:var(--navy);">María Álvarez</strong><span class="badge badge--red badge-caps">Prioridad 1</span><span class="badge badge--gray">Familiar directo</span></div>
+                      <div class="contact-phone-row"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H5.5L6.5 5.5L5 6.5C5.5 8 7 9.5 8.5 10L9.5 8.5L12.5 9.5V12C12.5 12.6 12 13 11.5 13C6.5 13 3 9.5 3 4.5C3 3.9 3 2.5 3 2.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>+51 993 456 789</div>
+                      <span class="status-ok text-sm"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 8L7.2 9.8L10.7 6.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>SMS &amp; WhatsApp</span>
+                    </div>
+                  </div>
+                  <div class="row-gap-8">
+                    <button class="icon-btn" title="Editar contacto" onclick="editContact(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2L14 5L6 13H3V10L11 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+                    <button class="icon-btn icon-btn--danger" title="Eliminar contacto" data-modal="deleteContactModal" onclick="prepDelete(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4.5H13M6.5 4.5V2.8C6.5 2.4 6.8 2 7.2 2H8.8C9.2 2 9.5 2.4 9.5 2.8V4.5M4.5 4.5L5 13C5 13.5 5.4 14 6 14H10C10.6 14 11 13.5 11 13L11.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-8" data-name="Carlos Ramírez" data-phone="+51 987 123 456" data-relation="Hermano" data-priority="2">
+                <div class="flex-gap-10" style="align-items:center;justify-content:space-between;">
+                  <div class="flex-gap-10" style="align-items:center;">
+                    <div class="contact-initials">CR</div>
+                    <div>
+                      <div class="flex-gap-10" style="align-items:center;"><strong style="color:var(--navy);">Carlos Ramírez</strong><span class="badge badge--blue badge-caps">Prioridad 2</span><span class="badge badge--gray">Hermano</span></div>
+                      <div class="contact-phone-row"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H5.5L6.5 5.5L5 6.5C5.5 8 7 9.5 8.5 10L9.5 8.5L12.5 9.5V12C12.5 12.6 12 13 11.5 13C6.5 13 3 9.5 3 4.5C3 3.9 3 2.5 3 2.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>+51 987 123 456</div>
+                      <span class="status-ok text-sm"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 8L7.2 9.8L10.7 6.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>SMS &amp; WhatsApp</span>
+                    </div>
+                  </div>
+                  <div class="row-gap-8">
+                    <button class="icon-btn" title="Editar contacto" onclick="editContact(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2L14 5L6 13H3V10L11 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+                    <button class="icon-btn icon-btn--danger" title="Eliminar contacto" data-modal="deleteContactModal" onclick="prepDelete(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4.5H13M6.5 4.5V2.8C6.5 2.4 6.8 2 7.2 2H8.8C9.2 2 9.5 2.4 9.5 2.8V4.5M4.5 4.5L5 13C5 13.5 5.4 14 6 14H10C10.6 14 11 13.5 11 13L11.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-8" data-name="Lucía Torres" data-phone="+51 912 345 678" data-relation="Amiga de confianza" data-priority="3">
+                <div class="flex-gap-10" style="align-items:center;justify-content:space-between;">
+                  <div class="flex-gap-10" style="align-items:center;">
+                    <div class="contact-initials">LT</div>
+                    <div>
+                      <div class="flex-gap-10" style="align-items:center;"><strong style="color:var(--navy);">Lucía Torres</strong><span class="badge badge--gray badge-caps">Prioridad 3</span><span class="badge badge--gray">Amiga de confianza</span></div>
+                      <div class="contact-phone-row"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H5.5L6.5 5.5L5 6.5C5.5 8 7 9.5 8.5 10L9.5 8.5L12.5 9.5V12C12.5 12.6 12 13 11.5 13C6.5 13 3 9.5 3 4.5C3 3.9 3 2.5 3 2.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>+51 912 345 678</div>
+                      <span class="status-warn text-sm"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5.2V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="10.6" r=".8" fill="currentColor"/></svg>Solo SMS</span>
+                    </div>
+                  </div>
+                  <div class="row-gap-8">
+                    <button class="icon-btn" title="Editar contacto" onclick="editContact(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2L14 5L6 13H3V10L11 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></button>
+                    <button class="icon-btn icon-btn--danger" title="Eliminar contacto" data-modal="deleteContactModal" onclick="prepDelete(this)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4.5H13M6.5 4.5V2.8C6.5 2.4 6.8 2 7.2 2H8.8C9.2 2 9.5 2.4 9.5 2.8V4.5M4.5 4.5L5 13C5 13.5 5.4 14 6 14H10C10.6 14 11 13.5 11 13L11.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn-add-contact" data-modal="addContactModal" onclick="resetContactModal()"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5V11M5 8H11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Agregar nuevo contacto de confianza</button>
+          </div>
+
+          <div class="card">
+            <div class="page-header__row mb-12"><h4 class="card-title-sm">Mensaje de Alerta SOS</h4><span class="badge badge--gray">Vista Previa</span></div>
+            <div class="info-note">
+              <p class="text-critical text-sm mb-8">[ALERTA SAFESIGNAL]</p>
+              <p class="page-subtitle mb-8">sebastiancuray08 ha activado una alerta de auxilio en tiempo real.</p>
+              <p class="mono text-sm" style="color:var(--accent);">https://safesignal.pe/live/sos-89</p>
+              <p class="page-subtitle mt-8">Coordenadas: -12.1221, -77.0289 (Miraflores)</p>
+            </div>
+            <div class="district-row mt-8"><span class="page-subtitle">Tiempo medio de despacho:</span><strong>1.8 segundos</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addContactModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon-row mb-8">
+        <div class="flex-gap-10" style="align-items:flex-start;">
+          <div class="threshold-card__icon kpi-card__icon--info"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6" r="2.6" stroke="currentColor" stroke-width="1.3"/><path d="M2 13C2 10.5 4 8.7 6.5 8.7C9 8.7 11 10.5 11 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M12 6H14.5M13.2 4.7V7.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          <div><div class="modal__title" id="contactModalTitle" style="margin-bottom:2px;">Agregar contacto de confianza</div><p class="page-subtitle">Completa los datos para enlazar el contacto a tus alertas SOS.</p></div>
+        </div>
+        <button class="modal-close-x" data-close-modal onclick="resetContactModal()">×</button>
+      </div>
+      <div class="modal__body" style="padding:0;">
+        <div class="form-group"><label class="form-label">Nombre del contacto *</label><input class="form-input" type="text" id="contactName" placeholder="Ej. Roberto Sánchez Gómez" /></div>
+        <div class="form-group"><label class="form-label">Número de teléfono *</label><input class="form-input" type="tel" id="contactPhone" placeholder="Ej. 987 654 321" /></div>
+        <div class="form-group"><label class="form-label">Parentesco o relación (Opcional)</label><input class="form-input" type="text" id="contactRelation" placeholder="Familiar directo (Padre, Madre, Hijo/a)" /></div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Canales de notificación inmediata</label>
+          <label class="radio-row"><input type="checkbox" checked> SMS de emergencia</label>
+          <label class="radio-row"><input type="checkbox" checked> Mensaje por WhatsApp</label>
+        </div>
+      </div>
+      <div class="modal__footer"><button class="btn-secondary" data-close-modal onclick="resetContactModal()">Cancelar</button><button class="btn-primary" style="width:auto;" onclick="saveContact()">Guardar</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="deleteContactModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon-row mb-8">
+        <div class="flex-gap-10" style="align-items:flex-start;">
+          <div class="threshold-card__icon kpi-card__icon--danger"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5H13M6.5 4.5V2.8C6.5 2.4 6.8 2 7.2 2H8.8C9.2 2 9.5 2.4 9.5 2.8V4.5M4.5 4.5L5 13C5 13.5 5.4 14 6 14H10C10.6 14 11 13.5 11 13L11.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="modal__title" style="margin-bottom:2px;">¿Eliminar contacto de confianza?</div><p class="page-subtitle">Esta acción alterará tu protocolo de seguridad SOS.</p></div>
+        </div>
+        <button class="modal-close-x" data-close-modal>×</button>
+      </div>
+      <div class="modal__body" style="padding:0;">
+        <p class="text-sm mb-16">Estás a punto de eliminar a <strong id="deleteContactName">Carlos Ramírez</strong> <span id="deleteContactMeta">(Prioridad 2 - Hermano)</span> de tu Red SOS Personal.</p>
+        <div class="contact-preview-card">
+          <div class="contact-preview-card__left">
+            <div class="contact-initials" id="deleteContactInitials">CR</div>
+            <div>
+              <div class="flex-gap-10" style="align-items:center;"><strong style="color:var(--navy);" id="deleteContactNamePreview">Carlos Ramírez</strong><span class="badge badge--gray" id="deleteContactRelationPreview">Hermano</span></div>
+              <div class="contact-phone-row"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H5.5L6.5 5.5L5 6.5C5.5 8 7 9.5 8.5 10L9.5 8.5L12.5 9.5V12C12.5 12.6 12 13 11.5 13C6.5 13 3 9.5 3 4.5C3 3.9 3 2.5 3 2.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="deleteContactPhonePreview">+51 987 123 456</span></div>
+              <span class="status-ok text-sm">SMS &amp; WhatsApp</span>
+            </div>
+          </div>
+          <span class="badge badge--blue" id="deleteContactPriorityPreview">Prioridad 2</span>
+        </div>
+        <div class="info-note" style="background:#fffbeb;display:flex;gap:8px;align-items:flex-start;">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:#b45309;"><path d="M8 1.5L15 13.5H1L8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.5V9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".8" fill="currentColor"/></svg>
+          <p class="page-subtitle"><strong style="color:#7f1d1d;">Aviso de seguridad:</strong> este contacto dejará de recibir alertas automáticas, tu enlace de rastreo en vivo y notificaciones asistidas. Al eliminarlo, se reordenarán las prioridades de notificación restantes de forma automática.</p>
+        </div>
+      </div>
+      <div class="modal__footer"><button class="btn-secondary" data-close-modal>Cancelar</button><button class="btn-danger" style="width:auto;" onclick="confirmDeleteContact()">Eliminar contacto</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="assets/scripts/contactos.js"></script>
+</body>
+</html>

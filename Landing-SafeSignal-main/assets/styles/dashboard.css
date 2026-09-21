@@ -1,0 +1,19 @@
+.dash-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.map-dark { background: #0d1b2a; border-radius: 12px; overflow: hidden; height: 320px; position: relative; }
+.anomaly-banner { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; }
+.anomaly-banner h4 { font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 4px; }
+.anomaly-banner p { font-size: 12.5px; color: #78350f; line-height: 1.55; }
+.anomaly-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.anomaly-actions button { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; }
+.btn-act-red { background: var(--sos); color: white; }
+.btn-act-ghost { background: white; color: var(--text); border: 1px solid var(--border) !important; }
+.sidebar-right-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.sidebar-right-card h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.priority-alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+.priority-alert:last-child { border-bottom: none; }
+
+/* Mapa real del dashboard */
+#dashMapLeaflet { z-index: 1; }
+.map-zoom-controls { position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
+.map-zoom-controls button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: white; color: var(--navy); font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.map-dark__legend { z-index: 2; }

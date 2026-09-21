@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lugares Guardados — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/ubicaciones.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row">
+          <div><h1 style="font-size:22px;font-weight:800;color:var(--navy);">Lugares guardados</h1><p style="font-size:13px;color:var(--muted);">Tus destinos frecuentes y zonas de referencia.</p></div>
+          <button class="btn-primary" style="width:auto;" data-modal="addLocModal">+ Agregar lugar</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:20px;">
+          <div class="loc-card">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div class="loc-icon loc-icon--home"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 8L9 2L16 8V16H11.5V11H6.5V16H2V8Z" stroke="#1d4ed8" stroke-width="1.4" fill="none"/></svg></div>
+              <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--navy);">Casa</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Av. Reducto 1200, Miraflores</div><div style="margin-top:6px;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span><span style="font-size:11.5px;color:#166534;font-weight:500;">Zona segura</span></div></div>
+            </div>
+            <div class="loc-actions">
+              <a href="mapa.html" class="btn-secondary" style="padding:5px 12px;font-size:11.5px;text-decoration:none;">Ir aquí</a>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;">Editar</button>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;color:var(--sos);border-color:#fca5a5;">Eliminar</button>
+            </div>
+          </div>
+          <div class="loc-card">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div class="loc-icon loc-icon--work"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="6" width="14" height="10" rx="2" stroke="#7c3aed" stroke-width="1.4"/><path d="M5 6V5C5 3.9 5.9 3 7 3H11C12.1 3 13 3.9 13 5V6" stroke="#7c3aed" stroke-width="1.4"/><path d="M2 10H16" stroke="#7c3aed" stroke-width="1"/></svg></div>
+              <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--navy);">Trabajo</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Av. El Derby 254, Santiago de Surco</div><div style="margin-top:6px;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;"></span><span style="font-size:11.5px;color:#166534;font-weight:500;">Zona segura</span></div></div>
+            </div>
+            <div class="loc-actions">
+              <a href="mapa.html" class="btn-secondary" style="padding:5px 12px;font-size:11.5px;text-decoration:none;">Ir aquí</a>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;">Editar</button>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;color:var(--sos);border-color:#fca5a5;">Eliminar</button>
+            </div>
+          </div>
+          <div class="loc-card">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div class="loc-icon loc-icon--fav"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L11 7H16.5L12 10.5L13.5 16L9 12.5L4.5 16L6 10.5L1.5 7H7L9 2Z" stroke="#d97706" stroke-width="1.4" fill="none"/></svg></div>
+              <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:var(--navy);">Gimnasio</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">Av. Benavides 3866, Miraflores</div><div style="margin-top:6px;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#f59e0b;display:inline-block;"></span><span style="font-size:11.5px;color:#92400e;font-weight:500;">1 incidente cercano</span></div></div>
+            </div>
+            <div class="loc-actions">
+              <a href="mapa.html" class="btn-secondary" style="padding:5px 12px;font-size:11.5px;text-decoration:none;">Ir aquí</a>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;">Editar</button>
+              <button class="btn-secondary" style="padding:5px 12px;font-size:11.5px;color:var(--sos);border-color:#fca5a5;">Eliminar</button>
+            </div>
+          </div>
+          <div class="loc-card loc-card--add" onclick="document.querySelector('[data-modal=addLocModal]').click()">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;"><div style="width:40px;height:40px;border-radius:50%;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--muted);">+</div><div style="font-size:13px;font-weight:600;color:var(--muted);">Agregar lugar</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addLocModal" style="display:none;">
+    <div class="modal">
+      <div class="modal__title">Agregar lugar</div>
+      <div class="modal__body">
+        <div class="form-group"><label class="form-label">Nombre del lugar</label><input class="form-input" type="text" placeholder="Ej. Casa, Trabajo, Gimnasio" /></div>
+        <div class="form-group"><label class="form-label">Dirección</label><input class="form-input" type="text" placeholder="Dirección completa" /></div>
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Categoría</label><select class="form-select"><option>Casa</option><option>Trabajo</option><option>Favorito</option><option>Otro</option></select></div>
+      </div>
+      <div class="modal__footer"><button class="btn-secondary" data-close-modal>Cancelar</button><button class="btn-primary" style="width:auto;">Guardar lugar</button></div>
+    </div>
+  </div>
+
+  <script src="assets/scripts/app.js"></script>
+</body>
+</html>

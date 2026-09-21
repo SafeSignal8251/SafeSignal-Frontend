@@ -1,0 +1,46 @@
+/* ===== Estilos propios — Gestión de Usuarios (Admin Console) ===== */
+/* No duplica clases ya existentes en app.css/admin.css; solo agrega variantes puntuales. */
+
+/* Avatares circulares del padrón de ciudadanos (versión pequeña para filas de tabla) */
+.audit-avatar--sm { width: 32px; height: 32px; font-size: 11.5px; }
+.audit-avatar--navy { background: var(--navy); }
+.audit-avatar--info { background: var(--accent); }
+.audit-avatar--danger { background: var(--sos); }
+.audit-avatar--muted { background: #cbd5e1; color: #64748b; }
+.user-cell { display: flex; align-items: center; gap: 10px; }
+
+.alert-dot--blue { background: var(--accent); }
+
+/* Callouts de motivo (sanción / levantamiento de sanción) */
+.callout { border: 1px solid; border-radius: 10px; padding: 12px 14px; font-size: 12.5px; line-height: 1.55; }
+.callout__title { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px; }
+.callout--warning { background: #fffaf0; border-color: #fde3c1; color: var(--text); }
+.callout--warning .callout__title { color: #b45309; }
+.callout--success { background: #f0fdf4; border-color: #bbf7d0; color: var(--text); }
+.callout--success .callout__title { color: #15803d; }
+
+/* Caja contenedora de checkboxes de medidas automáticas */
+.checklist-box { border: 1px solid var(--border); border-radius: 10px; background: var(--bg); padding: 8px 12px; }
+.checklist-box .radio-row { align-items: flex-start; }
+.checklist-box .radio-row input { margin-top: 3px; }
+
+/* Tarjetas de opción con descripción (condiciones de reactivación) */
+.option-card-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.option-card { flex: 1; min-width: 200px; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; font-size: 12.5px; color: var(--muted); }
+.option-card.active { border-color: var(--navy); background: #f5f8fc; }
+.option-card__head { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.option-card__head input { flex-shrink: 0; }
+
+.severity-btn__meta { display: block; margin-top: 4px; font-size: 11px; }
+.text-accent { color: var(--accent); font-weight: 700; }
+
+.row-action-icon { color: var(--muted); cursor: pointer; flex-shrink: 0; margin-left: 8px; display: inline-flex; }
+.estado-cell { display: flex; align-items: center; }
+
+/* Header de modal plano (blanco, texto navy) usado en Suspender / Reactivar / Descartar */
+.modal__header--plain { background: var(--white); color: var(--navy); border-bottom: 1px solid var(--border); }
+.modal__header--plain .modal__close { color: var(--muted); }
+
+/* Tabla más ancha que el panel de auditoría (proporción del mockup) */
+.page-content > .grid-2.two-col-16 { grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr); align-items: start; }
+.table-wrap td:first-child { min-width: 190px; }

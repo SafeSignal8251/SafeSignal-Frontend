@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/perfil.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user"><div class="sidebar__avatar" id="sidebarAvatar">S</div><div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div></div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div id="saveBar" class="profile-save-bar" style="display:none;">
+        <p>Perfil actualizado correctamente</p>
+        <div class="bar-actions"><button class="btn-secondary btn-sm" onclick="document.getElementById('saveBar').style.display='none'">Cancelar</button><button class="btn-primary btn-sm" onclick="saveProfile()">✓ Guardar cambios</button></div>
+      </div>
+      <div class="page-content">
+        <div class="page-header__row mb-16">
+          <div><div class="title-with-badge"><h1 class="page-title" id="pageHeading">Mi Perfil</h1><span class="badge badge--blue" id="verifiedBadge">● Verificado</span></div><p class="page-subtitle" id="pageSubheading">Consulta tu información de usuario, ubicación registrada y contactos de emergencia.</p></div>
+        </div>
+        <div class="grid-2" style="grid-template-columns:200px 1fr;gap:24px;">
+          <div>
+            <div class="profile-avatar-lg-wrap"><div class="profile-avatar-lg" id="bigAvatar">S</div><span class="profile-avatar-dot" id="avatarDot"></span></div>
+            <p class="text-sm" style="line-height:1.7;"><span id="profileUsernameLine"><strong style="color:var(--navy);">sebastiancuray08</strong><br></span>Vigilante Activo<br><span class="mono">ID Lima 2024-001</span></p>
+            <span class="badge badge--green mt-8" id="cuentaActivaBadge" style="display:inline-flex;">● Cuenta Activa</span>
+          </div>
+          <div class="card">
+            <div class="page-header__row mb-8"><div class="section-divider" style="margin:0;">Información Personal</div><span class="page-subtitle" id="modeLabel">Modo lectura</span></div>
+            <div class="grid-2" style="gap:16px;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Nombres</label><input class="form-input profile-field" readonly type="text" id="pNombres" value="sebastiancuray08" /></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Apellidos</label><input class="form-input profile-field" readonly type="text" id="pApellidos" value="Álvarez" /></div>
+            </div>
+            <div class="grid-2" style="gap:16px;margin-top:14px;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Correo electrónico</label><div class="field-with-badge"><input class="form-input profile-field" readonly type="email" id="pEmail" value="sebastiancuray08@gmail.com" /><span class="badge badge--blue field-badge">Verificado</span></div></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Teléfono</label><input class="form-input profile-field" readonly type="tel" id="pTel" value="+51 987 654 321" /></div>
+            </div>
+            <div class="section-divider">Ubicación Frecuente</div>
+            <div class="grid-2" style="gap:16px;">
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Distrito</label><input class="form-input profile-field" readonly type="text" id="pDistrito" value="Miraflores" /></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label">Dirección habitual</label><input class="form-input profile-field" readonly type="text" id="pDir" value="Av. Principal 123" /></div>
+            </div>
+            <div class="section-divider" style="margin-top:24px;">Datos de Emergencia</div>
+            <div class="emergency-data">
+              <p class="text-warn-soft mb-12">En caso de emergencia, esta información será enviada al cuadrante más cercano.</p>
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group" style="margin-bottom:0;"><label class="form-label">Nombre de contacto</label><input class="form-input profile-field" readonly type="text" id="eNombre" value="María Álvarez" /></div>
+                <div class="form-group" style="margin-bottom:0;"><label class="form-label">Teléfono de contacto</label><input class="form-input profile-field" readonly type="tel" id="eTel" value="993 456 789" /></div>
+              </div>
+            </div>
+            <div class="page-header__row mt-16">
+              <button class="btn-secondary btn-danger-outline" data-modal="deleteModal">Eliminar cuenta</button>
+              <div class="row-gap-8">
+                <button class="btn-secondary" id="btnCancelEdit" style="display:none;" onclick="cancelEdit()">Cancelar</button>
+                <a class="btn-secondary" href="configuracion.html" id="btnChangePass">Cambiar contraseña</a>
+                <button class="btn-primary" style="width:auto;" id="btnEditToggle" onclick="toggleEdit()">Editar perfil</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="deleteModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-icon-row mb-8">
+        <div class="flex-gap-10"><div class="threshold-card__icon kpi-card__icon--danger">⚠</div><div class="modal__title" style="margin:0;">¿Eliminar tu cuenta definitivamente?</div></div>
+        <button class="modal-close-x" data-close-modal>×</button>
+      </div>
+      <div class="modal__body">Esta acción eliminará de forma permanente tu perfil, rutas habituales, historial de alertas e información personal asociada en SafeSignal. <strong>No podrás recuperar tus datos</strong> una vez confirmada la eliminación.</div>
+      <div class="info-note mb-16">
+        <p class="text-critical text-sm mb-8">🗑 DATOS QUE SERÁN PURGADOS IRREVERSIBLEMENTE:</p>
+        <p class="page-subtitle">• Historial de monitoreo y coordenadas GPS registradas<br>• Red de contactos de confianza SOS vinculados<br>• Configuraciones de sensores IoT y botones físicos</p>
+      </div>
+      <div class="modal__footer"><button class="btn-secondary" data-close-modal>Conservar mi cuenta</button><button class="btn-danger" style="width:auto;" onclick="confirmDeleteAccountProfile()">Eliminar definitivamente</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="assets/scripts/perfil.js"></script>
+</body>
+</html>

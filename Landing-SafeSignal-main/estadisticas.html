@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estadísticas — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/estadisticas.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="page-header__row">
+          <div><h1 class="page-title">Estadísticas de Seguridad Ciudadana</h1><p class="page-subtitle">Monitoreo analítico de incidencias, patrones geoespaciales y tendencias para la prevención ciudadana.</p></div>
+          <button class="btn-secondary btn-sm">⬇ Exportar Informe (PDF)</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="stat-filter-field">
+            <label for="filterDistrito">Distrito / Sector</label>
+            <select id="filterDistrito" class="form-select" onchange="applyStatFilters()">
+              <option value="miraflores">Miraflores - Todos los cuadrantes</option>
+              <option value="sanisidro">San Isidro - Todos los cuadrantes</option>
+              <option value="surquillo">Surquillo - Todos los cuadrantes</option>
+              <option value="todos">Todos los distritos</option>
+            </select>
+          </div>
+          <div class="stat-filter-field">
+            <label for="filterTipologia">Tipología</label>
+            <select id="filterTipologia" class="form-select" onchange="applyStatFilters()">
+              <option value="todos">Todos los incidentes</option>
+              <option value="arrebato">Arrebato al paso</option>
+              <option value="robo">Robo a mano armada</option>
+              <option value="acoso">Acoso en vía pública</option>
+              <option value="sospecha">Sospechosos / Desmantelamiento</option>
+            </select>
+          </div>
+          <div class="stat-filter-field">
+            <label for="filterFecha">Fecha</label>
+            <select id="filterFecha" class="form-select" onchange="applyStatFilters()">
+              <option value="30">Últimos 30 días</option>
+              <option value="7">Últimos 7 días</option>
+              <option value="90">Últimos 90 días</option>
+              <option value="365">Último año</option>
+            </select>
+          </div>
+          <button class="btn-secondary btn-sm" data-modal="savedFiltersModal">Aplicar filtros guardados</button>
+          <button class="btn-secondary btn-sm" onclick="saveCurrentFilter()">🔖 Guardar filtro</button>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><span class="kpi-card__label">Total Incidentes</span><div class="kpi-card__num" id="kpiTotal">142</div><div class="kpi-card__delta kpi-card__delta--up" id="kpiTotalDelta">↓12% vs periodo anterior (161 reg.)</div></div>
+          <div class="kpi-card"><span class="kpi-card__label">Respuesta PNP / Serenazgo</span><div class="kpi-card__num">3.4 <span class="page-subtitle">min</span></div><div class="kpi-card__delta kpi-card__delta--up">−18% vel. · Media despacho en 94% de casos</div></div>
+          <div class="kpi-card"><span class="kpi-card__label">Índice de Riesgo Global</span><div class="kpi-card__num">5.8 <span class="page-subtitle">/ 10</span></div><div class="kpi-card__delta" style="color:#b45309;">Moderado · Estabilidad en cuadrantes 2 y 4</div></div>
+          <div class="kpi-card"><span class="kpi-card__label">Fiabilidad Comunitaria</span><div class="kpi-card__num">89%</div><div class="kpi-card__delta kpi-card__delta--up">+4% fiab. · 126 alertas cruzadas por vecinos</div></div>
+        </div>
+
+        <div class="grid-2 two-col-16">
+          <div class="chart-card">
+            <div class="chart-card__head" style="align-items:flex-start;">
+              <div>
+                <h4>Evolución de Incidencias en el Tiempo</h4>
+                <p class="page-subtitle" style="margin-top:2px;max-width:280px;">Comportamiento semanal continuo y detección de picos de criticidad</p>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <div class="page-header__row" style="gap:6px;justify-content:flex-end;margin-bottom:4px;"><span style="width:9px;height:9px;background:var(--accent);border-radius:2px;display:inline-block;"></span><span class="text-sm">Incidentes 2024</span></div>
+                <div class="page-header__row" style="gap:6px;justify-content:flex-end;"><span style="width:10px;height:0;border-top:2px dashed var(--border);display:inline-block;"></span><span class="page-subtitle">Promedio Histórico (22/sem)</span></div>
+              </div>
+            </div>
+            <svg class="line-chart-svg" viewBox="0 0 460 160" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="lineFillGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M10,140 C60,132 90,112 120,96 C160,80 195,42 230,24 C262,44 300,68 340,72 C372,66 410,78 450,68 L450,160 L10,160 Z" fill="url(#lineFillGrad)"/>
+              <path d="M10,140 C60,132 90,112 120,96 C160,80 195,42 230,24 C262,44 300,68 340,72 C372,66 410,78 450,68" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+              <polyline points="10,112 120,103 230,93 340,89 450,85" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4,4"/>
+              <circle cx="10" cy="140" r="3.5" fill="var(--accent)"/>
+              <circle cx="120" cy="96" r="3.5" fill="var(--accent)"/>
+              <circle cx="230" cy="24" r="7" fill="#fecdd3"/>
+              <circle cx="230" cy="24" r="4.5" fill="var(--sos)"/>
+              <circle cx="340" cy="72" r="3.5" fill="var(--accent)"/>
+              <circle cx="450" cy="68" r="3.5" fill="var(--accent)"/>
+            </svg>
+            <div class="page-header__row text-sm" style="margin-top:6px;">
+              <span class="page-subtitle">Semana 1 (01-07 Oct)</span><span class="page-subtitle">Semana 2 (08-14 Oct)</span><span class="text-critical">Semana 3 (15-21 Oct)</span><span class="page-subtitle">Semana 4 (22-30 Oct)</span>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-card__head"><h4>Nivel de Gravedad</h4><span class="page-subtitle">Clasificación por impacto</span></div>
+            <div class="donut-wrap">
+              <svg width="150" height="150" viewBox="0 0 42 42">
+                <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#dbeafe" stroke-width="6"></circle>
+                <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="var(--sos)" stroke-width="6" stroke-dasharray="28 72" stroke-dashoffset="25"></circle>
+                <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="var(--accent)" stroke-width="6" stroke-dasharray="46 54" stroke-dashoffset="-3"></circle>
+                <text x="21" y="19" text-anchor="middle" class="donut-center-num" id="donutTotal">142</text>
+                <text x="21" y="26" text-anchor="middle" class="donut-center-label">AUDITADOS</text>
+              </svg>
+              <div class="legend-list">
+                <div class="legend-list__row"><span class="legend-list__dot" style="background:var(--sos);"></span><span class="legend-list__label">Alto Riesgo Crítico</span><span class="legend-list__value" id="legendAlto">28% (40)</span></div>
+                <div class="legend-list__row"><span class="legend-list__dot" style="background:var(--accent);"></span><span class="legend-list__label">Riesgo Moderado</span><span class="legend-list__value" id="legendModerado">46% (65)</span></div>
+                <div class="legend-list__row"><span class="legend-list__dot" style="background:#93c5fd;"></span><span class="legend-list__label">Riesgo Bajo / Preventivo</span><span class="legend-list__value" id="legendBajo">26% (37)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card mt-16">
+          <div class="chart-card__head"><h4>Tipología Delictiva más Frecuente</h4><span class="page-subtitle">Desglose de modalidades con mayor recurrencia</span></div>
+          <div class="bar-progress-row" data-tipologia="arrebato"><span class="bar-progress-row__label">⚡ Arrebato al paso</span><div class="bar-progress-track"><div class="bar-progress-fill" id="barArrebatoFill" style="width:42%;background:var(--sos);"></div></div><span class="bar-progress-row__value" id="barArrebatoVal">42% (60)</span></div>
+          <div class="bar-progress-row" data-tipologia="robo"><span class="bar-progress-row__label">⚠ Robo a mano armada</span><div class="bar-progress-track"><div class="bar-progress-fill" id="barRoboFill" style="width:24%;background:var(--accent);"></div></div><span class="bar-progress-row__value" id="barRoboVal">24% (34)</span></div>
+          <div class="bar-progress-row" data-tipologia="acoso"><span class="bar-progress-row__label">👤 Acoso en vía pública</span><div class="bar-progress-track"><div class="bar-progress-fill" id="barAcosoFill" style="width:18%;background:#93c5fd;"></div></div><span class="bar-progress-row__value" id="barAcosoVal">18% (26)</span></div>
+          <div class="bar-progress-row" data-tipologia="sospecha"><span class="bar-progress-row__label">🚗 Sospechosos / Desmantelamiento</span><div class="bar-progress-track"><div class="bar-progress-fill" id="barSospechaFill" style="width:16%;background:var(--border);"></div></div><span class="bar-progress-row__value" id="barSospechaVal">16% (22)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="savedFiltersModal" style="display:none;">
+    <div class="modal modal--md">
+      <div class="page-header__row" style="align-items:flex-start;margin-bottom:8px;">
+        <div class="modal__title" style="margin-bottom:0;">Filtros y Vistas Analíticas Guardadas</div>
+        <button class="modal__close" data-close-modal style="color:var(--muted);font-size:20px;">×</button>
+      </div>
+      <p class="page-subtitle mb-16">Selecciona una vista previa guardada para cargar rápidamente los parámetros analíticos</p>
+      <div class="search-bar mb-16">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#94a3b8" stroke-width="1.4"/><path d="M11 11L14.5 14.5" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input type="text" id="savedFilterSearch" placeholder="Buscar entre mis filtros..." oninput="filterSavedViews(this.value)">
+      </div>
+      <div class="modal__body" style="padding:0;">
+        <div class="report-item selected" data-view-name="Ruta Universitaria Nocturna - Colonial y Bellavista">
+          <div class="page-header__row" style="margin-bottom:8px;">
+            <span class="text-sm" style="color:var(--navy);font-weight:700;">★ Ruta Universitaria Nocturna - Colonial y Bellavista <span class="badge badge--blue">Activo</span></span>
+            <span class="page-subtitle">Modificado: Hoy 18:20</span>
+          </div>
+          <div class="row-gap-8 mb-8" style="flex-wrap:wrap;">
+            <span class="badge badge--gray">📍 Bellavista / Cercado</span>
+            <span class="badge badge--gray">🕐 19:00 - 02:00 hrs</span>
+            <span class="badge badge--red">⚠ Asaltos / Arrebatos</span>
+          </div>
+          <div class="page-header__row"><span class="text-stable text-sm">● 60 incidentes filtrados en tiempo real</span><div class="row-gap-8"><button class="btn-secondary btn-xs" onclick="applySavedView(this)">▽ Aplicar Filtro</button><button class="btn-secondary btn-xs" title="Más opciones">⋮</button></div></div>
+        </div>
+        <div class="report-item" data-view-name="Perímetro Residencial Miraflores - Cuadrantes 2 y 4">
+          <div class="page-header__row" style="margin-bottom:8px;">
+            <span class="text-sm" style="color:var(--navy);font-weight:700;">★ Perímetro Residencial Miraflores - Cuadrantes 2 y 4</span>
+            <span class="page-subtitle">Modificado: Hace 2 días</span>
+          </div>
+          <div class="row-gap-8 mb-8" style="flex-wrap:wrap;">
+            <span class="badge badge--gray">📍 Miraflores (Zona Sur)</span>
+            <span class="badge badge--gray">📅 Últimos 30 días</span>
+            <span class="badge badge--gray">🗑 Hurto menor / Desmantelamiento</span>
+          </div>
+          <div class="page-header__row"><span class="page-subtitle">34 incidentes asociados</span><div class="row-gap-8"><button class="btn-secondary btn-xs" onclick="applySavedView(this)">▽ Aplicar Filtro</button><button class="btn-secondary btn-xs" title="Más opciones">⋮</button></div></div>
+        </div>
+        <div class="report-item" data-view-name="Eje Financiero San Isidro - Javier Prado">
+          <div class="page-header__row" style="margin-bottom:8px;">
+            <span class="text-sm" style="color:var(--navy);font-weight:700;">★ Eje Financiero San Isidro - Javier Prado</span>
+            <span class="page-subtitle">Modificado: Hace 5 días</span>
+          </div>
+          <div class="row-gap-8 mb-8" style="flex-wrap:wrap;">
+            <span class="badge badge--gray">📍 San Isidro (Zona Empresarial)</span>
+            <span class="badge badge--gray">🕐 08:00 - 18:00 hrs</span>
+            <span class="badge badge--red">💰 Robo a mano armada</span>
+          </div>
+          <div class="page-header__row"><span class="page-subtitle">18 incidentes asociados</span><div class="row-gap-8"><button class="btn-secondary btn-xs" onclick="applySavedView(this)">▽ Aplicar Filtro</button><button class="btn-secondary btn-xs" title="Más opciones">⋮</button></div></div>
+        </div>
+      </div>
+      <div class="modal__footer"><button class="btn-primary" style="width:auto;" onclick="applySavedView(document.querySelector('#savedFiltersModal .report-item.selected .btn-xs'))">⊞ Cargar Vista</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script>
+    var STAT_DISTRITO_BASE = { miraflores: 142, sanisidro: 98, surquillo: 76, todos: 316 };
+    var STAT_FECHA_MULT = { '7': 0.28, '30': 1, '90': 2.6, '365': 9.4 };
+    var STAT_TIPOLOGIAS = {
+      arrebato: { pct: 42, label: '⚡ Arrebato al paso', fillId: 'barArrebatoFill', valId: 'barArrebatoVal', color: 'var(--sos)' },
+      robo: { pct: 24, label: '⚠ Robo a mano armada', fillId: 'barRoboFill', valId: 'barRoboVal', color: 'var(--accent)' },
+      acoso: { pct: 18, label: '👤 Acoso en vía pública', fillId: 'barAcosoFill', valId: 'barAcosoVal', color: '#93c5fd' },
+      sospecha: { pct: 16, label: '🚗 Sospechosos / Desmantelamiento', fillId: 'barSospechaFill', valId: 'barSospechaVal', color: 'var(--border)' }
+    };
+
+    function applyStatFilters() {
+      var distrito = document.getElementById('filterDistrito').value;
+      var tipologia = document.getElementById('filterTipologia').value;
+      var fecha = document.getElementById('filterFecha').value;
+
+      var total = Math.round(STAT_DISTRITO_BASE[distrito] * STAT_FECHA_MULT[fecha]);
+
+      document.getElementById('kpiTotal').textContent = total;
+      document.getElementById('kpiTotalDelta').textContent = 'Filtrado: ' + document.getElementById('filterDistrito').selectedOptions[0].text + ' · ' + document.getElementById('filterFecha').selectedOptions[0].text;
+      document.getElementById('donutTotal').textContent = total;
+      document.getElementById('legendAlto').textContent = '28% (' + Math.round(total * 0.28) + ')';
+      document.getElementById('legendModerado').textContent = '46% (' + Math.round(total * 0.46) + ')';
+      document.getElementById('legendBajo').textContent = '26% (' + Math.round(total * 0.26) + ')';
+
+      Object.keys(STAT_TIPOLOGIAS).forEach(function (key) {
+        var t = STAT_TIPOLOGIAS[key];
+        var row = document.querySelector('.bar-progress-row[data-tipologia="' + key + '"]');
+        var show = (tipologia === 'todos' || tipologia === key);
+        row.style.display = show ? '' : 'none';
+        var count = Math.round(total * t.pct / 100);
+        document.getElementById(t.valId).textContent = t.pct + '% (' + count + ')';
+        document.getElementById(t.fillId).style.width = t.pct + '%';
+      });
+
+      showToast('Filtros aplicados: ' + total + ' incidentes encontrados.');
+    }
+
+    function saveCurrentFilter() {
+      showToast('Filtro actual guardado en tus Vistas Analíticas.');
+    }
+    function filterSavedViews(term) {
+      var q = term.trim().toLowerCase();
+      document.querySelectorAll('#savedFiltersModal .report-item').forEach(function (item) {
+        var name = (item.getAttribute('data-view-name') || '').toLowerCase();
+        item.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+      });
+    }
+    var SAVED_VIEW_TOTALS = {
+      'Ruta Universitaria Nocturna - Colonial y Bellavista': 60,
+      'Perímetro Residencial Miraflores - Cuadrantes 2 y 4': 34,
+      'Eje Financiero San Isidro - Javier Prado': 18
+    };
+
+    function applySavedView(btn) {
+      var item = btn.closest('.report-item');
+      document.querySelectorAll('#savedFiltersModal .report-item').forEach(function (el) { el.classList.remove('selected'); });
+      item.classList.add('selected');
+      var name = item.getAttribute('data-view-name') || 'vista';
+      var total = SAVED_VIEW_TOTALS[name];
+      if (total) {
+        document.getElementById('kpiTotal').textContent = total;
+        document.getElementById('kpiTotalDelta').textContent = 'Vista guardada: ' + name;
+        document.getElementById('donutTotal').textContent = total;
+        document.getElementById('legendAlto').textContent = '28% (' + Math.round(total * 0.28) + ')';
+        document.getElementById('legendModerado').textContent = '46% (' + Math.round(total * 0.46) + ')';
+        document.getElementById('legendBajo').textContent = '26% (' + Math.round(total * 0.26) + ')';
+        Object.keys(STAT_TIPOLOGIAS).forEach(function (key) {
+          var t = STAT_TIPOLOGIAS[key];
+          document.querySelector('.bar-progress-row[data-tipologia="' + key + '"]').style.display = '';
+          var count = Math.round(total * t.pct / 100);
+          document.getElementById(t.valId).textContent = t.pct + '% (' + count + ')';
+        });
+        document.getElementById('filterTipologia').value = 'todos';
+      }
+      closeModal('savedFiltersModal');
+      showToast('Filtro aplicado: ' + name);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+.contact-row { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid #f1f5f9; transition: background .15s; }
+.contact-row:hover { background: #fafbfd; }
+.contact-row:last-child { border-bottom: none; }
+.contact-initials { width: 40px; height: 40px; border-radius: 50%; background: var(--soft-bg); color: var(--navy); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-details { flex: 1; min-width: 0; }
+.contact-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.contact-sub { font-size: 12px; color: var(--muted); }
+.priority-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 10px; }
+.priority-tag--high { background: #fff0f0; color: var(--sos); }
+.priority-tag--std { background: #f1f5f9; color: var(--muted); }
+.priority-tag--1 { background: #fff0f0; color: var(--sos); }
+.priority-tag--2 { background: #fffbeb; color: #b45309; }
+.priority-tag--3 { background: #f1f5f9; color: var(--muted); }
+.share-map { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--navy); cursor: pointer; transition: background .15s; }
+.share-map:hover { background: #f1f5f9; }
+
+/* --- Mockup: Contactos --- */
+.section-label-caps { text-transform: uppercase; letter-spacing: .05em; font-size: 12px; }
+.badge-caps { text-transform: uppercase; letter-spacing: .02em; }
+.cupos-box { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px; text-align: right; }
+.contact-phone-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.status-ok { display: inline-flex; align-items: center; gap: 4px; color: #16a34a; font-weight: 700; }
+.status-warn { display: inline-flex; align-items: center; gap: 4px; color: #b45309; font-weight: 700; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 7px; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: background .15s, color .15s; }
+.icon-btn:hover { background: #f1f5f9; color: var(--navy); }
+.icon-btn--danger:hover { background: #fff0f0; color: var(--sos); }
+.btn-add-contact { display: inline-flex; align-items: center; gap: 6px; width: 100%; justify-content: center; border: 1.5px dashed var(--border); border-radius: 10px; background: transparent; color: var(--accent); font-weight: 700; font-size: 13.5px; padding: 12px; cursor: pointer; transition: background .15s, border-color .15s; }
+.btn-add-contact:hover { background: #f5f8fc; border-color: var(--accent); }
+.modal-close-x { background: none; border: none; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 4px; }
+.modal-close-x:hover { color: var(--sos); }
+.modal-icon-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.contact-preview-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.contact-preview-card__left { display: flex; align-items: center; gap: 10px; }

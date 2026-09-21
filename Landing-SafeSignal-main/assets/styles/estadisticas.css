@@ -1,0 +1,7 @@
+/* Filtros manuales de la página de Estadísticas */
+.stat-filter-field { display: flex; flex-direction: column; gap: 3px; }
+.stat-filter-field label { font-size: 11px; color: var(--muted); }
+.stat-filter-field select { font-size: 13px; font-weight: 600; color: var(--navy); width: auto; height: auto; padding: 6px 10px; }
+.insight-card { background: #f0f4ff; border: 1px solid #c7d4f8; border-radius: 10px; padding: 14px 16px; display: flex; gap: 10px; align-items: flex-start; }
+.insight-card h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.insight-card p { font-size: 12.5px; color: #374151; line-height: 1.5; margin: 0; }

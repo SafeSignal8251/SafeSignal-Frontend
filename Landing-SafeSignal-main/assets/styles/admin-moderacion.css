@@ -1,0 +1,17 @@
+/* ===== Estilos propios — Moderación de Reportes (Admin Console) ===== */
+/* No duplica clases ya existentes en app.css/admin.css; solo agrega variantes puntuales. */
+
+.kpi-num-note { font-size: 13px; font-weight: 700; color: var(--sos); margin-left: 8px; font-family: var(--font-mono); }
+
+/* Tarjetas de opción con descripción (motivo administrativo del descarte) */
+.option-card-row { display: flex; flex-direction: column; gap: 10px; }
+.option-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; font-size: 12.5px; color: var(--muted); }
+.option-card.active { border-color: var(--navy); background: #f5f8fc; }
+.option-card__head { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.option-card__head input { flex-shrink: 0; }
+.option-card__sub { font-size: 12px; color: var(--muted); margin-left: 24px; }
+
+/* Header de modal plano (blanco, texto navy) usado en Confirmar Descarte de Reporte */
+.modal__header--plain { background: var(--white); color: var(--navy); border-bottom: 1px solid var(--border); }
+.modal__header--plain .modal__close { color: var(--muted); }
+.map-dark__legend--corner .map-dark__legend-title { color: white; font-weight: 600; font-size: 11px; margin: 0; }

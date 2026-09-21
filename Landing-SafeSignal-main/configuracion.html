@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/configuracion.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div id="cfgSaveBar" class="config-save-bar" style="display:none;">
+        <span style="font-size:13px;font-weight:600;color:#166534;">Configuración guardada correctamente</span>
+        <button class="btn-primary" style="width:auto;padding:7px 16px;font-size:13px;" onclick="document.getElementById('cfgSaveBar').style.display='none'">✓ OK</button>
+      </div>
+      <div class="page-content">
+        <div class="page-header__row" style="margin-bottom:20px;">
+          <div><h1 class="cfg-page-title">Centro de Configuración</h1><p style="font-size:13px;color:var(--muted);">Personaliza y gestiona las funciones de seguridad, monitoreo y dispositivos de tu cuenta SafeSignal.</p></div>
+        </div>
+
+        <div class="config-section">
+          <div class="page-header__row mb-8" style="align-items:flex-start;">
+            <div><h3 style="margin-bottom:2px;">Personalizar mensaje de emergencia SOS</h3><p class="desc" style="margin-bottom:0;">Este mensaje se enviará instantáneamente por SMS y notificación push a tus contactos de confianza al pulsar SOS.</p></div>
+            <span class="badge badge--green" id="sosSavedBadge" style="display:none;white-space:nowrap;">✓ Mensaje guardado</span>
+          </div>
+          <div class="cfg-grid-2" style="margin-top:16px;">
+            <div>
+              <div class="cfg-section-label">Redacción del mensaje de difusión</div>
+              <textarea class="sms-textarea" id="sosMsgInput" maxlength="200" oninput="updateCharCount()">¡ALERTA DE EMERGENCIA SAFESIGNAL! Necesito ayuda urgente en mi ubicación actual. Por favor verifica mi posición en tiempo real en el enlace adjunto.</textarea>
+              <div class="char-counter" id="sosCharCount">148 / 200 caracteres</div>
+              <button class="btn-primary" style="width:auto;" onclick="saveSosMsg()">Guardar mensaje SOS</button>
+            </div>
+            <div class="sms-preview">
+              <div class="sms-preview__header">
+                <div class="sms-preview__label"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 3.5H14V10.5H9L6 13V10.5H2V3.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="5.2" cy="7" r=".6" fill="currentColor"/><circle cx="8" cy="7" r=".6" fill="currentColor"/><circle cx="10.8" cy="7" r=".6" fill="currentColor"/></svg>[VISTA PREVIA SMS]</div>
+                <span class="badge badge--red">PRIORIDAD ALTA</span>
+              </div>
+              <div class="sms-preview__bubble">
+                <p><strong style="display:inline;">¡ALERTA DE EMERGENCIA SAFESIGNAL!</strong> <span id="sosPreviewText">Necesito ayuda urgente en mi ubicación actual. Por favor verifica mi posición en tiempo real en el enlace adjunto.</span></p>
+                <div class="sms-preview__link"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M6.5 9.5L9.5 6.5M6 11L4 13C3 14 1.5 14 1 13C.5 12 .5 10.5 1.5 9.5L3.5 7.5M10 5L12 3C13 2 14.5 2 15 3C15.5 4 15.5 5.5 14.5 6.5L12.5 8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>https://safesignal.pe/live/sos?id=8f912a</div>
+                <div class="sms-preview__meta">14:26 PM · Transmisión Encriptada</div>
+              </div>
+              <div class="sms-preview__footer">Enviado vía SMS masivo directo a 3 contactos de emergencia.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-header__row mb-8" style="margin-top:24px;">
+          <div><h3 style="font-size:16px;font-weight:800;color:var(--navy);margin-bottom:2px;">Seguimiento y Monitoreo de Trayectos</h3><p class="desc" style="margin-bottom:0;">Supervisión autónoma y prevención activa frente a desvíos o retrasos.</p></div>
+        </div>
+        <div class="cfg-grid-2--eq mb-16">
+          <div class="cfg-inner-card">
+            <div class="cfg-inner-card__head"><h4>Configurar tiempo estimado de monitoreo</h4></div>
+            <p class="cfg-inner-card__desc">Define la duración estimada de tus trayectos. El sistema detectará demoras inusuales si superas este tiempo y alertará a tu red.</p>
+            <div class="time-input-row">
+              <div class="time-input"><label>HORAS</label><div class="time-input__box"><input type="number" id="monHoras" min="0" max="23" value="0" oninput="updateTimeConfigured()"><span>hrs</span></div></div>
+              <div class="time-input"><label>MINUTOS</label><div class="time-input__box"><input type="number" id="monMinutos" min="0" max="59" value="35" oninput="updateTimeConfigured()"><span>min</span></div></div>
+            </div>
+            <div class="time-save-row"><span class="time-configured" id="timeConfiguredLabel">Tiempo configurado: 35 min</span><button class="btn-accent" onclick="saveTime()">Guardar tiempo</button></div>
+          </div>
+          <div class="cfg-inner-card">
+            <div class="cfg-inner-card__head"><h4>Seguimiento al salir de zona segura</h4><span class="badge badge--green" style="white-space:nowrap;">ESTADO: ACTIVO</span></div>
+            <p class="cfg-inner-card__desc">El monitoreo asistido por GPS se iniciará de forma autónoma cada vez que salgas del radio de tus zonas seguras registradas (Hogar, Trabajo, Universidad).</p>
+            <div class="zone-info">
+              <div class="zone-info-row"><span>Radio perimétrico activo:</span><strong>250 metros</strong></div>
+              <div class="zone-info-row"><span>Lugares protegidos:</span><strong>3 lugares guardados</strong></div>
+            </div>
+            <div class="config-row" style="border:none;padding:0;"><div class="config-row-label">Activar seguimiento automático</div><label class="toggle"><input type="checkbox" checked onchange="showToast('Preferencia actualizada.')" /><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+
+        <div class="page-header__row mb-8">
+          <div><h3 style="font-size:16px;font-weight:800;color:var(--navy);margin-bottom:2px;">Dispositivos IoT y Sensores Inteligentes</h3><p class="desc" style="margin-bottom:0;">Gestión de periféricos conectados, telemetría y reglas de detección de anomalías por Inteligencia Artificial.</p></div>
+        </div>
+        <div class="cfg-grid-2--eq mb-16">
+          <div class="cfg-inner-card">
+            <div class="cfg-inner-card__head"><h4>Sensores inteligentes de periféricos</h4></div>
+            <p class="cfg-inner-card__desc">Gestiona la activación de la telemetría enviada por hardware vinculado (smartbands, colgantes SOS).</p>
+            <div class="config-row"><div><div class="config-row-label">Sensor de movimiento / acelerómetro</div><div class="config-row-sub">Detecta caídas bruscas o impactos repentinos</div></div><label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="config-row"><div><div class="config-row-label">Sensor de ubicación GPS asistido</div><div class="config-row-sub">Registro de coordenadas satelitales de alta precisión</div></div><label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label></div>
+            <div class="config-row" style="border-bottom:none;"><div><div class="config-row-label">Sensor de proximidad / desacople</div><div class="config-row-sub">Alerta si el dispositivo se separa del teléfono</div></div><label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label></div>
+            <button class="btn-primary mt-8" style="width:auto;" onclick="saveSensors()">Guardar configuración de sensores</button>
+          </div>
+          <div class="cfg-inner-card">
+            <div class="cfg-inner-card__head"><h4>Detección de tipos de anomalías con IA</h4></div>
+            <p class="cfg-inner-card__desc">Selecciona qué patrones atípicos activarán advertencias automáticas al centro de comando:</p>
+            <div class="check-row"><input type="checkbox" id="anom1" checked><div><label for="anom1">Desviación imprevista de la ruta habitual</label><div class="config-row-sub">Notifica cuando el trayecto cambia más de 400m de la ruta calculada</div></div></div>
+            <div class="check-row"><input type="checkbox" id="anom2" checked><div><label for="anom2">Detención prolongada en zona de riesgo alto</label><div class="config-row-sub">Dispara alerta si la inmovilidad supera los 4 minutos en puntos críticos</div></div></div>
+            <div class="check-row"><input type="checkbox" id="anom3" checked><div><label for="anom3">Pérdida súbita de señal en trayecto nocturno</label><div class="config-row-sub">Reporta a contactos si el terminal se desconecta repentinamente</div></div></div>
+            <div class="check-row" style="border-bottom:none;"><input type="checkbox" id="anom4"><div><label for="anom4">Movimiento a velocidad anormalmente alta</label><div class="config-row-sub">Aceleración vehicular no prevista durante trayecto a pie</div></div></div>
+            <button class="btn-accent mt-8" onclick="saveAnomalies()">Guardar anomalías</button>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__head">
+            <h4>Modo Ahorro de Batería Inteligente</h4>
+            <div class="feature-card__head-right"><span class="badge badge--green" style="white-space:nowrap;">● Estado: ACTIVO (+6.5 hrs autonomía)</span><label class="toggle"><input type="checkbox" checked onchange="showToast('Preferencia actualizada.')" /><span class="toggle-slider"></span></label></div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row__icon feature-row__icon--battery"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 1L3 9H7.5L6.5 15L13 6.5H8.5L9 1Z" fill="currentColor"/></svg></div>
+            <div><strong>Gestión Energética de Misión Crítica</strong><span>Optimiza el consumo reduciendo la frecuencia de refresco de mapas y animaciones no esenciales, manteniendo <b>100% activas</b> las señales SOS, GPS en segundo plano y conexión continua con la central C5.</span></div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__head">
+            <h4>Alarma silenciosa</h4>
+            <label class="toggle"><input type="checkbox" checked onchange="showToast('Preferencia actualizada.')" /><span class="toggle-slider"></span></label>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row__icon feature-row__icon--bell"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C6 1.5 4.5 3 4.5 5V7.5L3 10.5H13L11.5 7.5V5C11.5 3 10 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.5 12.5C6.5 13.3 7.2 14 8 14C8.8 14 9.5 13.3 9.5 12.5" stroke="currentColor" stroke-width="1.3"/></svg></div>
+            <div><strong>Activar alarma silenciosa</strong><span>Al momento de una alerta SOS, el sonido de alerta será silencioso para no llamar la atención</span></div>
+          </div>
+        </div>
+
+        <div class="config-save-actions">
+          <button class="btn-primary" style="width:auto;" onclick="showConfigSaveBar()">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="assets/scripts/configuracion.js"></script>
+</body>
+</html>

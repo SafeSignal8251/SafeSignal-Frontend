@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguimiento Activo — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/seguimiento.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content" style="display:flex;flex-direction:column;">
+      <div class="seg-header">
+        <div>
+          <h1 style="font-size:20px;font-weight:800;color:var(--navy);margin:0;">Seguimiento en vivo</h1>
+          <p style="font-size:12.5px;color:var(--muted);margin:2px 0 0;">Tu recorrido es monitoreado por tus contactos de confianza.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="display:flex;align-items:center;gap:6px;background:#dcfce7;border-radius:20px;padding:6px 14px;"><div style="width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 1.4s infinite;"></div><span style="font-size:13px;font-weight:600;color:#166534;">Activo</span></div>
+          <div style="font-size:22px;font-weight:800;color:var(--navy);" id="segTimer">00:00:00</div>
+          <button class="btn-danger" style="width:auto;padding:8px 16px;" onclick="stopTracking()">Finalizar</button>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;gap:0;min-height:0;">
+        <div id="mapOuter" class="map-view" style="flex:1;min-height:460px;">
+          <div id="map" style="position:absolute;inset:0;"></div>
+        </div>
+        <div class="seg-side">
+          <div class="seg-dest-card">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Destino</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy);">Av. Larco 345, Miraflores</div>
+            <div style="margin-top:8px;display:flex;gap:10px;font-size:12px;"><span style="color:var(--muted);">⏱ Estimado:</span><span style="font-weight:600;">18 min</span><span style="color:var(--muted);">📏 2.4 km</span></div>
+          </div>
+          <div style="margin-top:14px;">
+            <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;">Notificando a</div>
+            <div class="seg-contact"><div class="contact-initials" style="width:30px;height:30px;font-size:11px;background:#dde8f5;color:var(--navy);">MA</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:600;">María Álvarez</div><div style="font-size:11px;color:var(--muted);">Recibido hace 2 min</div></div><span style="font-size:10.5px;color:#16a34a;background:#dcfce7;padding:2px 7px;border-radius:10px;font-weight:600;">✓ Activo</span></div>
+            <div class="seg-contact"><div class="contact-initials" style="width:30px;height:30px;font-size:11px;background:#fef3c7;color:#92400e;">CP</div><div style="flex:1;"><div style="font-size:12.5px;font-weight:600;">Carlos Pérez</div><div style="font-size:11px;color:var(--muted);">Recibido hace 2 min</div></div><span style="font-size:10.5px;color:#16a34a;background:#dcfce7;padding:2px 7px;border-radius:10px;font-weight:600;">✓ Activo</span></div>
+          </div>
+          <div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:10px;border:1px solid var(--border);">
+            <div style="font-size:11.5px;font-weight:600;color:var(--navy);margin-bottom:6px;">Estado de ruta</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;"><span style="color:#22c55e;">●</span>Ruta sin incidentes activos</div>
+            <div style="margin-top:6px;font-size:11.5px;color:var(--muted);">Última actualización: hace 10 seg</div>
+          </div>
+          <button class="btn-secondary" style="margin-top:10px;font-size:12.5px;" onclick="stopTracking()">Llegué con seguridad</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/seguimiento.js"></script>
+</body>
+</html>

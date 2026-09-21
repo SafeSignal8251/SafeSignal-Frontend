@@ -1,0 +1,50 @@
+/* Centro de Comunicación (Admin) — estilos propios de la página (no compartidos) */
+
+/* Botones de "Zona de alcance": pill sólido navy cuando está activo */
+.severity-btn.pill-zone {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+.severity-btn.pill-zone.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+/* Botones de "Severidad": pill con borde/texto azul cuando está activo */
+.severity-btn.pill-sev {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+.severity-btn.pill-sev.active {
+  background: var(--white);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.message-quote-box {
+  margin-top: 8px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.channel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 13px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}

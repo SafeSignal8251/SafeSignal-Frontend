@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeSignal — Seguridad Ciudadana</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/index.css" />
+</head>
+<body class="landing-page">
+  <nav class="top-nav top-nav--landing">
+    <a href="index.html" class="brand-logo">
+      <span class="brand-logo__name">SafeSignal</span>
+      <span class="brand-logo__tag">Seguridad Ciudadana</span>
+    </a>
+    <div class="top-nav__links">
+      <a href="#features">Características</a>
+      <a href="#how">Cómo funciona</a>
+      <a href="#nosotros">Sobre nosotros</a>
+      <a href="#contacto">Contáctanos</a>
+    </div>
+    <div class="top-nav__actions">
+      <a href="login.html" class="btn-outline">Iniciar sesión</a>
+      <a href="register.html" class="btn-primary">Registrarse</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__badge">Red de seguridad ciudadana #1 en Lima</div>
+      <h1 class="hero__title">Tu seguridad, <span class="hero__accent">siempre conectada</span></h1>
+      <p class="hero__sub">SafeSignal te protege con alertas en tiempo real, seguimiento de recorridos y contactos de emergencia. Porque tu tranquilidad es lo primero.</p>
+      <div class="hero__actions" id="comenzar">
+        <a href="register.html" class="btn-primary">Registrarse</a>
+        <a href="login.html" class="btn-outline">Iniciar Sesión</a>
+      </div>
+      <div class="hero__stats">
+        <div class="hero__stat"><div class="hero__stat-num">12,400+</div><div class="hero__stat-label">Ciudadanos protegidos</div></div>
+        <div class="hero__stat"><div class="hero__stat-num">340 km</div><div class="hero__stat-label">Cobertura en Lima</div></div>
+        <div class="hero__stat"><div class="hero__stat-num">4.2 min</div><div class="hero__stat-label">Tiempo de respuesta</div></div>
+      </div>
+      <p class="demo-note">*Cifras de demostración con fines ilustrativos.</p>
+    </div>
+    <div class="hero__visual">
+      <div class="hero-panel">
+        <div class="hero-panel__header">
+          <span class="hero-panel__label">Panel de Control</span>
+          <span class="badge badge--green hero-panel__status-badge">En línea</span>
+        </div>
+        <div class="hero-panel__status">
+          <span class="alert-dot alert-dot--green"></span>
+          <span>Zona actualmente segura</span>
+        </div>
+        <div class="hero-panel__metric">
+          <div class="hero-panel__metric-label">Incidentes hoy</div>
+          <div class="hero-panel__metric-value-row">
+            <span class="hero-panel__metric-value">12</span>
+            <span class="hero-panel__metric-delta">-18% vs ayer</span>
+          </div>
+        </div>
+        <div class="hero-panel__row">
+          <div class="hero-panel__col">
+            <div class="hero-panel__col-label">Respuesta</div>
+            <div class="hero-panel__col-value">4.2 min</div>
+          </div>
+          <div class="hero-panel__col">
+            <div class="hero-panel__col-label">Rutas ok</div>
+            <div class="hero-panel__col-value">98%</div>
+          </div>
+        </div>
+        <button class="hero-panel__sos-btn" type="button"><span class="hero-panel__sos-dot"></span>SOS - Emergencia</button>
+        <p class="hero-panel__demo-note">Datos de demostración</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-header"><h2 class="section-title">Todo lo que necesitas para estar seguro</h2><p class="section-sub">Tecnología de vigilancia ciudadana en la palma de tu mano.</p></div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon feature-icon--red"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L3 6V11C3 15.4 6.5 19.5 11 21C15.5 19.5 19 15.4 19 11V6L11 2Z" stroke-width="1.5" fill="none"/></svg></div><h3>Alertas SOS</h3><p>Activa una alerta de emergencia con un toque. Notifica a tus contactos y autoridades al instante.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--blue"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2C7.7 2 5 4.7 5 8C5 12.5 11 20 11 20C11 20 17 12.5 17 8C17 4.7 14.3 2 11 2Z" stroke-width="1.5" fill="none"/><circle cx="11" cy="8" r="2.5" stroke-width="1.4"/></svg></div><h3>Mapa en tiempo real</h3><p>Visualiza incidentes activos en tu zona y evita rutas peligrosas con alertas geolocalizadas.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--green"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke-width="1.5"/><path d="M11 7V11L14 14" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Seguimiento de recorridos</h3><p>Comparte tu ruta en vivo con personas de confianza. Recibe una alerta si te desvías de la ruta.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--purple"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="7" r="3" stroke-width="1.4"/><path d="M2 19C2 15.7 4.7 13 8 13M14 13V19M11 16H17" stroke-width="1.4" stroke-linecap="round"/></svg></div><h3>Contactos de emergencia</h3><p>Registra hasta 5 contactos de confianza que serán notificados automáticamente en caso de SOS.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--orange"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 16L8 10L12 14L18 6" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Estadísticas de tu zona</h3><p>Conoce los patrones de inseguridad en tu distrito y toma decisiones informadas sobre tus recorridos.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--navy"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="16" height="11" rx="2.5" stroke-width="1.4"/><path d="M7 7V6C7 4.3 8.3 3 10 3H12C13.7 3 15 4.3 15 6V7" stroke-width="1.4"/></svg></div><h3>Dispositivos IoT</h3><p>Conecta pulseras inteligentes, botones de pánico y sensores para una protección aún más completa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how">
+    <div class="section-inner">
+      <div class="section-header section-header--tight"><h2 class="section-title">¿Cómo funciona?</h2><p class="section-sub">Tres pasos para estar protegido desde hoy.</p></div>
+      <div class="steps-grid">
+        <div class="step-block"><div class="step-num">1</div><h3>Crea tu cuenta</h3><p>Regístrate en menos de 2 minutos y configura tu perfil de seguridad con tus datos y zona habitual.</p></div>
+        <div class="step-block"><div class="step-num">2</div><h3>Agrega contactos</h3><p>Añade hasta 5 personas de confianza que recibirán alertas y tu ubicación cuando actives el SOS.</p></div>
+        <div class="step-block"><div class="step-num">3</div><h3>¡Ya estás protegido!</h3><p>Recibe alertas en tiempo real, comparte tu recorrido y activa el SOS con un solo toque si lo necesitas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section" id="nosotros">
+    <div class="section-inner about-grid">
+      <div class="about-text">
+        <h2 class="section-title">Sobre Nosotros</h2>
+        <p>SafeSignal es una plataforma orientada a mejorar la seguridad urbana mediante el uso de tecnologías inteligentes. Nace para ayudar a estudiantes y trabajadores que se desplazan por Lima Metropolitana en horarios de mayor riesgo, brindándoles herramientas para prevenir y actuar ante situaciones de peligro.</p>
+        <p>Combinamos alertas SOS, ubicación en tiempo real, mapas de riesgo, rutas seguras y reportes comunitarios con dispositivos IoT e inteligencia artificial, para que cada desplazamiento sea más seguro y acompañado.</p>
+      </div>
+      <div class="about-values">
+        <div class="about-value"><h3>Misión</h3><p>Brindar una solución tecnológica innovadora que proteja a las personas durante sus desplazamientos diarios.</p></div>
+        <div class="about-value"><h3>Visión</h3><p>Convertirse en una plataforma líder en seguridad urbana en Lima Metropolitana.</p></div>
+        <div class="about-value"><h3>Valores</h3><p>Innovación, colaboración y compromiso con la comunidad que protegemos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="section-inner cta-section__inner">
+      <h2 class="cta-section__title">¿Listo para estar más seguro?</h2>
+      <p class="cta-section__sub">Únete a la red de seguridad ciudadana de SafeSignal.</p>
+      <a href="register.html" class="btn-primary">Crear mi cuenta gratis →</a>
+    </div>
+  </section>
+
+  <footer class="landing-footer" id="contacto">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo"><span class="brand-logo__name">SafeSignal</span></a>
+          <p>Plataforma comunitaria de vigilancia ciudadana y respuesta de emergencia en tiempo real para Lima Metropolitana.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="SafeSignal en X" class="footer-social__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 2H21.5L14.6 10.1L22.7 22H16.3L11.3 15.1L5.6 22H2.4L9.7 13.3L2 2H8.5L13 8.4L18.3 2Z"/></svg>
+            </a>
+            <a href="#" aria-label="SafeSignal en LinkedIn" class="footer-social__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.9 3.9 6 2.5 6S0 4.9 0 3.5 1.1 1 2.5 1s2.48 1.1 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V23h-4V8z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <div class="footer-links">
+            <a href="#features">Alertas SOS</a>
+            <a href="#features">Mapa Comunitario</a>
+            <a href="#features">Dispositivos Compatibles</a>
+            <a href="#features">Centros de Serenazgo</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Soporte &amp; Legal</h4>
+          <div class="footer-links">
+            <a href="#">Centro de Ayuda</a>
+            <a href="#">Términos de Servicio</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="mailto:contacto@safesignal.pe">contacto@safesignal.pe</a>
+            <a href="tel:+51987654321">+51 987 654 321 (24/7)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2026 SafeSignal Technologies S.A.C. Todos los derechos reservados.</p>
+        <p class="footer-tagline">Iniciativa de tecnología para la seguridad comunitaria en Lima, Perú.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/scripts/index.js"></script>
+</body>
+</html>

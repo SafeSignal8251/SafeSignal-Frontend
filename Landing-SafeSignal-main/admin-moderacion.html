@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moderación de Reportes — Admin Console</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/admin-moderacion.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar sidebar--admin">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__admin-tag">Admin Console</div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="admin-dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="admin-usuarios.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 13.5C1.5 10.5 3.5 8.5 6 8.5C8.5 8.5 10.5 10.5 10.5 13.5M11 5.5C11.8 5.5 12.5 6.2 12.5 7C12.5 7.8 11.8 8.5 11 8.5M11.5 9C13 9.3 14 10.6 14 12.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Gestión de Usuarios</a>
+        <a href="admin-moderacion.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Moderación Reportes</a>
+        <a href="admin-umbrales.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2V14M3 4H8M3 8H13M3 11H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Umbrales de Riesgo</a>
+        <a href="admin-estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas Globales</a>
+        <a href="admin-comunicacion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L14 4V8C14 11.3 11.4 13.9 8 15C4.6 13.9 2 11.3 2 8V4L8 1Z" stroke="currentColor" stroke-width="1.4"/></svg>Centro de Comunicación</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <div class="sidebar__admin-officer">
+          <div class="sidebar__admin-officer-avatar">CM</div>
+          <div><div class="sidebar__admin-officer-name">Cmdte. C. Mendoza</div><div class="sidebar__admin-officer-status"><span class="alert-dot alert-dot--green"></span>En turno · Lima Centro</div></div>
+        </div>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar Sesión</a>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="page-content">
+        <h1 class="page-title mb-16">Moderación de Reportes Comunitarios</h1>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-card__top"><span class="kpi-card__label">En Cola de Moderación</span><div class="kpi-card__icon kpi-card__icon--danger">⚑</div></div><div class="kpi-card__num">24</div><div class="kpi-card__delta kpi-card__delta--muted">≥ 3 denuncias acumuladas</div></div>
+          <div class="kpi-card"><div class="kpi-card__top"><span class="kpi-card__label">Falsas Alarmas Confirmadas</span><div class="kpi-card__icon kpi-card__icon--danger">⛔</div></div><div class="kpi-card__num">14<span class="kpi-num-note">(+3 vs ayer)</span></div><div class="kpi-card__delta kpi-card__delta--muted">58% sancionadas bajo US48</div></div>
+          <div class="kpi-card"><div class="kpi-card__top"><span class="kpi-card__label">Reportes Legítimos Verificados</span><div class="kpi-card__icon kpi-card__icon--success">✓</div></div><div class="kpi-card__num">182</div><div class="kpi-card__delta kpi-card__delta--up">Aprobados en mapa vecinal</div></div>
+          <div class="kpi-card"><div class="kpi-card__top"><span class="kpi-card__label">Índice Confiabilidad</span><div class="kpi-card__icon kpi-card__icon--info">🛡</div></div><div class="kpi-card__num">92.4%</div><div class="kpi-card__delta kpi-card__delta--muted">Precisión comunitaria global</div></div>
+        </div>
+
+        <div class="grid-2 two-col-16" style="align-items:start;">
+          <div>
+            <div class="page-header__row mb-12"><h4 class="card-title-sm">Casos en Revisión Pendiente</h4><span class="page-subtitle">3 mostrados</span></div>
+            <div class="report-item selected" onclick="selectCase(this,1)" data-case="1">
+              <div class="report-item__meta"><span class="mono">#REP-2024-8839</span><span>Hace 35 min</span><span class="badge badge--red">5 Denuncias</span></div>
+              <div class="report-item__title">Sospecha de Falsa Alarma Reincidente</div>
+              <p class="report-item__quote">"Robo armado en proceso en la esquina con 3 sujetos armados en moto lineal, rompieron vidrios..."</p>
+              <div class="side-stack gap-8-col" style="margin-top:10px;">
+                <div class="district-row text-sm"><span>Autor:</span><strong>Raúl Quispe Benítez</strong></div>
+                <div class="district-row text-sm"><span>Reputación Cívica:</span><strong class="text-critical">42% (Crítica · 2 Sanciones)</strong></div>
+                <div class="district-row text-sm"><span>Ubicación:</span><strong>Av. Brasil 1420 - Jesús María</strong></div>
+              </div>
+              <p class="text-critical text-sm mt-8">⚑ Despacho Móvil P-14 no halló anomalía · SELECCIONADO</p>
+            </div>
+            <div class="report-item" onclick="selectCase(this,2)">
+              <div class="report-item__meta"><span class="mono">#REP-2024-8842</span><span>Hace 50 min</span><span class="badge badge--yellow">3 Marcas</span></div>
+              <div class="report-item__title">Foto desactualizada o de internet</div>
+              <p class="report-item__quote">"Venta ilícita y disturbios en vereda"</p>
+              <div class="district-row text-sm mt-8"><span>Jr. Lampa 450 · Cercado</span><strong>Valeria Morales (65%)</strong></div>
+            </div>
+            <div class="report-item" onclick="selectCase(this,3)">
+              <div class="report-item__meta"><span class="mono">#REP-2024-8831</span><span>Hace 1h 20m</span><span class="badge badge--yellow">4 Marcas</span></div>
+              <div class="report-item__title">Reporte con insultos / Spam</div>
+              <p class="report-item__quote">"Contenido difamatorio contra vecinos y comercio local"</p>
+              <div class="district-row text-sm mt-8"><span>Av. Larco 880 · Miraflores</span><strong>Usuario Anónimo</strong></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="row-gap-8 mb-12"><span class="badge badge--navy mono" id="caseId">#REP-2024-8839</span><span class="status-pill status-pill--critical" id="casePriority">Alta Prioridad</span></div>
+            <h3 style="color:var(--navy);margin-bottom:6px;" id="caseTitle">Sospecha de Falsa Alarma Reincidente en Vía Pública</h3>
+            <p class="page-subtitle mb-16" id="caseMeta">Coordenadas GPS: -12.0722, -77.0498 · Cuadrante C-03 Jesús María · Hora de emisión: 14:14 hrs</p>
+            <div class="map-dark map-dark--sm mb-16" id="caseMap" data-live-map data-lat="-12.0722" data-lng="-77.0498" data-zoom="15">
+              <img src="assets/images/mapa-referencia.jpg" alt="Punto denunciado" class="map-dark__img">
+              <div class="map-dark__legend map-dark__legend--corner"><div class="map-dark__legend-title" id="caseMapTag">Punto Denunciado (Av. Brasil 1420)</div></div>
+            </div>
+            <div class="info-note mb-16">
+              <div class="text-sm label-strong-navy" id="caseVeredictoTitle">Veredicto de Campo Serenazgo (Móvil P-14)</div>
+              <p class="page-subtitle" id="caseVeredictoText">"Inspección visual inmediata constató normalidad absoluta a los 4 minutos del reporte. Comercios y transeúntes operan con calma, sin señales de robo armado ni vidrios rotos."</p>
+              <p class="page-subtitle mt-8" id="caseOficial">Oficial: Sgt. J. Valdivia</p>
+            </div>
+            <div class="modal__section-label" id="caseDenunciasLabel">Denuncias vecinales acumuladas</div>
+            <div id="caseDenunciasList">
+              <div class="witness-row"><div class="witness-row__head"><strong>Carmen Salazar P.</strong><span class="badge badge--red">Marcó Falso</span></div><p class="page-subtitle">"Estoy parada en la misma esquina esperando el bus hace 20 minutos y no pasó absolutamente nada."</p></div>
+              <div class="witness-row"><div class="witness-row__head"><strong>Carlos Geldres C.</strong><span class="badge badge--red">Marcó Falso</span></div><p class="page-subtitle">"Nuestras cámaras de seguridad y personal confirman que no hubo intento de asalto alguno."</p></div>
+              <div class="witness-row"><div class="witness-row__head"><strong>Miguel Ángel T.</strong><span class="badge badge--red">Marcó Falso</span></div><p class="page-subtitle">"Reporte totalmente falso y malintencionado."</p></div>
+            </div>
+            <div class="modal__footer" style="padding:16px 0 0;">
+              <button class="btn-secondary">Mantener como Válido</button>
+              <button class="btn-danger" data-modal="discardModal">Descartar Reporte</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="discardModal" style="display:none;">
+    <div class="modal modal--md">
+      <div class="modal__header modal__header--plain"><div class="modal__header-title">Confirmar Descarte de Reporte <span class="status-pill status-pill--critical" id="discardPriority">Alta Prioridad</span></div><button class="modal__close" data-close-modal>×</button></div>
+      <div class="modal__body">
+        <div class="info-note mb-16">
+          <div class="page-header__row mb-8"><span class="modal__section-label" style="margin-bottom:0;">Resumen del expediente a descartar</span><span class="text-critical text-sm" id="discardCount">5 Denuncias Acumuladas</span></div>
+          <div class="page-header__row" style="margin-bottom:0;">
+            <span class="page-subtitle" id="discardAuthor">Autor: <strong>Raúl Quispe Benítez</strong> (DNI: 45910283)</span>
+            <span class="page-subtitle" id="discardVeredicto">Veredicto Serenazgo: <strong class="text-stable">INFORME NEGATIVO (Móvil P-14)</strong></span>
+          </div>
+        </div>
+        <div class="info-note mb-16"><p class="page-subtitle" id="discardIncident"><strong class="label-strong-navy">Incidente denunciado:</strong><br>"Robo armado en proceso en la esquina con 3 sujetos armados en moto lineal, rompieron vidrios..."</p></div>
+        <div class="modal__section-label">Motivo administrativo del descarte</div>
+        <div class="option-card-row">
+          <label class="option-card active">
+            <div class="option-card__head"><input type="radio" name="discard" checked>Falsa Alarma Comprobada en Sitio (Móvil P-14 verificó normalidad)</div>
+            <div class="option-card__sub">Constatación ocular in situ descarta hecho delictivo reportado.</div>
+          </label>
+          <label class="option-card">
+            <div class="option-card__head"><input type="radio" name="discard">Reporte duplicado o spam malicioso</div>
+          </label>
+          <label class="option-card">
+            <div class="option-card__head"><input type="radio" name="discard">Otro motivo técnico o administrativo</div>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-secondary" data-close-modal>Cancelar y Volver</button>
+        <button class="btn-danger" id="confirmDiscard">Confirmar Descarte de Reporte</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="assets/scripts/live-map.js"></script>
+  <script>
+    var CASE_DATA = {
+      1: {
+        id: '#REP-2024-8839', lat: -12.0722, lng: -77.0498, priority: 'Alta Prioridad', priorityClass: 'status-pill--critical',
+        title: 'Sospecha de Falsa Alarma Reincidente en Vía Pública',
+        meta: 'Coordenadas GPS: -12.0722, -77.0498 · Cuadrante C-03 Jesús María · Hora de emisión: 14:14 hrs',
+        mapTag: 'Punto Denunciado (Av. Brasil 1420)',
+        veredictoTitle: 'Veredicto de Campo Serenazgo (Móvil P-14)',
+        veredicto: '"Inspección visual inmediata constató normalidad absoluta a los 4 minutos del reporte. Comercios y transeúntes operan con calma, sin señales de robo armado ni vidrios rotos."',
+        oficial: 'Oficial: Sgt. J. Valdivia',
+        denunciasLabel: 'Denuncias vecinales acumuladas',
+        denuncias: [
+          { name: 'Carmen Salazar P.', badge: 'Marcó Falso', quote: '"Estoy parada en la misma esquina esperando el bus hace 20 minutos y no pasó absolutamente nada."' },
+          { name: 'Carlos Geldres C.', badge: 'Marcó Falso', quote: '"Nuestras cámaras de seguridad y personal confirman que no hubo intento de asalto alguno."' },
+          { name: 'Miguel Ángel T.', badge: 'Marcó Falso', quote: '"Reporte totalmente falso y malintencionado."' }
+        ],
+        discardCount: '5 Denuncias Acumuladas',
+        discardAuthor: 'Autor: <strong>Raúl Quispe Benítez</strong> (DNI: 45910283)',
+        discardVeredicto: 'Veredicto Serenazgo: <strong class="text-stable">INFORME NEGATIVO (Móvil P-14)</strong>',
+        discardIncident: '<strong class="label-strong-navy">Incidente denunciado:</strong><br>"Robo armado en proceso en la esquina con 3 sujetos armados en moto lineal, rompieron vidrios..."'
+      },
+      2: {
+        id: '#REP-2024-8842', lat: -12.0475, lng: -77.0350, priority: 'Prioridad Media', priorityClass: 'status-pill--moderate',
+        title: 'Fotografía Desactualizada o Extraída de Internet',
+        meta: 'Coordenadas GPS: -12.0554, -77.0433 · Cuadrante C-01 Cercado · Hora de emisión: hace 50 min',
+        mapTag: 'Punto Denunciado (Jr. Lampa 450)',
+        veredictoTitle: 'Verificación Automática de Imagen',
+        veredicto: '"El sistema de reconocimiento detectó coincidencia con una imagen indexada públicamente desde 2021. No corresponde a una escena capturada en el lugar reportado."',
+        oficial: 'Analista: Sistema de Verificación de Contenido (IA)',
+        denunciasLabel: 'Marcas de la comunidad',
+        denuncias: [
+          { name: 'Rosa Pinedo M.', badge: 'Marcó Sospechoso', quote: '"La foto no coincide con cómo se ve la cuadra ahora mismo, hay obras nuevas ahí."' },
+          { name: 'Vecino Anónimo', badge: 'Marcó Sospechoso', quote: '"Esa imagen la he visto antes en internet, no es de aquí."' }
+        ],
+        discardCount: '3 Marcas Acumuladas',
+        discardAuthor: 'Autor: <strong>Valeria Morales Ruiz</strong> (DNI: 70881924)',
+        discardVeredicto: 'Veredicto: <strong class="text-stable">IMAGEN NO ORIGINAL (Verificación IA)</strong>',
+        discardIncident: '<strong class="label-strong-navy">Contenido denunciado:</strong><br>"Venta ilícita y disturbios en vereda"'
+      },
+      3: {
+        id: '#REP-2024-8831', lat: -12.1245, lng: -77.0270, priority: 'Prioridad Media', priorityClass: 'status-pill--moderate',
+        title: 'Reporte con Lenguaje Difamatorio / Posible Spam',
+        meta: 'Coordenadas GPS: -12.1245, -77.0270 · Cuadrante C-05 Miraflores · Hora de emisión: hace 1h 20m',
+        mapTag: 'Punto Denunciado (Av. Larco 880)',
+        veredictoTitle: 'Revisión de Contenido Comunitario',
+        veredicto: '"El texto incluye acusaciones directas contra un comercio identificado por nombre, sin evidencia fotográfica ni testigos adicionales. Se identificaron patrones de lenguaje ofensivo."',
+        oficial: 'Moderador: Panel de Contenido Comunitario',
+        denunciasLabel: 'Marcas de la comunidad',
+        denuncias: [
+          { name: 'Comité Vecinal Larco', badge: 'Marcó Ofensivo', quote: '"Este tipo de comentarios solo generan alarma sin fundamento, deberían moderarlo."' }
+        ],
+        discardCount: '4 Marcas Acumuladas',
+        discardAuthor: 'Autor: <strong>Usuario Anónimo</strong> (Cuenta no verificada)',
+        discardVeredicto: 'Veredicto: <strong class="text-stable">LENGUAJE OFENSIVO CONFIRMADO</strong>',
+        discardIncident: '<strong class="label-strong-navy">Contenido denunciado:</strong><br>"Contenido difamatorio contra vecinos y comercio local"'
+      }
+    };
+
+    function renderCase(n) {
+      var c = CASE_DATA[n];
+      if (!c) return;
+      document.getElementById('caseId').textContent = c.id;
+      var priorityEl = document.getElementById('casePriority');
+      priorityEl.textContent = c.priority;
+      priorityEl.className = 'status-pill ' + c.priorityClass;
+      document.getElementById('caseTitle').textContent = c.title;
+      document.getElementById('caseMeta').textContent = c.meta;
+      document.getElementById('caseMapTag').textContent = c.mapTag;
+      var mapHost = document.getElementById('caseMap');
+      var lm = window.LiveMap && LiveMap.get(mapHost);
+      if (lm) {
+        lm.setView([c.lat, c.lng], 15);
+        if (!window.caseMarker) { window.caseMarker = L.circleMarker([c.lat, c.lng], { radius: 8, color: 'white', weight: 3, fillColor: '#C0392B', fillOpacity: 1 }).addTo(lm); }
+        else { window.caseMarker.setLatLng([c.lat, c.lng]); }
+      }
+      document.getElementById('caseVeredictoTitle').textContent = c.veredictoTitle;
+      document.getElementById('caseVeredictoText').textContent = c.veredicto;
+      document.getElementById('caseOficial').textContent = c.oficial;
+      document.getElementById('caseDenunciasLabel').textContent = c.denunciasLabel;
+      var list = document.getElementById('caseDenunciasList');
+      list.innerHTML = c.denuncias.map(function (d) {
+        return '<div class="witness-row"><div class="witness-row__head"><strong>' + d.name + '</strong><span class="badge badge--red">' + d.badge + '</span></div><p class="page-subtitle">' + d.quote + '</p></div>';
+      }).join('');
+
+      var discardPriorityEl = document.getElementById('discardPriority');
+      discardPriorityEl.textContent = c.priority;
+      discardPriorityEl.className = 'status-pill ' + c.priorityClass;
+      document.getElementById('discardCount').textContent = c.discardCount;
+      document.getElementById('discardAuthor').innerHTML = c.discardAuthor;
+      document.getElementById('discardVeredicto').innerHTML = c.discardVeredicto;
+      document.getElementById('discardIncident').innerHTML = c.discardIncident;
+    }
+
+    function selectCase(el, n) {
+      document.querySelectorAll('.report-item').forEach(function(x){x.classList.remove('selected');});
+      el.classList.add('selected');
+      renderCase(n);
+    }
+    document.querySelectorAll('.option-card').forEach(function(c){ c.addEventListener('click', function(){ var group = c.closest('.option-card-row'); group.querySelectorAll('.option-card').forEach(function(x){x.classList.remove('active');}); c.classList.add('active'); }); });
+    var cd = document.getElementById('confirmDiscard');
+    if (cd) cd.addEventListener('click', function () { closeModal('discardModal'); showToast('Reporte descartado.'); });
+      renderCase(1);
+  </script>
+</body>
+</html>

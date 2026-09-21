@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOS — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/sos.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user">
+          <div class="sidebar__avatar" id="sidebarAvatar">S</div>
+          <div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <div style="text-align:center;margin-bottom:24px;">
+          <h1 style="font-size:22px;font-weight:800;color:var(--navy);">Activar Alerta de Emergencia</h1>
+          <p style="font-size:13.5px;color:var(--muted);">Presiona el botón para enviar una alerta SOS a tus contactos y autoridades.</p>
+        </div>
+
+        <div class="sos-center">
+          <div id="sosRing">
+            <button class="sos-big-btn" id="btnSOS" onclick="activateSOS()">
+              <svg width="42" height="42" viewBox="0 0 42 42" fill="none"><path d="M21 4L6 11V21.5C6 30.5 12.8 38.8 21 41C29.2 38.8 36 30.5 36 21.5V11L21 4Z" fill="white" opacity="0.95"/></svg>
+              SOS
+            </button>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);text-align:center;max-width:280px;line-height:1.65;margin-top:12px;" id="sosHint">Mantén presionado 3 segundos para activar la alerta de emergencia</p>
+        </div>
+
+        <div class="detail-panel" id="activePanel" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:10px;"><div class="alert-dot alert-dot--red" style="width:12px;height:12px;"></div><span style="font-weight:700;font-size:15px;color:var(--sos);">Alerta SOS ACTIVA</span></div>
+            <div style="font-size:22px;font-weight:800;color:var(--sos);" id="sosTimer">00:00</div>
+          </div>
+          <div style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">📍 Av. Javier Prado Este 4200, San Borja · Lima</div>
+          <div class="contact-notify"><div class="contact-initials" style="background:#fef2f2;color:var(--sos);width:32px;height:32px;font-size:12px;flex-shrink:0;">MA</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">María Álvarez</div><div style="font-size:11.5px;color:var(--muted);">Notificada hace 10 seg.</div></div><span style="font-size:11px;color:#16a34a;background:#dcfce7;padding:3px 8px;border-radius:10px;font-weight:600;">Recibido</span></div>
+          <div class="contact-notify"><div class="contact-initials" style="background:#fef2f2;color:var(--sos);width:32px;height:32px;font-size:12px;flex-shrink:0;">CP</div><div style="flex:1;"><div style="font-size:13px;font-weight:600;">Carlos Pérez</div><div style="font-size:11.5px;color:var(--muted);">Notificando…</div></div><span style="font-size:11px;color:#d97706;background:#fef3c7;padding:3px 8px;border-radius:10px;font-weight:600;">Enviando</span></div>
+          <button class="cancel-btn" id="btnCancel" onclick="cancelSOS()">Cancelar alerta SOS</button>
+        </div>
+
+        <div class="protocol-box">
+          <h4 style="margin-bottom:14px;color:white;font-size:14px;">Protocolo de emergencia</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:22px;height:22px;border-radius:50%;background:white;color:var(--navy);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div><div><div style="font-size:13px;font-weight:600;">Alerta enviada</div><div style="font-size:12px;color:rgba(255,255,255,.72);">Tus contactos y el cuadrante más cercano son notificados con tu ubicación GPS.</div></div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:22px;height:22px;border-radius:50%;background:white;color:var(--navy);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div><div><div style="font-size:13px;font-weight:600;">Seguimiento activado</div><div style="font-size:12px;color:rgba(255,255,255,.72);">Tu ubicación se comparte en tiempo real hasta que canceles la alerta.</div></div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;"><div style="width:22px;height:22px;border-radius:50%;background:white;color:var(--navy);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div><div><div style="font-size:13px;font-weight:600;">Respuesta</div><div style="font-size:12px;color:rgba(255,255,255,.72);">Las autoridades están en camino. Mantén la calma y quédate en un lugar seguro.</div></div></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+          <a href="seguimiento.html" class="card" style="padding:14px 16px;display:flex;align-items:center;gap:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="var(--navy)" stroke-width="1.5"/><path d="M10 6V10L13 13" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div style="font-size:13px;font-weight:600;color:var(--navy);">Seguimiento activo</div><div style="font-size:11px;color:var(--muted);">Activar modo monitoreado</div></div></a>
+          <a href="reporte-incidente.html" class="card" style="padding:14px 16px;display:flex;align-items:center;gap:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L17 16H3L10 3Z" stroke="var(--navy)" stroke-width="1.5" fill="none"/><path d="M10 9V12M10 14V14.5" stroke="var(--navy)" stroke-width="1.5" stroke-linecap="round"/></svg><div><div style="font-size:13px;font-weight:600;color:var(--navy);">Reportar incidente</div><div style="font-size:11px;color:var(--muted);">Sin alerta de emergencia</div></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="assets/scripts/sos.js"></script>
+</body>
+</html>

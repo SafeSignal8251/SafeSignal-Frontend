@@ -1,0 +1,37 @@
+.sos-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 56px 0 28px; }
+.sos-center #sosHint { margin-top: 44px !important; max-width: 320px; }
+.protocol-box { padding: 20px 24px; }
+.sos-btn-wrap { text-align: center; }
+.sos-big-btn {
+  width: 200px; height: 200px; border-radius: 50%; background: var(--sos);
+  color: white; font-size: 28px; font-weight: 900; letter-spacing: 2px;
+  border: none; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; flex-direction: column; gap: 8px;
+  box-shadow: 0 0 0 16px rgba(197,48,48,.15), 0 0 0 32px rgba(197,48,48,.07);
+  transition: transform .15s, box-shadow .15s;
+  margin: 0 auto;
+}
+.sos-big-btn:hover { transform: scale(1.04); }
+.sos-big-btn:active { transform: scale(.97); }
+.sos-big-btn svg { width: 36px; height: 36px; }
+.sos-hint { font-size: 14px; color: var(--muted); margin-top: 20px; }
+.detail-panel { width: 320px; border-left: 1px solid var(--border); background: white; padding: 24px; flex-shrink: 0; overflow-y: auto; }
+.detail-panel h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.detail-panel .sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+.detail-row:last-child { border-bottom: none; }
+.detail-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.contact-notify { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px; }
+.notify-status { font-size: 11px; font-weight: 600; }
+.notify-status--done { color: #16a34a; }
+.notify-status--pending { color: var(--muted); }
+.protocol-box { background: var(--navy); border-radius: 10px; padding: 14px 16px; color: white; margin-top: 20px; }
+.protocol-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.protocol-box p { font-size: 12px; color: rgba(255,255,255,.7); line-height: 1.55; }
+.cancel-btn {
+  width: 100%; margin-top: 20px; border: 1.5px solid var(--sos); color: var(--sos);
+  background: white; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background .15s;
+}
+.cancel-btn:hover { background: #fff0f0; }

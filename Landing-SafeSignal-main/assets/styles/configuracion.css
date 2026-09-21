@@ -1,0 +1,73 @@
+.config-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+.config-section h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.config-section .desc { font-size: 12.5px; color: var(--muted); margin-bottom: 16px; }
+.config-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.config-row:last-child { border-bottom: none; padding-bottom: 0; }
+.config-row-label { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.config-row-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.plan-card { background: var(--navy); border-radius: 12px; padding: 20px 24px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.plan-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.plan-card p { font-size: 12.5px; color: rgba(255,255,255,.7); margin: 0; }
+
+.config-save-bar { align-items: center; justify-content: space-between; gap: 12px; background: #f0fdf4; border-bottom: 1px solid #bbf7d0; padding: 12px 32px; }
+.config-save-actions { display: flex; justify-content: flex-end; padding: 20px 0 4px; }
+
+/* --- Centro de Configuración (mockup) --- */
+.cfg-page-title { font-size: 26px; font-weight: 800; color: var(--navy); font-family: var(--font-heading); }
+.cfg-section-label { font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.cfg-grid-2 { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: start; }
+.cfg-grid-2--eq { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .cfg-grid-2, .cfg-grid-2--eq { grid-template-columns: 1fr; } }
+
+.sms-textarea { width: 100%; min-height: 110px; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 13.5px; font-family: inherit; color: var(--text); resize: vertical; }
+.sms-textarea:focus { outline: none; border-color: var(--accent); }
+.char-counter { font-size: 12px; color: var(--muted); margin: 8px 0 14px; }
+
+.sms-preview { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; height: 100%; }
+.sms-preview__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.sms-preview__label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--text); }
+.sms-preview__bubble { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.sms-preview__bubble strong { color: var(--sos); display: block; margin-bottom: 6px; }
+.sms-preview__bubble p { font-size: 13px; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
+.sms-preview__link { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); word-break: break-all; }
+.sms-preview__meta { font-size: 11px; color: var(--muted); margin-top: 8px; }
+.sms-preview__footer { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+.btn-accent { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--white); font-weight: 700; font-size: 13.5px; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; width: auto; font-family: var(--font-heading); transition: background .15s; }
+.btn-accent:hover { background: #245f96; }
+
+.cfg-inner-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+.cfg-inner-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.cfg-inner-card__head h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
+.cfg-inner-card__desc { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.55; }
+
+.time-input-row { display: flex; gap: 14px; margin-bottom: 14px; }
+.time-input { flex: 1; }
+.time-input label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: var(--muted); margin-bottom: 6px; }
+.time-input .time-input__box { display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 12px; }
+.time-input .time-input__box input { border: none; outline: none; font-size: 15px; font-weight: 700; color: var(--text); width: 100%; font-family: var(--font-mono); }
+.time-input .time-input__box span { font-size: 11px; color: var(--muted); }
+.time-configured { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.time-save-row { display: flex; align-items: center; justify-content: space-between; }
+
+.zone-info { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin: 12px 0 14px; }
+.zone-info-row { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); padding: 4px 0; }
+.zone-info-row strong { color: var(--navy); font-weight: 700; }
+
+.check-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.check-row:last-child { border-bottom: none; }
+.check-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+.check-row label { font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; }
+.check-row .config-row-sub { margin-top: 3px; }
+
+.feature-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+.feature-card__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.feature-card__head h4 { font-size: 15px; font-weight: 800; color: var(--navy); }
+.feature-card__head-right { display: flex; align-items: center; gap: 12px; }
+.feature-row { display: flex; align-items: flex-start; gap: 12px; background: #f8fafc; border-radius: 10px; padding: 14px 16px; }
+.feature-row__icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.feature-row__icon--battery { background: #f0fdf4; color: #16a34a; }
+.feature-row__icon--bell { background: #fffbeb; color: #b45309; }
+.feature-row strong { display: block; font-size: 13px; color: var(--text); margin-bottom: 3px; }
+.feature-row span { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.feature-row span b { color: var(--text); }

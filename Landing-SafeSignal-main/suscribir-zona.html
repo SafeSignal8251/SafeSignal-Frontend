@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suscribir Nueva Zona — SafeSignal</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/admin.css" />
+  <link rel="stylesheet" href="assets/styles/suscribir-zona.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="index.html" class="brand-logo brand-logo--sidebar"><span class="brand-logo__name">SafeSignal</span></a>
+        <div class="sidebar__user"><div class="sidebar__avatar" id="sidebarAvatar">S</div><div><div class="sidebar__user-name" id="sidebarUserName">sebastiancuray08</div><div class="sidebar__user-role" id="sidebarUserRole">Lima, PE</div></div></div>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Dashboard</a>
+        <a href="mapa.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="6" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Riesgo</a>
+        <a href="historial-alertas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8.5L10.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Historial</a>
+        <a href="reportes-comunidad.html" class="sidebar__link active"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14V11H9L6.5 13.5L4 11H2V4Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Reportes</a>
+        <a href="estadisticas.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 10L14 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Estadísticas</a>
+        <a href="configuracion.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Configuración</a>
+      </nav>
+      <div class="sidebar__bottom">
+        <a href="perfil.html" class="sidebar__link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 13C3 10.2 5.2 8 8 8C10.8 8 13 10.2 13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mi Perfil</a>
+        <a href="#" class="sidebar__link sidebar__link--danger" id="btnLogout"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H6M10.5 11L14 8L10.5 5M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cerrar sesión</a>
+        <a href="sos.html" class="sidebar__sos-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3.5V7C2 10 4.3 12.7 7 13.5C9.7 12.7 12 10 12 7V3.5L7 1Z" fill="white"/></svg>Reportar Emergencia</a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="page-content">
+        <h1 class="page-title" id="wizardPageTitle">Suscribir Nueva Zona</h1>
+        <p class="page-subtitle mb-16" id="wizardPageSubtitle">Selecciona el punto central en el mapa o busca una dirección para trazar el radio de cobertura preventiva de alertas ciudadanas.</p>
+
+        <div class="wizard-steps">
+          <div class="wizard-step active" id="wstep1"><span class="wizard-step__num">1</span><div><div class="wizard-step__title">Ubicación y Geocerca</div><div class="wizard-step__sub" id="wstep1sub">Punto central y radio de acción</div></div></div>
+          <div class="wizard-step" id="wstep2"><span class="wizard-step__num">2</span><div><div class="wizard-step__title">Filtro de Incidentes</div><div class="wizard-step__sub">Configuración de criticidad</div></div></div>
+          <div class="wizard-step" id="wstep3"><span class="wizard-step__num">3</span><div><div class="wizard-step__title">Canales y Horarios</div><div class="wizard-step__sub">Push, WhatsApp y alertas</div></div></div>
+        </div>
+
+        <div class="wizard-panel active" id="panel1">
+          <div class="grid-2 two-col-16">
+            <div class="card">
+              <h4 class="card-title-sm mb-8">Delimitación Geográfica</h4>
+              <p class="page-subtitle mb-16">Indica la dirección o coordenadas de la zona que frecuentas o deseas vigilar activamente.</p>
+              <div class="form-group">
+                <label class="form-label">Punto Central de Referencia</label>
+                <div class="zone-input-row">
+                  <div class="form-group-icon">
+                    <svg class="form-icon" width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#94a3b8" stroke-width="1.4"/><path d="M11 11L14.5 14.5" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round"/></svg>
+                    <input class="form-input form-input--icon" id="zonePointInput" value="Av. Oscar R. Benavides (Colonial) con Universitaria, Bellavista">
+                  </div>
+                  <button class="btn-primary" style="width:auto;white-space:nowrap;" type="button" onclick="localizarPunto()">⊙ Localizar</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">⊙ Radio del Perímetro de Alerta</label>
+                <div class="severity-btn-row">
+                  <button class="severity-btn" type="button">250m</button>
+                  <button class="severity-btn active" type="button">500m<br><span class="page-subtitle">Recomendado</span></button>
+                  <button class="severity-btn" type="button">1 km</button>
+                  <button class="severity-btn" type="button">2 km</button>
+                </div>
+              </div>
+              <div class="info-note mb-16">
+                <div class="info-note__title">ⓘ Área de cobertura estimada</div>
+                <p class="page-subtitle">Un radio de 500 metros equilibra notificaciones oportunas y reduce falsos avisos por saturación fuera de tu entorno caminable.</p>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <div class="page-header__row" style="margin-bottom:6px;"><label class="form-label" style="margin-bottom:0;">Etiqueta identificadora de la Geocerca</label><span class="page-subtitle">Editable</span></div>
+                <input class="form-input mb-8" id="zoneLabelInput" value="Ruta Universidad - Av. Colonial">
+                <span class="geo-tag">Bellavista / Cercado</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="page-header__row mb-8"><h4 class="card-title-sm">● Vista Cartográfica Satelital / Vector</h4></div>
+              <div class="map-dark map-dark--sm mb-16" id="geoMap" style="height:220px;">
+                <div id="geoMapLeaflet" style="position:absolute;inset:0;"></div>
+                <div class="map-perimeter-tag" id="geoPerimeterTag">Perímetro: 500m (Radio)</div>
+                <div class="map-zoom-controls"><button type="button" title="Acercar" onclick="zoomGeoMap(1)">+</button><button type="button" title="Alejar" onclick="zoomGeoMap(-1)">−</button></div>
+                <div class="map-center-pin">
+                  <div class="map-center-pin__dot">🚩</div>
+                  <div class="map-center-pin__label"><strong class="text-sm">Punto Central</strong><br><span class="page-subtitle" id="geoCenterLabel">Colonial / Universitaria</span></div>
+                </div>
+              </div>
+              <div class="grid-2" style="gap:12px;">
+                <div class="stat-box card-sm"><div class="stat-box__label">Superficie cubierta</div><div class="stat-box__num" style="font-size:19px;">0.79 km²</div><div class="stat-box__delta">Radio lineal 500m</div></div>
+                <div class="stat-box card-sm"><div class="stat-box__label">Cámaras C5 conectadas</div><div class="stat-box__num" style="font-size:19px;">6</div><div class="stat-box__delta stat-box__delta--up">100% Online</div></div>
+                <div class="stat-box card-sm"><div class="stat-box__label">Nivel de riesgo zona</div><div class="stat-box__num" style="font-size:19px;color:#b45309;">6.2 / 10</div><div class="stat-box__delta">Moderado - Bajo</div></div>
+                <div class="stat-box card-sm"><div class="stat-box__label">Comunidad activa</div><div class="stat-box__num" style="font-size:19px;">~3,420</div><div class="stat-box__delta">Vecinos vigías en red</div></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-primary mt-16" style="width:auto;" onclick="goStep(2)">Continuar →</button>
+        </div>
+
+        <div class="wizard-panel" id="panel2">
+          <h3 style="color:var(--navy);margin-bottom:4px;">Paso 2: Categorías de Incidentes y Sensibilidad de Notificación</h3>
+          <p class="page-subtitle mb-16">Selecciona qué tipos de eventos gatillarán avisos prioritarios para tu geocerca activa "<span id="panel2ZoneName">Ruta Universidad - Av. Colonial</span>".</p>
+          <div class="grid-2 two-col-16">
+            <div class="card">
+              <label class="category-card category-card--red">
+                <div class="category-card__head">
+                  <span class="category-card__title"><input type="checkbox" checked> Delitos de alto impacto</span>
+                  <span class="badge badge--red">Alto Impacto</span>
+                </div>
+                <p class="category-card__desc">Robo a mano armada, asaltos grupales y agresiones con armas en vía pública.</p>
+              </label>
+              <label class="category-card category-card--amber">
+                <div class="category-card__head">
+                  <span class="category-card__title"><input type="checkbox" checked> Incidentes sospechosos y arrebatos</span>
+                  <span class="badge badge--yellow">Ámbar / Alerta</span>
+                </div>
+                <p class="category-card__desc">Vehículos en seguimiento, hurtos al paso (raqueteo) y conato de vandalismo local.</p>
+              </label>
+              <label class="category-card">
+                <div class="category-card__head">
+                  <span class="category-card__title"><input type="checkbox"> Tráfico y desvíos preventivos de patrullaje</span>
+                  <span class="badge badge--gray">Preventivo</span>
+                </div>
+                <p class="category-card__desc">Cierre de vías principales por operativos policiales conjuntos Serenazgo-PNP.</p>
+              </label>
+              <label class="category-card category-card--blue">
+                <div class="category-card__head">
+                  <span class="category-card__title"><input type="checkbox" checked> Falsas alarmas confirmadas o avisos comunitarios</span>
+                  <span class="badge badge--blue">Info Verificada</span>
+                </div>
+                <p class="category-card__desc">Correcciones tempranas de reportes erróneos para evitar histeria y desinformación vecinal.</p>
+              </label>
+            </div>
+            <div>
+              <div class="card mb-16" style="padding:16px;">
+                <div class="mini-geomap">
+                  <div id="geoMapLeaflet2" style="position:absolute;inset:0;"></div>
+                  <div class="mini-geomap__tag" id="panel2GeoTag">Av. Col. / Bellavista (500m)</div>
+                </div>
+                <div class="mini-geomap__legend">
+                  <span><i style="background:var(--sos);"></i>Delito Crítico</span>
+                  <span><i style="background:#d97706;"></i>Sospecha</span>
+                  <span><i style="background:var(--navy);"></i>Cámara C5</span>
+                </div>
+              </div>
+              <div class="card">
+                <div class="page-header__row mb-8"><h4 class="card-title-sm">Telemetría de la Zona</h4><span class="text-stable text-sm">● Cuadrante Activo</span></div>
+                <div class="grid-2" style="gap:12px;">
+                  <div class="stat-box card-sm"><div class="stat-box__label">Área de Cobertura</div><div class="stat-box__num" style="font-size:19px;">0.79 km²</div><div class="stat-box__delta">Perímetro: 3.14 km</div></div>
+                  <div class="stat-box card-sm"><div class="stat-box__label">Cámaras C5 / LPR</div><div class="stat-box__num" style="font-size:19px;">6 Operativas</div><div class="stat-box__delta stat-box__delta--up">100% integradas</div></div>
+                  <div class="stat-box card-sm"><div class="stat-box__label">Vecinos Vigilantes</div><div class="stat-box__num" style="font-size:19px;">~3,420 vigías</div><div class="stat-box__delta">Red activa Colonial</div></div>
+                  <div class="stat-box card-sm"><div class="stat-box__label">Nivel de Riesgo</div><div class="stat-box__num" style="font-size:19px;color:#b45309;">6.2 / 10</div><div class="stat-box__delta">Moderado-Bajo</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-header__row mt-16" style="margin-bottom:0;">
+            <div class="row-gap-8"><button class="btn-secondary" onclick="goStep(1)">← Volver</button><button class="btn-secondary" style="border-color:transparent;box-shadow:none;color:var(--muted);" onclick="cancelWizard()">Cancelar</button></div>
+            <button class="btn-primary" style="width:auto;" onclick="goStep(3)">Continuar a Canales y Horarios →</button>
+          </div>
+        </div>
+
+        <div class="wizard-panel" id="panel3">
+          <h3 style="color:var(--navy);margin-bottom:4px;">Paso 3: Vías de Difusión y Programación</h3>
+          <p class="page-subtitle mb-16">Selecciona por cuáles medios deseas recibir los avisos y define la ventana horaria de vigilancia comunitaria.</p>
+          <div class="grid-2 two-col-16">
+            <div class="card">
+              <div class="page-header__row mb-16"><h4 class="card-title-sm" style="text-transform:uppercase;letter-spacing:.02em;">Canales de Recepción Inmediata</h4><span class="text-sm" id="activeChannelsCount">2 de 3 activos</span></div>
+              <div class="channel-item">
+                <div class="channel-item__icon channel-item__icon--blue">🔔</div>
+                <div class="channel-item__body">
+                  <div class="page-header__row" style="margin-bottom:2px;"><strong class="label-strong">Notificaciones Push Web / Móvil</strong> <span class="badge badge--blue">Instantáneo</span></div>
+                  <p class="page-subtitle">Alertas sonoras instantáneas en tu navegador y smartphone. Prioridad alta con sonido de baliza para delitos de alto impacto.</p>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" checked onchange="updateChannelCount()"><span class="toggle-switch__track"></span></label>
+              </div>
+              <div class="channel-item">
+                <div class="channel-item__icon channel-item__icon--green">💬</div>
+                <div class="channel-item__body">
+                  <div class="page-header__row" style="margin-bottom:2px;"><strong class="label-strong">Alertas por WhatsApp / SMS</strong> <span class="badge badge--green">Recomendado</span></div>
+                  <p class="page-subtitle">Mensajes con enlace de geolocalización en vivo y síntesis de incidentes vecinales al +51 987 654 321.</p>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" checked onchange="updateChannelCount()"><span class="toggle-switch__track"></span></label>
+              </div>
+              <div class="channel-item">
+                <div class="channel-item__icon channel-item__icon--gray">✉</div>
+                <div class="channel-item__body">
+                  <div class="page-header__row" style="margin-bottom:2px;"><strong class="label-strong">Correo Electrónico Semanal / Resumen</strong> <span class="badge badge--gray">Opcional</span></div>
+                  <p class="page-subtitle">Boletín con reporte consolidado de incidencias históricas, mapa de calor semanal y tendencias de patrullaje.</p>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" onchange="updateChannelCount()"><span class="toggle-switch__track"></span></label>
+              </div>
+            </div>
+            <div class="card">
+              <div class="page-header__row mb-8"><h4 class="card-title-sm" style="text-transform:uppercase;letter-spacing:.02em;">🕐 Horarios de Monitoreo de Alerta</h4></div>
+              <p class="page-subtitle mb-16">Establece en qué momentos del día requieres que el cuadrante emita avisos críticos a tus dispositivos.</p>
+              <div class="info-note mb-16">
+                <div class="page-header__row">
+                  <div><strong class="label-strong">Rango de Horas Activo</strong><p class="page-subtitle">Horas de retorno de universidad y centro laboral</p></div>
+                  <div class="time-range-edit">
+                    <input type="time" class="time-range-edit__input" id="zoneHoraDesde" value="18:00" onchange="updateTimeRange()">
+                    <span>–</span>
+                    <input type="time" class="time-range-edit__input" id="zoneHoraHasta" value="07:00" onchange="updateTimeRange()">
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm mb-8" style="font-weight:700;text-transform:uppercase;letter-spacing:.02em;">Días con vigilancia personalizada</p>
+              <div class="row-gap-8">
+                <span class="chip-tag">L</span><span class="chip-tag">M</span><span class="chip-tag">M</span><span class="chip-tag">J</span><span class="chip-tag">V</span><span class="chip-tag" style="background:var(--accent);">S</span><span class="chip-tag" style="background:var(--accent);">D</span>
+              </div>
+            </div>
+          </div>
+          <div class="row-gap-8 mt-16"><button class="btn-secondary" onclick="goStep(2)">← Volver</button><button class="btn-primary" style="width:auto;" onclick="finishWizard()">Confirmar Suscripción de Zona</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="assets/scripts/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script>
+    document.querySelectorAll('.severity-btn-row').forEach(function(row){
+      row.querySelectorAll('.severity-btn').forEach(function(b){
+        b.addEventListener('click', function(){ row.querySelectorAll('.severity-btn').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); });
+      });
+    });
+
+    var WIZARD_COPY = {
+      1: { title: 'Suscribir Nueva Zona', sub: 'Selecciona el punto central en el mapa o busca una dirección para trazar el radio de cobertura preventiva de alertas ciudadanas.' },
+      2: { title: 'Suscribir Nueva Zona', sub: 'Red colaborativa de alertas ciudadanas verificadas en tiempo real para Lima Metropolitana.' },
+      3: { title: 'Suscripción a Nueva Zona', sub: 'Define canales de alerta inmediata, horarios de activación y contactos vinculados para la geocerca activa.' }
+    };
+
+    function goStep(n) {
+      for (var i = 1; i <= 3; i++) {
+        document.getElementById('wstep' + i).classList.remove('active','done');
+        document.getElementById('panel' + i).classList.remove('active');
+        if (i < n) document.getElementById('wstep' + i).classList.add('done');
+      }
+      document.getElementById('wstep' + n).classList.add('active');
+      document.getElementById('panel' + n).classList.add('active');
+
+      var copy = WIZARD_COPY[n];
+      if (copy) {
+        document.getElementById('wizardPageTitle').textContent = copy.title;
+        document.getElementById('wizardPageSubtitle').textContent = copy.sub;
+      }
+      if (n > 1) {
+        var activeRadius = document.querySelector('.severity-btn.active');
+        var radiusText = activeRadius ? activeRadius.firstChild.textContent.trim() : '500m';
+        var label = document.getElementById('zoneLabelInput').value;
+        document.getElementById('wstep1sub').textContent = label + ' (' + radiusText + ')';
+        var zoneNameEl = document.getElementById('panel2ZoneName');
+        if (zoneNameEl) zoneNameEl.textContent = label;
+      }
+      if (n === 2) { ensureGeoMap2(); }
+    }
+
+    function updateTimeRange() {
+      var desde = document.getElementById('zoneHoraDesde').value;
+      var hasta = document.getElementById('zoneHoraHasta').value;
+      showToast('Horario de vigilancia actualizado: ' + desde + ' hrs – ' + hasta + ' hrs');
+    }
+
+    /* --- Mini-mapa real (Leaflet + OpenStreetMap) del Paso 1 --- */
+    var GEO_DEFAULT = { lat: -12.0522, lng: -77.0965 }; // Av. Colonial / Av. Universitaria, Bellavista
+
+    var geoLeafletMap = L.map('geoMapLeaflet', { zoomControl: false, attributionControl: false })
+      .setView([GEO_DEFAULT.lat, GEO_DEFAULT.lng], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(geoLeafletMap);
+
+    var geoRadiusCircle = L.circle([GEO_DEFAULT.lat, GEO_DEFAULT.lng], {
+      radius: 500, color: '#2E75B6', weight: 1.5, fillColor: '#2E75B6', fillOpacity: .12
+    }).addTo(geoLeafletMap);
+
+    geoLeafletMap.on('move', function () {
+      geoRadiusCircle.setLatLng(geoLeafletMap.getCenter());
+    });
+
+    function zoomGeoMap(dir) {
+      if (dir > 0) geoLeafletMap.zoomIn(); else geoLeafletMap.zoomOut();
+    }
+
+    /* --- Mini-mapa real del Paso 2 (sincronizado con el punto elegido en el Paso 1) --- */
+    var geoLeafletMap2 = null;
+    var geoMarkers2 = [];
+    var geoCircle2 = null;
+
+    function ensureGeoMap2() {
+      var center = geoLeafletMap.getCenter();
+      var radiusText = document.getElementById('geoPerimeterTag').textContent.replace('Perímetro: ', '').replace(' (Radio)', '');
+      var label = document.getElementById('geoCenterLabel').textContent;
+      document.getElementById('panel2GeoTag').textContent = label + ' (' + radiusText + ')';
+
+      if (!geoLeafletMap2) {
+        geoLeafletMap2 = L.map('geoMapLeaflet2', {
+          zoomControl: false, attributionControl: false,
+          dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false
+        }).setView(center, 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(geoLeafletMap2);
+        geoCircle2 = L.circle(center, { radius: geoRadiusCircle.getRadius(), color: '#2E75B6', weight: 1.5, fillColor: '#2E75B6', fillOpacity: .12 }).addTo(geoLeafletMap2);
+        var offsets = [[0.0009, -0.0006], [0.0015, 0.0010], [0.0006, 0.0016]];
+        var colors = ['#C0392B', '#d97706', '#1A3A5C'];
+        offsets.forEach(function (off, i) {
+          geoMarkers2.push(L.circleMarker([center.lat + off[0], center.lng + off[1]], { radius: 6, color: 'white', weight: 2, fillColor: colors[i], fillOpacity: 1 }).addTo(geoLeafletMap2));
+        });
+      } else {
+        geoLeafletMap2.setView(center, 15);
+        geoCircle2.setLatLng(center).setRadius(geoRadiusCircle.getRadius());
+        var offsets2 = [[0.0009, -0.0006], [0.0015, 0.0010], [0.0006, 0.0016]];
+        geoMarkers2.forEach(function (m, i) { m.setLatLng([center.lat + offsets2[i][0], center.lng + offsets2[i][1]]); });
+      }
+      setTimeout(function () { geoLeafletMap2.invalidateSize(); }, 60);
+    }
+
+    var RADIUS_METERS = { '250m': 250, '500m': 500, '1 km': 1000, '2 km': 2000 };
+    document.querySelectorAll('#panel1 .severity-btn-row .severity-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var label = b.firstChild.textContent.trim();
+        var meters = RADIUS_METERS[label];
+        if (meters) {
+          geoRadiusCircle.setRadius(meters);
+          document.getElementById('geoPerimeterTag').textContent = 'Perímetro: ' + label + ' (Radio)';
+        }
+      });
+    });
+
+    var GEO_PLACES = {
+      'upc': { lat: -12.0774, lng: -77.0916, label: 'UPC San Miguel' },
+      'san miguel': { lat: -12.0768, lng: -77.0925, label: 'San Miguel' },
+      'bellavista': { lat: -12.0576, lng: -77.1051, label: 'Bellavista' },
+      'colonial': { lat: -12.0522, lng: -77.0965, label: 'Av. Colonial' },
+      'la victoria': { lat: -12.0654, lng: -77.0119, label: 'La Victoria' },
+      'magdalena': { lat: -12.0925, lng: -77.0745, label: 'Magdalena del Mar' },
+      'san isidro': { lat: -12.0931, lng: -77.0465, label: 'San Isidro' },
+      'san borja': { lat: -12.1019, lng: -76.9975, label: 'San Borja' },
+      'surquillo': { lat: -12.1116, lng: -77.0128, label: 'Surquillo' },
+      'miraflores': { lat: -12.1211, lng: -77.0295, label: 'Miraflores' },
+      'callao': { lat: -12.0621, lng: -77.1181, label: 'Callao' }
+    };
+
+    function normalizePlaceQuery(str) {
+      return str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+
+    function findGeoPlace(query) {
+      if (!query) return null;
+      var q = normalizePlaceQuery(query);
+      var bestKey = null;
+      Object.keys(GEO_PLACES).forEach(function (key) { if (q.indexOf(key) !== -1 && (!bestKey || key.length > bestKey.length)) bestKey = key; });
+      return bestKey ? GEO_PLACES[bestKey] : null;
+    }
+
+    function localizarPunto() {
+      var query = document.getElementById('zonePointInput').value;
+      var place = findGeoPlace(query);
+      if (place) {
+        geoLeafletMap.flyTo([place.lat, place.lng], 15, { duration: 1 });
+        document.getElementById('geoCenterLabel').textContent = place.label;
+      }
+      showToast('Ubicación localizada: ' + query);
+    }
+
+    function cancelWizard() {
+      if (confirm('¿Deseas cancelar la suscripción de esta nueva zona? Se perderán los datos ingresados.')) {
+        window.location.href = 'reportes-comunidad.html';
+      }
+    }
+
+    function updateChannelCount() {
+      var toggles = document.querySelectorAll('#panel3 .toggle-switch input[type=checkbox]');
+      var active = 0;
+      toggles.forEach(function (t) { if (t.checked) active++; });
+      document.getElementById('activeChannelsCount').textContent = active + ' de ' + toggles.length + ' activos';
+    }
+
+    function finishWizard() {
+      showToast('Zona suscrita correctamente. Recibirás alertas de esta geocerca.');
+      setTimeout(function(){ window.location.href = 'reportes-comunidad.html'; }, 1500);
+    }
+  </script>
+</body>
+</html>

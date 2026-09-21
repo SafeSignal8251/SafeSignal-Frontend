@@ -1,0 +1,65 @@
+.report-layout { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+.report-card { padding: 24px; }
+
+.form-section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.form-section-title h3 { font-size: 15px; font-weight: 700; color: var(--navy); flex: 1; }
+.section-num { width: 24px; height: 24px; border-radius: 50%; background: var(--navy); color: white; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-required { font-size: 11px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--sos); white-space: nowrap; }
+.btn-gps { display: inline-flex; align-items: center; gap: 6px; background: var(--soft-bg); color: var(--navy); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px; border: none; cursor: pointer; white-space: nowrap; font-family: var(--font-body); }
+.btn-gps:hover { background: #c3d8ec; }
+
+/* Tipo y categoria */
+.incident-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.incident-type-card { display: flex; align-items: flex-start; gap: 10px; text-align: left; border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; background: white; cursor: pointer; transition: all .15s; font-family: var(--font-body); }
+.incident-type-card:hover { border-color: var(--navy); }
+.incident-type-card.selected { background: var(--navy); border-color: var(--navy); color: white; }
+.incident-type-card__icon { width: 32px; height: 32px; border-radius: 8px; background: #f1f5f9; color: var(--muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.incident-type-card.selected .incident-type-card__icon { background: rgba(255,255,255,.15); color: white; }
+.incident-type-card__text { flex: 1; display: flex; flex-direction: column; }
+.incident-type-card__title { font-size: 13px; font-weight: 700; }
+.incident-type-card__sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.incident-type-card.selected .incident-type-card__sub { color: rgba(255,255,255,.7); }
+.incident-type-card__check { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.2); color: white; align-items: center; justify-content: center; flex-shrink: 0; display: none; }
+.incident-type-card.selected .incident-type-card__check { display: flex; }
+
+/* Nivel de gravedad */
+.risk-level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.risk-level-card { text-align: left; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; background: white; cursor: pointer; transition: all .15s; font-family: var(--font-body); }
+.risk-level-card:hover { border-color: var(--navy); }
+.risk-level-card__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.risk-level-card__label { font-size: 11px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
+.risk-level-card__radio { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; }
+.risk-level-card__desc { font-size: 12px; line-height: 1.5; color: var(--text); margin-bottom: 10px; }
+.risk-level-card__priority { font-family: var(--font-mono); font-size: 10px; line-height: 1.5; color: var(--muted); }
+.risk-level-card--alto.selected { background: var(--sos); border-color: var(--sos); }
+.risk-level-card--alto.selected .risk-level-card__label,
+.risk-level-card--alto.selected .risk-level-card__desc { color: white; }
+.risk-level-card--alto.selected .risk-level-card__priority { color: rgba(255,255,255,.75); }
+.risk-level-card--alto.selected .risk-level-card__radio { border-color: white; background: white; }
+.risk-level-card--medio.selected { background: #eff6ff; border-color: var(--accent); }
+.risk-level-card--medio.selected .risk-level-card__label { color: var(--accent); }
+.risk-level-card--medio.selected .risk-level-card__radio { border-color: var(--accent); background: var(--accent); }
+.risk-level-card--leve.selected { background: #f8fafc; border-color: var(--muted); }
+.risk-level-card--leve.selected .risk-level-card__radio { border-color: var(--muted); background: var(--muted); }
+
+.coord-note { font-size: 11.5px; color: var(--muted); }
+.char-counter { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+
+/* Panel de validacion en mapa */
+.report-side { position: sticky; top: 20px; }
+.report-side__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.report-side__head h4 { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.report-side__map { height: 190px; border-radius: 10px; margin-bottom: 14px; }
+.report-side__map-tag { position: absolute; top: 10px; left: 10px; background: rgba(15,23,42,.85); color: white; font-size: 10.5px; font-weight: 600; padding: 5px 9px; border-radius: 6px; }
+.report-side__map-eta { position: absolute; top: 10px; right: 10px; background: white; color: var(--navy); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+.report-side__info { display: flex; flex-direction: column; gap: 10px; }
+.report-side__info > div { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.report-side__info-label { color: var(--muted); }
+.report-side__info-value { font-weight: 700; color: var(--navy); }
+
+@media (max-width: 900px) {
+  .report-layout { grid-template-columns: 1fr; }
+  .incident-type-grid { grid-template-columns: 1fr; }
+  .risk-level-grid { grid-template-columns: 1fr; }
+  .report-side { position: static; }
+}

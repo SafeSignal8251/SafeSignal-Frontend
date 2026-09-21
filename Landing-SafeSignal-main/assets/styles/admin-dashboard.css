@@ -1,0 +1,11 @@
+/* Admin Dashboard — estilos propios (no compartidos) */
+
+#quadrantMapLeaflet { z-index: 1; }
+
+.map-zoom-controls { position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 5px; z-index: 2; }
+.map-zoom-controls button { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border); background: white; color: var(--navy); font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+
+.map-dark__legend--corner { z-index: 2; }
+
+.map-zone-tag { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding: 3px 7px; border-radius: 5px; color: white; text-align: center; pointer-events: none; }
+.map-zone-tag--danger { background: var(--sos); }

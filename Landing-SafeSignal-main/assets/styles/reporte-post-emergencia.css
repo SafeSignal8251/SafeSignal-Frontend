@@ -1,0 +1,14 @@
+.form-section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin-bottom: 16px; }
+.form-section h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.form-section p { font-size: 12.5px; color: var(--muted); margin-bottom: 16px; }
+.scale-row { display: flex; gap: 8px; align-items: center; }
+.scale-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--muted); transition: all .15s; }
+.scale-btn.sel { background: var(--navy); color: white; border-color: var(--navy); }
+.contact-status-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+.contact-status-row:last-child { border-bottom: none; }
+.check-yes { color: var(--success); font-size: 18px; }
+.check-pending { color: var(--warning); font-size: 18px; }
+
+.estado-btn { padding: 9px 18px; border-radius: 22px; border: 1.5px solid var(--border); background: white; color: var(--muted); font-size: 13px; font-weight: 600; font-family: var(--font-heading); cursor: pointer; transition: all .15s; }
+.estado-btn:hover { border-color: var(--navy); color: var(--navy); }
+.estado-btn--active, .estado-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
