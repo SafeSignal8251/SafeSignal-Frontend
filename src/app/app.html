@@ -1,0 +1,14 @@
+<mat-drawer-container class="contenedor">
+  @if (auth.sesion$ | async; as sesion) {
+    <mat-drawer mode="side" opened class="lateral" [class.lateral-admin]="auth.esAdmin()">
+      @if (auth.esAdmin()) {
+        <app-nav-admin-component></app-nav-admin-component>
+      } @else {
+        <app-nav-cliente-component></app-nav-cliente-component>
+      }
+    </mat-drawer>
+  }
+  <mat-drawer-content class="contenido">
+    <router-outlet />
+  </mat-drawer-content>
+</mat-drawer-container>
