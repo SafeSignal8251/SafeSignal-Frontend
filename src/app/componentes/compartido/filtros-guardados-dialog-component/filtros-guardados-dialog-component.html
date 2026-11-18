@@ -1,0 +1,20 @@
+<h2 mat-dialog-title class="titulo"><mat-icon>bookmark</mat-icon> Filtros y vistas guardadas</h2>
+<mat-dialog-content>
+  <p class="sub">Aplica rápidamente una combinación de distrito, tipología y período que guardaste antes.</p>
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+  @for (f of filtros; track f.id_filtro) {
+    <div class="filtro">
+      <div class="datos">
+        <strong>{{ f.nombre }}</strong>
+        <small>{{ f.distrito || 'Todos los distritos' }} · {{ f.tipologia || 'Todas las tipologías' }} · {{ f.rango_dias ? 'Últimos ' + f.rango_dias + ' días' : 'Todo el período' }}</small>
+      </div>
+      <button mat-stroked-button class="btn-secundario" (click)="aplicar(f)">Aplicar vista</button>
+      <button class="boton-enlace rojo" (click)="eliminar(f)">Eliminar</button>
+    </div>
+  } @empty {
+    <p class="vacio">Aún no tienes filtros guardados. Usa «Guardar filtro» en la pantalla de estadísticas.</p>
+  }
+  <div class="pie"><button mat-button class="btn-secundario" (click)="cerrar()">Cerrar</button></div>
+</mat-dialog-content>
