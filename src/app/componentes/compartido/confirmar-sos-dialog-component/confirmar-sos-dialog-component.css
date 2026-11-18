@@ -1,0 +1,112 @@
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+}
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  font-size: 19px;
+}
+.titulo mat-icon {
+  color: var(--ss-rojo);
+}
+.critica {
+  background: var(--ss-rojo);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.cuenta {
+  background: #fdeceb;
+  border: 1px solid #f3c1bc;
+  color: var(--ss-rojo);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.cuenta div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.barra {
+  height: 6px;
+  background: #f3c1bc;
+  border-radius: 999px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.relleno {
+  height: 100%;
+  background: var(--ss-rojo);
+  transition: width 1s linear;
+}
+.mensaje {
+  font-size: 13px;
+  color: var(--ss-gris);
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.titulo-lista {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ss-gris);
+}
+.contacto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ss-azul-claro);
+  color: var(--ss-azul-oscuro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.datos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.datos small {
+  color: var(--ss-gris);
+}
+.canal {
+  background: #e3eefa;
+  color: #1a5a9a;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.sin-contactos {
+  font-size: 13px;
+  color: var(--ss-gris);
+}
+.acciones-dialogo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
