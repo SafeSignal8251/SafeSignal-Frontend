@@ -1,0 +1,88 @@
+.nav {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 14px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+.marca {
+  margin: 0 8px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.marca strong {
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+}
+.marca small {
+  color: #8fb2d6;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.menu, .pie {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #c9d8e8;
+  text-decoration: none;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.item.activo {
+  background: #0f2740;
+  color: #ffffff;
+  font-weight: 600;
+}
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ss-azul);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.datos {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  overflow: hidden;
+}
+.datos strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.datos small {
+  color: #8fb2d6;
+}
+.salir {
+  color: #ff9a8f;
+}
