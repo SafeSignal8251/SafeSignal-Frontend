@@ -1,0 +1,52 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div><h1>Gestión de Contactos de Confianza</h1></div>
+  </div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="banner">
+    <mat-icon>info</mat-icon>
+    <div class="texto">
+      <strong>Red SOS Personal (Máximo {{ maximo }} contactos)</strong>
+      <p>En situaciones de pánico o desvío de ruta, el sistema despacha enlaces de rastreo y llamadas asistidas a tus contactos por orden de prioridad.</p>
+    </div>
+    <div class="cupos">Cupos disponibles: <strong>{{ cupos }} de {{ maximo }}</strong></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="pila">
+      <p class="etiqueta">CONTACTOS REGISTRADOS ({{ contactos.length }}) <span>Prioridad descendente de notificación</span></p>
+      @for (c of contactos; track c.id_contacto) {
+        <article class="contacto">
+          <span class="avatar">{{ iniciales(c) }}</span>
+          <div class="datos">
+            <div class="nombre">
+              <strong>{{ c.nombres }} {{ c.apellidos }}</strong>
+              <span class="badge" [class]="'badge ' + (c.prioridad === 1 ? 'badge-rojo' : 'badge-azul')">PRIORIDAD {{ c.prioridad }}</span>
+              @if (c.parentesco) { <span class="badge badge-gris">{{ c.parentesco }}</span> }
+            </div>
+            <small><mat-icon>call</mat-icon> {{ c.telefono }} &nbsp; <b [class.naranja]="!c.notificar_whatsapp">{{ canales(c) }}</b></small>
+          </div>
+          <button class="icono" (click)="agregar(c)" aria-label="Editar contacto"><mat-icon>edit</mat-icon></button>
+          <button class="icono" (click)="eliminar(c)" aria-label="Eliminar contacto"><mat-icon>delete</mat-icon></button>
+        </article>
+      } @empty {
+        <div class="tarjeta-ss vacio">Aún no tienes contactos de confianza. Agrega al menos uno para que reciba tus alertas.</div>
+      }
+      <button class="nuevo" (click)="agregar(null)" [disabled]="cupos <= 0">
+        <mat-icon>add_circle</mat-icon> Agregar nuevo contacto de confianza
+      </button>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h3><mat-icon class="chico">sms</mat-icon> Mensaje de Alerta SOS <span class="badge badge-gris">Vista previa</span></h3>
+      <div class="sms">
+        <b>[ALERTA SAFESIGNAL]</b>
+        <p>{{ mensajeSos || 'Tu mensaje de auxilio aún no está configurado. Puedes definirlo en Configuración.' }}</p>
+      </div>
+      <p class="sub">Tiempo medio de despacho: <strong>1.8 segundos</strong></p>
+    </div>
+  </div>
+</section>
