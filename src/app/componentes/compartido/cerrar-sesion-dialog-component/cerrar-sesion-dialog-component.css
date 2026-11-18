@@ -1,0 +1,51 @@
+.icono {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+.icono mat-icon {
+  color: var(--ss-rojo);
+  background: #fdeceb;
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: content-box;
+}
+h2 {
+  text-align: center;
+}
+.texto {
+  text-align: center;
+  color: var(--ss-gris);
+  font-size: 14px;
+}
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 12px 0;
+}
+.usuario small {
+  display: block;
+  color: var(--ss-gris);
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ss-azul-oscuro);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.nota {
+  font-size: 12px;
+  color: var(--ss-gris);
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
