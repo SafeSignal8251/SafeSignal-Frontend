@@ -1,0 +1,57 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Mi Perfil <span class="badge badge-azul">Verificado</span></h1>
+      <p>Consulta la información de usuario, ubicación registrada y contactos de emergencia.</p>
+    </div>
+  </div>
+
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  @if (usuario) {
+    <div class="contenedor">
+      <aside class="lado">
+        <span class="avatar">{{ inicial }}</span>
+        <strong>{{ usuario.nombres }}</strong>
+        <small>{{ usuario.rol === 'ADMIN' ? 'Administrador' : 'Vigilante Activo' }}</small>
+        <span class="badge" [class]="'badge ' + (usuario.estado === 'ACTIVA' ? 'badge-verde' : 'badge-rojo')">Cuenta {{ usuario.estado === 'ACTIVA' ? 'Activa' : 'Suspendida' }}</span>
+      </aside>
+
+      <div class="tarjeta-ss principal">
+        <p class="seccion">INFORMACIÓN PERSONAL <span>Modo lectura</span></p>
+        <div class="datos">
+          <div><small>NOMBRES</small><strong>{{ usuario.nombres }}</strong></div>
+          <div><small>APELLIDOS</small><strong>{{ usuario.apellidos }}</strong></div>
+          <div><small>CORREO ELECTRÓNICO</small><strong>{{ usuario.correo }}</strong></div>
+          <div><small>TELÉFONO</small><strong>{{ usuario.telefono || '—' }}</strong></div>
+          <div><small>DNI</small><strong>{{ usuario.dni }}</strong></div>
+        </div>
+
+        <p class="seccion">UBICACIÓN FRECUENTE</p>
+        <div class="datos">
+          <div><small>DISTRITO</small><strong>{{ usuario.distrito || '—' }}</strong></div>
+          <div><small>DIRECCIÓN HABITUAL</small><strong>{{ usuario.direccion || '—' }}</strong></div>
+        </div>
+
+        <p class="seccion">DATOS DE EMERGENCIA</p>
+        <div class="emergencia">
+          <p>En caso de emergencia, esta información será enviada al cuadrante más cercano.</p>
+          <div class="datos">
+            <div><small>NOMBRE DE CONTACTO</small><strong>{{ contacto ? contacto.nombres + ' ' + (contacto.apellidos ?? '') : 'Sin contacto registrado' }}</strong></div>
+            <div><small>TELÉFONO DE CONTACTO</small><strong>{{ contacto ? contacto.telefono : '—' }}</strong></div>
+          </div>
+        </div>
+
+        <div class="pie">
+          <button mat-stroked-button class="btn-peligro-borde" (click)="eliminarCuenta()">Eliminar cuenta</button>
+          <div class="acciones">
+            <button mat-stroked-button class="btn-secundario" (click)="cambiarContrasena()">Cambiar contraseña</button>
+            <a mat-raised-button routerLink="/perfil/editar" class="btn-primario">Editar perfil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (!error) {
+    <p class="vacio">Cargando perfil...</p>
+  }
+</section>
