@@ -1,0 +1,103 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Historial de Alertas</h1>
+      <p>Consulta y audita todos los eventos de emergencia emitidos desde tu cuenta personal con detalle de trazabilidad por geolocalización.</p>
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  <div class="kpis">
+    <div class="kpi"><small>Total alertas cuenta</small><strong>{{ alertas.length }} eventos</strong></div>
+    <div class="kpi rojo"><small>Alertas SOS críticas</small><strong>{{ totalSos }}</strong><span class="badge badge-rojo">Alta prioridad</span></div>
+    <div class="kpi"><small>Alertas silenciosas</small><strong>{{ totalSilenciosas }}</strong><span>Modo sigilo</span></div>
+    <div class="kpi verde"><small>Canceladas a tiempo</small><strong>{{ totalCanceladas }}</strong><span>Cancelación correcta</span></div>
+    <div class="kpi"><small>Atendidas por Serenazgo</small><strong>{{ totalDespachadas }}</strong><span>Con código de despacho</span></div>
+  </div>
+
+  <div class="filtros tarjeta-ss">
+    <input [(ngModel)]="texto" (ngModelChange)="filtrar()" placeholder="Buscar por ubicación, tipo de alerta o ID (ej. ALT-9042)..." class="buscar" />
+    <select [(ngModel)]="estado" (ngModelChange)="filtrar()">
+      <option value="">Estado: Todos</option>
+      <option value="ACTIVA">Activa</option>
+      <option value="DESPACHADA">Despachada</option>
+      <option value="CANCELADA">Cancelada</option>
+    </select>
+    <select [(ngModel)]="periodo" (ngModelChange)="filtrar()">
+      <option value="">Período: Todo</option>
+      <option value="7">Últimos 7 días</option>
+      <option value="30">Últimos 30 días</option>
+      <option value="90">Últimos 90 días</option>
+    </select>
+    <button mat-stroked-button class="btn-secundario" (click)="limpiar()">Limpiar</button>
+  </div>
+
+  <div class="grid-2">
+    <div class="tarjeta-ss">
+      <p class="titulo-tabla">REGISTROS DE AUDITORÍA — Mostrando {{ dataSource.filteredData.length }} de {{ alertas.length }} eventos</p>
+      <table mat-table [dataSource]="dataSource" matSort class="tabla-material">
+        <ng-container matColumnDef="id_alerta">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Y ALERTA</th>
+          <td mat-cell *matCellDef="let a">
+            <strong>#ALT-{{ a.id_alerta }}</strong><br />
+            <small>{{ a.tipo_alerta === 'SOS' ? 'Alerta SOS' : 'Alerta Silenciosa' }}</small><br />
+            <small class="gris">Origen: {{ a.origen === 'DISPOSITIVO' ? 'Dispositivo IoT' : 'App web' }}</small>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha_hora">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>FECHA / HORA</th>
+          <td mat-cell *matCellDef="let a">{{ a.fecha_hora | date: 'dd MMM yyyy' }}<br /><small class="gris">{{ a.fecha_hora | date: 'HH:mm:ss' }} hrs</small></td>
+        </ng-container>
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>UBICACIÓN REGISTRADA</th>
+          <td mat-cell *matCellDef="let a">{{ a.direccion || 'Sin dirección' }}<br /><small class="mono">GPS: {{ a.latitud | number: '1.4-4' }}, {{ a.longitud | number: '1.4-4' }}</small></td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</th>
+          <td mat-cell *matCellDef="let a">
+            <span class="badge" [class]="'badge ' + claseEstado(a.estado)">{{ textoEstado(a.estado) }}</span>
+            @if (a.codigo_despacho) {
+              <br /><small class="gris">Código: {{ a.codigo_despacho }}</small>
+            }
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="fila" [class.seleccionada]="seleccionada?.id_alerta === row.id_alerta" (click)="seleccionar(row)"></tr>
+      </table>
+      @if (dataSource.filteredData.length === 0) {
+        <p class="vacio">No hay alertas para mostrar.</p>
+      }
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Página de alertas"></mat-paginator>
+    </div>
+
+    <div class="tarjeta-ss panel">
+      @if (seleccionada) {
+        <p class="rojo-txt">EVENTO INSPECCIONADO</p>
+        <h3>{{ seleccionada.tipo_alerta === 'SOS' ? 'Alerta SOS Sonora' : 'Alerta Silenciosa' }} (#ALT-{{ seleccionada.id_alerta }})</h3>
+        @if (marcadores.length > 0) {
+          <app-mapa-component [centro]="[marcadores[0].lat, marcadores[0].lng]" [marcadores]="marcadores" [zoom]="15" altura="200px"></app-mapa-component>
+        }
+        <p class="sub">{{ seleccionada.direccion || 'Sin dirección registrada' }}</p>
+        <p class="etiqueta">CONTACTOS NOTIFICADOS ({{ notificados.length }})</p>
+        @for (n of notificados; track n.id_notificacion) {
+          <div class="notificado"><span>{{ n.mensaje }}</span><span class="badge badge-verde">{{ n.estado }}</span></div>
+        } @empty {
+          <p class="sub">Sin notificaciones registradas para este evento.</p>
+        }
+      } @else {
+        <h3 class="centro">Selecciona una alerta para inspeccionar</h3>
+        <p class="sub centro">Haz clic en cualquiera de los registros del listado para auditar la ruta geolocalizada en el mapa, coordenadas exactas y el acuse de recibo de tus contactos de emergencia.</p>
+        <p class="etiqueta">CAPACIDADES DEL MÓDULO DE AUDITORÍA:</p>
+        <ul class="capacidades">
+          <li><mat-icon>check_circle</mat-icon> Visualización de coordenadas y mapa de desplazamiento GPS</li>
+          <li><mat-icon>check_circle</mat-icon> Registro cronológico de respuesta (Serenazgo / PNP)</li>
+          <li><mat-icon>check_circle</mat-icon> Trazabilidad de mensajes SMS / WhatsApp enviados a tu red de auxilio</li>
+          <li><mat-icon>check_circle</mat-icon> Registro de cancelación de la alerta</li>
+        </ul>
+      }
+    </div>
+  </div>
+</section>

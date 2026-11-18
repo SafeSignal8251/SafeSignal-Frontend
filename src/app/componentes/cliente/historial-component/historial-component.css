@@ -1,0 +1,76 @@
+.buscar {
+  flex: 1;
+  min-width: 260px;
+}
+.titulo-tabla {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-azul-oscuro);
+  margin: 0 0 8px;
+}
+.tabla-material {
+  width: 100%;
+}
+.gris {
+  color: var(--ss-gris);
+}
+.mono {
+  font-family: monospace;
+  color: var(--ss-azul);
+  font-size: 12px;
+}
+td small {
+  font-size: 12px;
+}
+.fila {
+  cursor: pointer;
+}
+.fila:hover {
+  background: #f7f9fc;
+}
+.fila.seleccionada {
+  background: #eaf2fb;
+}
+.rojo-txt {
+  color: var(--ss-rojo);
+  font-size: 11px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.centro {
+  text-align: center;
+}
+.etiqueta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin: 14px 0 8px;
+}
+.capacidades {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+.capacidades li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.capacidades mat-icon {
+  color: #1e9a5e;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.notificado {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eef1f5;
+}
