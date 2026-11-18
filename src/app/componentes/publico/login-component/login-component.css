@@ -1,0 +1,79 @@
+.fondo {
+  min-height: calc(100vh - 57px);
+  background: var(--ss-azul-claro);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 16px;
+  box-sizing: border-box;
+}
+.tarjeta {
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  border-top: 4px solid var(--ss-azul-oscuro);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(26, 58, 92, 0.12);
+  padding: 28px 32px 24px;
+  box-sizing: border-box;
+}
+h1 {
+  font-size: 24px;
+}
+.subtitulo {
+  color: var(--ss-gris);
+  font-size: 14px;
+  margin: 6px 0 18px;
+}
+.tipos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 18px;
+}
+.tipos button {
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: var(--ss-gris);
+}
+.tipos button small {
+  font-size: 11px;
+}
+.tipos button.activo {
+  background: #ffffff;
+  color: var(--ss-azul-oscuro);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+.olvido {
+  align-self: flex-end;
+  font-size: 13px;
+  color: var(--ss-azul);
+  text-decoration: none;
+  margin: -8px 0 16px;
+}
+.enviar {
+  align-self: center;
+  min-width: 200px;
+}
+.pie {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ss-gris);
+  margin: 18px 0 0;
+}
+.pie a {
+  color: var(--ss-azul);
+  font-weight: 600;
+  text-decoration: none;
+}
