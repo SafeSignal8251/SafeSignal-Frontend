@@ -1,0 +1,31 @@
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 19px;
+}
+.filtro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.datos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.datos small {
+  color: var(--ss-gris);
+}
+.rojo {
+  color: var(--ss-rojo);
+}
+.pie {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}

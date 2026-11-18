@@ -1,0 +1,45 @@
+<h2 mat-dialog-title class="titulo"><mat-icon>group_add</mat-icon> {{ edicion ? 'Editar contacto de confianza' : 'Agregar contacto de confianza' }}</h2>
+<mat-dialog-content>
+  <p class="sub">Completa los datos para enlazar este contacto a tus alertas SOS.</p>
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+  <form [formGroup]="contactoForm" (ngSubmit)="guardar()">
+    <div class="fila">
+      <div class="campo">
+        <label>Nombres *</label>
+        <input formControlName="nombres" placeholder="Ej. Roberto" />
+        @if (contactoForm.get('nombres')?.touched && contactoForm.get('nombres')?.invalid) { <span class="error-texto">El nombre es obligatorio</span> }
+      </div>
+      <div class="campo">
+        <label>Apellidos</label>
+        <input formControlName="apellidos" placeholder="Ej. Sánchez Díaz" />
+      </div>
+    </div>
+    <div class="fila">
+      <div class="campo">
+        <label>Número de teléfono *</label>
+        <input formControlName="telefono" placeholder="Ej. 987 654 321" />
+        @if (contactoForm.get('telefono')?.touched && contactoForm.get('telefono')?.invalid) { <span class="error-texto">Ingresa un teléfono válido</span> }
+      </div>
+      <div class="campo">
+        <label>Parentesco o relación</label>
+        <input formControlName="parentesco" placeholder="Ej. Familiar directo (Padre, Madre, Hijo/a)" />
+      </div>
+    </div>
+    <div class="campo">
+      <label>Prioridad de notificación (1 = primero en ser avisado)</label>
+      <select formControlName="prioridad">
+        @for (p of [1, 2, 3, 4, 5]; track p) { <option [value]="p">Prioridad {{ p }}</option> }
+      </select>
+    </div>
+    <p class="etiqueta">CANALES DE NOTIFICACIÓN INMEDIATA</p>
+    <label class="canal"><input type="checkbox" formControlName="notificar_sms" /> SMS de emergencia</label>
+    <label class="canal"><input type="checkbox" formControlName="notificar_whatsapp" /> Mensaje por WhatsApp</label>
+
+    <div class="pie">
+      <button type="button" mat-button class="btn-secundario" (click)="cancelar()">Cancelar</button>
+      <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">{{ cargando ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+</mat-dialog-content>

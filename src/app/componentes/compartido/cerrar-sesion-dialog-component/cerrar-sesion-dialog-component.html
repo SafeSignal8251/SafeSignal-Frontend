@@ -1,0 +1,22 @@
+<div class="icono"><mat-icon>logout</mat-icon></div>
+<h2 mat-dialog-title class="titulo">¿Cerrar sesión de SafeSignal?</h2>
+<mat-dialog-content>
+  <p class="texto">
+    Tu sesión actual se finalizará de forma segura en este equipo. No podrás acceder a tus rutas,
+    contactos de emergencia ni funciones privadas sin volver a autenticarte.
+  </p>
+  <div class="usuario">
+    <span class="avatar">{{ nombre.charAt(0).toUpperCase() }}</span>
+    <div>
+      <strong>{{ nombre }}</strong>
+      <small>{{ correo }}</small>
+    </div>
+  </div>
+  <p class="nota">
+    <strong>Nota:</strong> si tienes una alerta SOS activa, seguirá su curso aunque cierres sesión.
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false" class="btn-secundario">Cancelar</button>
+  <button mat-raised-button [mat-dialog-close]="true" class="btn-peligro">Sí, cerrar sesión</button>
+</mat-dialog-actions>

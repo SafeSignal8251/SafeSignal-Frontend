@@ -1,0 +1,37 @@
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--ss-borde);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--ss-azul-oscuro);
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+.sos {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--ss-rojo);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+.sos mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

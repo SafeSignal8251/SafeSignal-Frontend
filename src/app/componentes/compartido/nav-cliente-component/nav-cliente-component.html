@@ -1,0 +1,35 @@
+<div class="nav">
+  <div>
+    <a routerLink="/dashboard" class="marca">SAFESIGNAL</a>
+    <div class="usuario">
+      <span class="avatar">{{ inicial }}</span>
+      <div class="datos">
+        <strong>{{ nombre }}</strong>
+        <small>Lima, PE</small>
+      </div>
+    </div>
+    <nav class="menu">
+      @for (item of items; track item.ruta) {
+        <a [routerLink]="item.ruta" routerLinkActive="activo" class="item">
+          <mat-icon>{{ item.icono }}</mat-icon>
+          <span>{{ item.texto }}</span>
+        </a>
+      }
+    </nav>
+  </div>
+
+  <div class="pie">
+    <a routerLink="/perfil" routerLinkActive="activo" class="item">
+      <mat-icon>person</mat-icon>
+      <span>Mi Perfil</span>
+    </a>
+    <button type="button" class="item salir" (click)="cerrarSesion()">
+      <mat-icon>logout</mat-icon>
+      <span>Cerrar sesión</span>
+    </button>
+    <button mat-raised-button class="btn-peligro emergencia" (click)="emergencia()">
+      <mat-icon>crisis_alert</mat-icon>
+      Reportar Emergencia
+    </button>
+  </div>
+</div>

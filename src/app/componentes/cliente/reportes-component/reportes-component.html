@@ -1,0 +1,128 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Reportes Comunitarios</h1>
+      <p>Red colaborativa de alertas ciudadanas verificadas en tiempo real para Lima Metropolitana.</p>
+    </div>
+  </div>
+
+  <div class="acciones pestanas">
+    <button class="chip" [class.activo]="pestana === 'todos'" (click)="cambiarPestana('todos')">Todos los reportes ({{ todos.length }})</button>
+    <button class="chip" [class.activo]="pestana === 'mios'" (click)="cambiarPestana('mios')">Mis reportes ({{ mios.length }})</button>
+    <a mat-raised-button routerLink="/reportes/nuevo" class="btn-primario">+ Crear Nuevo Reporte</a>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta-ok">{{ mensaje }}</div>
+  }
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  <div class="filtros tarjeta-ss">
+    <input [(ngModel)]="texto" placeholder="Buscar por calle, distrito o descripción..." class="buscar" />
+    <select [(ngModel)]="tipo">
+      <option value="">Tipo: Todos</option>
+      @for (t of tipos; track t) { <option [value]="t">{{ t }}</option> }
+    </select>
+    <select [(ngModel)]="nivel">
+      <option value="">Nivel de riesgo: Todos</option>
+      <option value="ALTO">Alto</option>
+      <option value="MEDIO">Medio</option>
+      <option value="BAJO">Bajo</option>
+    </select>
+    <select [(ngModel)]="distrito">
+      <option value="">Distrito: Todos</option>
+      @for (d of distritos; track d) { <option [value]="d">{{ d }}</option> }
+    </select>
+    <select [(ngModel)]="periodo">
+      <option value="">Período: Todo</option>
+      <option value="1">Últimas 24 horas</option>
+      <option value="7">Últimos 7 días</option>
+      <option value="30">Últimos 30 días</option>
+    </select>
+    <label class="check"><input type="checkbox" [(ngModel)]="soloVerificados" /> Solo verificados</label>
+  </div>
+
+  <div class="grid-2b">
+    <div class="pila">
+      <h3 class="tit">{{ pestana === 'mios' ? 'Mis reportes' : 'Todos los reportes' }} ({{ lista.length }})</h3>
+      @for (i of lista; track i.id_incidente) {
+        <article class="reporte" [class.activo]="seleccionado?.id_incidente === i.id_incidente" (click)="seleccionar(i)">
+          <div class="etiquetas">
+            <span class="badge" [class]="'badge ' + clase(i.nivel_riesgo)">{{ i.nivel_riesgo || 'SIN NIVEL' }}</span>
+            <span class="badge badge-gris">{{ i.estado }}</span>
+            <small>#REP-{{ i.id_incidente }}</small>
+          </div>
+          <h3>{{ i.tipo_incidente }}</h3>
+          <small class="gris">{{ i.direccion || i.distrito }} · {{ hace(i.fecha_hora) }}</small>
+          <p class="descripcion">{{ i.descripcion }}</p>
+          <div class="pie">
+            <a [routerLink]="['/reportes', i.id_incidente]" class="boton-enlace">Ver detalle →</a>
+            @if (i.id_usuario === auth.usuarioId()) {
+              <a [routerLink]="['/reportes/editar', i.id_incidente]" class="boton-enlace">Editar mi reporte</a>
+            }
+          </div>
+        </article>
+      } @empty {
+        <div class="tarjeta-ss vacio">No hay reportes que coincidan con los filtros.</div>
+      }
+
+      <div class="tarjeta-ss">
+        <div class="cab">
+          <h3>MIS ZONAS SUSCRITAS</h3>
+          <a routerLink="/zonas/suscribir" class="boton-enlace">+ Suscribir nueva zona</a>
+        </div>
+        <p class="sub">Alertas automáticas en tiempo real enviadas a tu móvil y correo.</p>
+        <div class="acciones">
+          @for (s of suscripciones; track s.id_suscripcion) {
+            <span class="chip-zona">{{ s.etiqueta || 'Zona ' + s.id_zona }} <button (click)="quitarSuscripcion(s)" aria-label="Quitar">×</button></span>
+          } @empty {
+            <span class="sub">Aún no estás suscrito a ninguna zona.</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta-ss detalle">
+      @if (seleccionado) {
+        <div class="cab">
+          <small>#REP-{{ seleccionado.id_incidente }}</small>
+          <small>{{ seleccionado.fecha_hora }}</small>
+        </div>
+        @if (seleccionado.latitud != null) {
+          <app-mapa-component
+            [centro]="[seleccionado.latitud, seleccionado.longitud]"
+            [circulos]="[{ lat: seleccionado.latitud, lng: seleccionado.longitud, radio: 250, color: colorRiesgo(seleccionado.nivel_riesgo) }]"
+            [marcadores]="[{ lat: seleccionado.latitud, lng: seleccionado.longitud, color: colorRiesgo(seleccionado.nivel_riesgo), etiqueta: 'Punto del incidente' }]"
+            [zoom]="15"
+            altura="170px"
+          ></app-mapa-component>
+        }
+        <span class="badge" [class]="'badge ' + clase(seleccionado.nivel_riesgo)">{{ seleccionado.nivel_riesgo }}</span>
+        <h3 class="titulo-detalle">{{ seleccionado.tipo_incidente }}</h3>
+        <small class="gris">{{ seleccionado.direccion }} · {{ seleccionado.distrito }}</small>
+        <p class="etiqueta">DESCRIPCIÓN DEL SUCESO</p>
+        <p class="texto-detalle">{{ seleccionado.descripcion }}</p>
+        <div class="votos">
+          <button mat-raised-button class="btn-verde" (click)="votar('CONFIRMADO')">Confirmar y Validar ({{ votosConfirmados }})</button>
+          <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Falsa Alarma ({{ votosFalsos }})</button>
+        </div>
+        <p class="etiqueta">ACTUALIZACIONES EN VIVO <span class="badge badge-azul">{{ comentarios.length }} APORTES</span></p>
+        @for (c of comentarios; track c.id_comentario) {
+          <div class="comentario">
+            <small class="gris">Vecino #{{ c.id_usuario }} · {{ hace(c.fecha_hora) }}</small>
+            <p>{{ c.texto }}</p>
+          </div>
+        }
+        <textarea [(ngModel)]="nuevoComentario" rows="2" placeholder="Escribe una actualización o aporte verificado..." class="area"></textarea>
+        <div class="acciones fin">
+          <button mat-stroked-button class="btn-secundario no-imprimir" (click)="descargarPdf()">Descargar PDF</button>
+          <button mat-raised-button class="btn-primario" (click)="comentar()">Publicar comentario</button>
+        </div>
+      } @else {
+        <p class="vacio">Selecciona un reporte para ver su detalle.</p>
+      }
+    </div>
+  </div>
+</section>

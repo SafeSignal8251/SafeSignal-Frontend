@@ -1,0 +1,30 @@
+<div class="nav">
+  <div>
+    <div class="marca">
+      <strong>SafeSignal</strong>
+      <small>ADMIN CONSOLE</small>
+    </div>
+    <nav class="menu">
+      @for (item of items; track item.ruta) {
+        <a [routerLink]="item.ruta" routerLinkActive="activo" class="item">
+          <mat-icon>{{ item.icono }}</mat-icon>
+          <span>{{ item.texto }}</span>
+        </a>
+      }
+    </nav>
+  </div>
+
+  <div class="pie">
+    <div class="usuario">
+      <span class="avatar">{{ inicial }}</span>
+      <div class="datos">
+        <strong>{{ nombre }}</strong>
+        <small>Administrador</small>
+      </div>
+    </div>
+    <button type="button" class="item salir" (click)="cerrarSesion()">
+      <mat-icon>logout</mat-icon>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+</div>

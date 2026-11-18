@@ -1,0 +1,38 @@
+<div class="icono" [class.peligro]="datos.peligro">
+  <mat-icon>{{ datos.icono ?? (datos.peligro ? 'warning' : 'help') }}</mat-icon>
+</div>
+<h2 mat-dialog-title class="titulo">{{ datos.titulo }}</h2>
+<mat-dialog-content>
+  <p class="mensaje">{{ datos.mensaje }}</p>
+
+  @if (datos.detalle) {
+    <div class="detalle">{{ datos.detalle }}</div>
+  }
+  @if (datos.advertencia) {
+    <div class="advertencia">{{ datos.advertencia }}</div>
+  }
+
+  @if (datos.opciones && datos.opciones.length > 0) {
+    <p class="subtitulo">{{ datos.tituloOpciones ?? 'Motivo' }}</p>
+    @for (o of datos.opciones; track o) {
+      <label class="opcion">
+        <input type="radio" name="motivo" [value]="o" [(ngModel)]="motivo" />
+        <span>{{ o }}</span>
+      </label>
+    }
+  }
+
+  @if (datos.pedirTexto) {
+    <p class="subtitulo">{{ datos.etiquetaTexto ?? 'Comentario' }}</p>
+    <textarea rows="3" [(ngModel)]="texto" class="texto"></textarea>
+    @if (intento && datos.textoObligatorio && texto.trim() === '') {
+      <p class="error">Este campo es obligatorio.</p>
+    }
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button class="btn-secundario" (click)="cancelar()">{{ datos.textoCancelar ?? 'Cancelar' }}</button>
+  <button mat-raised-button [class]="datos.peligro ? 'btn-peligro' : 'btn-primario'" (click)="confirmar()">
+    {{ datos.textoConfirmar ?? 'Confirmar' }}
+  </button>
+</mat-dialog-actions>
