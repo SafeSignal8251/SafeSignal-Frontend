@@ -1,0 +1,94 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>{{ edicion ? 'Edición de Reporte Comunitario' : 'Reportar Incidente Ciudadano' }}</h1>
+      <p>
+        {{ edicion
+          ? 'Solo puedes modificar la descripción de tu propio reporte.'
+          : 'Registra y alerta a tu comunidad y cuadrante de Serenazgo en tiempo real con geolocalización precisa y evidencia directa.' }}
+      </p>
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  <form [formGroup]="incidenteForm" (ngSubmit)="onSubmit()" class="grid-2">
+    <div class="tarjeta-ss">
+      <h3><span class="num">1</span> Tipo y Categoría del Incidente <small class="oblig">Obligatorio *</small></h3>
+      <div class="tipos">
+        @for (t of tipos; track t.valor) {
+          <button type="button" class="tipo" [class.activo]="incidenteForm.get('tipo_incidente')?.value === t.valor" [disabled]="edicion" (click)="elegir('tipo_incidente', t.valor)">
+            <mat-icon>{{ t.icono }}</mat-icon>
+            <span><strong>{{ t.valor }}</strong><small>{{ t.detalle }}</small></span>
+          </button>
+        }
+      </div>
+      @if (incidenteForm.get('tipo_incidente')?.touched && incidenteForm.get('tipo_incidente')?.invalid) {
+        <p class="error-texto">Selecciona un tipo de incidente.</p>
+      }
+
+      <h3><span class="num">2</span> Nivel de Gravedad / Riesgo</h3>
+      <div class="niveles">
+        @for (n of niveles; track n.valor) {
+          <button type="button" class="nivel" [class]="'nivel n-' + n.valor + (incidenteForm.get('nivel_riesgo')?.value === n.valor ? ' activo' : '')" [disabled]="edicion" (click)="elegir('nivel_riesgo', n.valor)">
+            <strong>{{ n.titulo }}</strong>
+            <span>{{ n.detalle }}</span>
+          </button>
+        }
+      </div>
+
+      <h3><span class="num">3</span> Ubicación del Suceso <button type="button" class="chip" [disabled]="edicion" (click)="usarGps()">Usar mi GPS actual</button></h3>
+      <div class="fila">
+        <div class="campo"><label>Dirección o referencia</label><input formControlName="direccion" placeholder="Ej. Av. Javier Prado Este con Calle Las Begonias" /></div>
+        <div class="campo">
+          <label>Distrito</label>
+          <select formControlName="distrito">
+            <option value="" disabled>Selecciona</option>
+            @for (d of distritos; track d) { <option [value]="d">{{ d }}</option> }
+          </select>
+        </div>
+      </div>
+      <p class="coord">
+        <mat-icon>my_location</mat-icon>
+        @if (incidenteForm.getRawValue().latitud !== null) {
+          Coordenadas: {{ incidenteForm.getRawValue().latitud }}, {{ incidenteForm.getRawValue().longitud }}
+          @if (zonaDetectada) { (Zona: {{ zonaDetectada.nombre }}) }
+        } @else {
+          Usa tu GPS o haz clic en el mapa para marcar el punto del incidente.
+        }
+      </p>
+
+      <h3><span class="num">4</span> Descripción de los Hechos <small class="contador">{{ caracteres }} / 500 caracteres</small></h3>
+      <div class="campo">
+        <textarea formControlName="descripcion" rows="5" maxlength="500" placeholder="Describe qué ocurrió, cuántas personas participaron y hacia dónde se dirigieron."></textarea>
+        @if (incidenteForm.get('descripcion')?.touched && incidenteForm.get('descripcion')?.hasError('required')) {
+          <span class="error-texto">La descripción es obligatoria.</span>
+        }
+      </div>
+
+      <div class="pie">
+        <a routerLink="/reportes" class="cancelar">Cancelar</a>
+        <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">
+          {{ cargando ? 'Guardando...' : edicion ? 'Guardar mensaje editado' : 'Publicar Reporte y Alertar Comunidad' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h3>Validación en Mapa <span class="badge badge-azul">Radio 500m</span></h3>
+      <app-mapa-component
+        [centro]="centro"
+        [marcadores]="marcadores"
+        [circulos]="marcadores.length ? [{ lat: marcadores[0].lat, lng: marcadores[0].lng, radio: 500, color: '#2e75b6' }] : []"
+        [seleccionable]="!edicion"
+        (puntoElegido)="elegirEnMapa($event)"
+        altura="320px"
+      ></app-mapa-component>
+      @if (zonaDetectada) {
+        <p class="sub">Zona asociada: <strong>{{ zonaDetectada.nombre }}</strong> (riesgo {{ zonaDetectada.nivel_riesgo }})</p>
+      }
+    </div>
+  </form>
+</section>
