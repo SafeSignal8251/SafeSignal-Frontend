@@ -1,0 +1,56 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Editar perfil</h1>
+      <p>Gestiona tu identidad digital y contactos de emergencia.</p>
+    </div>
+  </div>
+
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()" class="tarjeta-ss">
+    <p class="seccion">INFORMACIÓN PERSONAL</p>
+    <div class="fila">
+      <div class="campo"><label>Nombres</label><input formControlName="nombres" />
+        @if (perfilForm.get('nombres')?.touched && perfilForm.get('nombres')?.invalid) { <span class="error-texto">Obligatorio</span> }
+      </div>
+      <div class="campo"><label>Apellidos</label><input formControlName="apellidos" />
+        @if (perfilForm.get('apellidos')?.touched && perfilForm.get('apellidos')?.invalid) { <span class="error-texto">Obligatorio</span> }
+      </div>
+    </div>
+    <div class="fila">
+      <div class="campo"><label>Correo (no editable)</label><input formControlName="correo" /></div>
+      <div class="campo"><label>Teléfono</label><input formControlName="telefono" placeholder="+51 987 654 321" />
+        @if (perfilForm.get('telefono')?.invalid) { <span class="error-texto">Teléfono no válido</span> }
+      </div>
+    </div>
+
+    <p class="seccion">UBICACIÓN FRECUENTE</p>
+    <div class="fila">
+      <div class="campo">
+        <label>Distrito</label>
+        <select formControlName="distrito">
+          <option value="">Selecciona</option>
+          @for (d of distritos; track d) { <option [value]="d">{{ d }}</option> }
+        </select>
+      </div>
+      <div class="campo"><label>Dirección habitual</label><input formControlName="direccion" placeholder="Av. Principal 123" /></div>
+    </div>
+
+    <p class="seccion">DATOS DE EMERGENCIA</p>
+    <div class="emergencia">
+      <p>En caso de emergencia, esta información será enviada al cuadrante más cercano.</p>
+      <div class="fila">
+        <div class="campo"><label>Nombre de contacto</label><input formControlName="contacto_nombre" placeholder="Nombre completo" /></div>
+        <div class="campo"><label>Teléfono de contacto</label><input formControlName="contacto_telefono" placeholder="993 456 789" />
+          @if (perfilForm.get('contacto_telefono')?.invalid) { <span class="error-texto">Teléfono no válido</span> }
+        </div>
+      </div>
+    </div>
+
+    <div class="pie">
+      <a routerLink="/perfil" mat-stroked-button class="btn-secundario">Cancelar</a>
+      <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">{{ cargando ? 'Guardando...' : 'Guardar cambios' }}</button>
+    </div>
+  </form>
+</section>

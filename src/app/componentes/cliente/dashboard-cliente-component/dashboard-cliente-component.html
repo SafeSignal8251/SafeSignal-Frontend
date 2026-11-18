@@ -1,0 +1,112 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Estás activo en la seguridad de tu zona</p>
+    </div>
+    <div class="acciones">
+      <a routerLink="/notificaciones" class="campana" aria-label="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+        @if (noLeidas > 0) {
+          <span class="contador">{{ noLeidas }}</span>
+        }
+      </a>
+      <button mat-raised-button class="btn-peligro" (click)="alternarMonitoreo()">
+        {{ seguimientoActivo ? 'Finalizar Monitoreo' : 'Activar Monitoreo' }}
+      </button>
+    </div>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta-ok">{{ mensaje }}</div>
+  }
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  @if (alertaActiva) {
+    <div class="banner sos">
+      <div class="banner-texto">
+        <strong>
+          <mat-icon>emergency</mat-icon>
+          {{ alertaActiva.tipo_alerta === 'SILENCIOSA' ? '¡ALARMA SILENCIOSA ACTIVA!' : '¡ALERTA SOS EN CURSO!' }}
+          <span class="etiqueta">EN PROCESO</span>
+        </strong>
+        <p>
+          <b>Ubicación:</b> {{ alertaActiva.direccion || 'Ubicación GPS registrada' }} &nbsp;·&nbsp;
+          <b>Enviada:</b> {{ alertaActiva.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} &nbsp;·&nbsp;
+          <b>Contactos notificados:</b> {{ accesos.contactos.length }}
+        </p>
+      </div>
+      <button mat-raised-button class="btn-primario" (click)="cancelarAlerta()">Procederé a cancelar alerta</button>
+    </div>
+  } @else {
+    <div class="banner aviso">
+      <div class="banner-texto">
+        <strong><mat-icon>shield</mat-icon> Acciones rápidas de seguridad</strong>
+        <p>Si te sientes en peligro, avisa de inmediato a tus contactos de confianza.</p>
+      </div>
+      <div class="acciones">
+        <button mat-raised-button class="btn-peligro" (click)="activarSos()">Activar SOS</button>
+        <button mat-stroked-button class="btn-secundario" (click)="alertaSilenciosa()">Alarma silenciosa</button>
+        <button mat-stroked-button class="btn-secundario" (click)="estoyBien()">Estoy bien</button>
+        <button mat-stroked-button class="btn-secundario" (click)="compartirUbicacion()">Compartir ubicación</button>
+      </div>
+    </div>
+  }
+
+  <div class="grid-2">
+    <div class="mapa-caja">
+      <app-mapa-component [centro]="centro" [circulos]="circulos" [marcadores]="marcadores" altura="360px"></app-mapa-component>
+      <div class="leyenda">
+        <span><i class="p verde"></i> Seguro</span>
+        <span><i class="p amarillo"></i> Advertencia</span>
+        <span><i class="p rojo"></i> Peligro</span>
+      </div>
+    </div>
+
+    <div class="pila">
+      <div class="tarjeta-ss">
+        <h3>{{ zonasAltas > 0 ? 'Zonas de riesgo activas' : 'Zona Segura' }}</h3>
+        <p class="sub">
+          {{ zonasAltas > 0
+            ? 'Hay ' + zonasAltas + ' zonas de riesgo alto en Lima. Revisa el mapa de riesgo antes de desplazarte.'
+            : 'No hay zonas de riesgo alto activas en este momento.' }}
+        </p>
+        <span class="estado" [class.malo]="zonasAltas > 0">
+          <i class="p" [class.verde]="zonasAltas === 0" [class.rojo]="zonasAltas > 0"></i>
+          {{ zonasAltas > 0 ? 'Precaución recomendada' : 'Zona actualmente segura' }}
+        </span>
+      </div>
+      <div class="tarjeta-ss">
+        <h3>Alertas Prioritarias</h3>
+        @for (i of prioritarias; track i.id_incidente) {
+          <div class="prioritaria">
+            <i class="p" [class.rojo]="i.nivel_riesgo === 'ALTO'" [class.amarillo]="i.nivel_riesgo !== 'ALTO'"></i>
+            <div>
+              <strong>{{ i.tipo_incidente }}</strong>
+              <small>{{ i.direccion || i.distrito }} · {{ hace(i.fecha_hora) }}</small>
+            </div>
+          </div>
+        } @empty {
+          <p class="sub">Sin incidentes recientes.</p>
+        }
+        <a routerLink="/reportes" class="boton-enlace">Ver todos los incidentes →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><small>Incidentes hoy</small><strong>{{ incidentesHoy }}</strong><span>{{ incidentes.length }} registrados en total</span></div>
+    <div class="kpi" [class.rojo]="accesos.alertas_activas.length > 0"><small>Alertas activas</small><strong>{{ accesos.alertas_activas.length }}</strong><span>tuyas en este momento</span></div>
+    <div class="kpi verde"><small>Zonas vigiladas</small><strong>{{ zonas.length }}</strong><span>{{ zonasAltas }} con riesgo alto</span></div>
+    <div class="kpi"><small>Estado de monitoreo</small><strong class="chico">{{ seguimientoActivo ? 'Activo' : 'Inactivo' }}</strong><span>{{ seguimientoActivo ? seguimientoActivo.destino : 'Actívalo cuando lo necesites' }}</span></div>
+  </div>
+
+  <div class="accesos">
+    <a routerLink="/contactos" class="acceso"><mat-icon>group_add</mat-icon><div><strong>Contactos</strong><small>{{ accesos.contactos.length }} configurados</small></div></a>
+    <a routerLink="/dispositivos" class="acceso"><mat-icon>sensors</mat-icon><div><strong>Dispositivos</strong><small>{{ accesos.dispositivos.length }} configurados</small></div></a>
+    <a routerLink="/mapa-riesgo" class="acceso"><mat-icon>route</mat-icon><div><strong>Seguimiento</strong><small>{{ seguimientoActivo ? 'Activo' : 'Planifica una ruta' }}</small></div></a>
+    <a routerLink="/reportes/nuevo" class="acceso"><mat-icon>report</mat-icon><div><strong>Reportar</strong><small>Nuevo incidente</small></div></a>
+  </div>
+</section>

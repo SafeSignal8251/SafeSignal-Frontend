@@ -1,0 +1,89 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Centro de Configuración</h1>
+      <p>Personaliza y gestiona las funciones de seguridad, monitoreo y dispositivos de tu cuenta SafeSignal.</p>
+    </div>
+  </div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="pila">
+    <div class="tarjeta-ss">
+      <h2>Personalizar mensaje de emergencia SOS</h2>
+      <p class="sub">Este mensaje se enviará instantáneamente por SMS y notificación push a tus contactos de confianza al pulsar SOS.</p>
+      <div class="grid-sos">
+        <div>
+          <label class="etq">REDACCIÓN DEL MENSAJE DE DIFUSIÓN</label>
+          <textarea [(ngModel)]="mensajeSos" [maxlength]="maxMensaje" rows="4" class="area"></textarea>
+          <small class="cont">{{ mensajeSos.length }} / {{ maxMensaje }} caracteres</small><br />
+          <button mat-raised-button class="btn-primario" (click)="guardarMensajeSos()">Guardar mensaje SOS</button>
+        </div>
+        <div class="previa">
+          <small>[VISTA PREVIA SMS]</small>
+          <p><b class="rojo">¡ALERTA DE EMERGENCIA SAFESIGNAL!</b> {{ mensajeSos || '(escribe tu mensaje)' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h2>Seguimiento y Monitoreo de Trayectos</h2>
+      <p class="sub">Supervisión autónoma y prevención activa frente a desvíos o retrasos.</p>
+      <div class="dos">
+        <div class="caja">
+          <h3>Configurar tiempo estimado de monitoreo</h3>
+          <p class="sub">Define la duración estimada de tus trayectos. El sistema detectará demoras inusuales si superas este tiempo.</p>
+          <div class="tiempo">
+            <div class="campo"><label>HORAS</label><input type="number" min="0" max="24" [(ngModel)]="horas" /></div>
+            <div class="campo"><label>MINUTOS</label><input type="number" min="0" max="59" [(ngModel)]="minutos" /></div>
+          </div>
+          <div class="acciones"><small class="azul">Tiempo configurado: {{ horas * 60 + minutos }} min</small>
+            <button mat-raised-button class="btn-primario" (click)="guardarTiempo()">Guardar tiempo</button></div>
+        </div>
+        <div class="caja">
+          <h3>Seguimiento al salir de zona segura <span class="badge badge-verde">{{ seguimientoAutomatico ? 'ESTADO: ACTIVO' : 'INACTIVO' }}</span></h3>
+          <p class="sub">El monitoreo asistido por GPS se iniciará de forma autónoma cada vez que salgas del radio de tus zonas seguras.</p>
+          <label class="fila-switch">Activar seguimiento automático <input type="checkbox" class="interruptor" [(ngModel)]="seguimientoAutomatico" (change)="guardarPreferencias()" /></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h2>Dispositivos IoT y Sensores Inteligentes</h2>
+      <p class="sub">Gestión de periféricos conectados, telemetría y reglas de detección de anomalías.</p>
+      <div class="dos">
+        <div class="caja">
+          <h3>Sensores inteligentes de periféricos</h3>
+          @for (d of dispositivos; track d.id_dispositivo) {
+            <label class="fila-switch sensor">
+              <span><strong>{{ d.nombre }}</strong><small>{{ d.tipo_dispositivo }} · S/N {{ d.codigo_dispositivo }}</small></span>
+              <input type="checkbox" class="interruptor" [(ngModel)]="habilitados[d.id_dispositivo]" />
+            </label>
+          } @empty {
+            <p class="sub">No tienes dispositivos vinculados. <a routerLink="/dispositivos/vincular" class="boton-enlace">Vincular uno</a></p>
+          }
+          <button mat-raised-button class="btn-primario ancho" (click)="guardarSensores()" [disabled]="dispositivos.length === 0">Guardar configuración de sensores</button>
+        </div>
+        <div class="caja">
+          <h3>Detección de tipos de anomalías con IA</h3>
+          <p class="sub">Selecciona qué patrones atípicos activarán advertencias automáticas al centro de comando.</p>
+          @for (a of anomalias; track a.clave) {
+            <label class="anomalia"><input type="checkbox" [(ngModel)]="a.activa" /><span><strong>{{ a.titulo }}</strong><small>{{ a.detalle }}</small></span></label>
+          }
+          <button mat-raised-button class="btn-primario ancho" (click)="guardarAnomalias()">Guardar anomalías</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta-ss">
+      <label class="fila-switch grande"><span><h2>Modo Ahorro de Batería Inteligente</h2><small>Optimiza el consumo reduciendo el refresco de mapas y animaciones no esenciales, manteniendo activas las señales SOS y GPS en segundo plano.</small></span>
+        <input type="checkbox" class="interruptor" [(ngModel)]="ahorroBateria" (change)="guardarPreferencias()" /></label>
+    </div>
+
+    <div class="tarjeta-ss">
+      <label class="fila-switch grande"><span><h2>Alarma silenciosa</h2><small>Al momento de activar una alerta SOS, el sonido de alerta será silenciado para no llamar la atención.</small></span>
+        <input type="checkbox" class="interruptor" [(ngModel)]="alarmaSilenciosa" (change)="guardarPreferencias()" /></label>
+    </div>
+  </div>
+</section>

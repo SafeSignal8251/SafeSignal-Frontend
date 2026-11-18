@@ -1,0 +1,40 @@
+form {
+  max-width: 820px;
+}
+.seccion {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ss-gris);
+  margin: 18px 0 10px;
+}
+.seccion:first-child {
+  margin-top: 0;
+}
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.emergencia {
+  background: #fffaf0;
+  border: 1px solid #f1dca0;
+  border-radius: 10px;
+  padding: 12px;
+}
+.emergencia p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #8a6100;
+}
+.pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+@media (max-width: 700px) {
+  .fila {
+    grid-template-columns: 1fr;
+  }
+}

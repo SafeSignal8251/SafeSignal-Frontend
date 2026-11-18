@@ -1,0 +1,140 @@
+.banner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #e8f1fb;
+  border: 1px solid #cfe0f3;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.banner mat-icon {
+  color: var(--ss-azul);
+}
+.banner .texto {
+  flex: 1;
+  min-width: 240px;
+}
+.banner p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--ss-gris);
+}
+.cupos {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.etiqueta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.etiqueta span {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.contacto {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e3eefa;
+  color: var(--ss-azul-oscuro);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.datos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nombre {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.datos small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ss-gris);
+}
+.datos small mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+}
+.datos small b {
+  color: #1e7b4b;
+}
+.datos small b.naranja {
+  color: #d97706;
+}
+.icono {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--ss-gris);
+}
+.icono:hover {
+  color: var(--ss-azul-oscuro);
+}
+.nuevo {
+  border: 2px dashed #c9d3df;
+  background: transparent;
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--ss-gris);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+}
+.nuevo:hover:not([disabled]) {
+  border-color: var(--ss-azul);
+  color: var(--ss-azul);
+}
+.nuevo[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.chico {
+  vertical-align: middle;
+  color: var(--ss-azul);
+}
+.sms {
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 12px;
+}
+.sms b {
+  color: var(--ss-rojo);
+  font-family: monospace;
+}
+.sms p {
+  margin: 6px 0 0;
+  font-family: monospace;
+  font-size: 13px;
+}

@@ -1,0 +1,121 @@
+.grid-sos {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+}
+.etq {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin-bottom: 6px;
+}
+.area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Roboto, sans-serif;
+}
+.cont {
+  color: var(--ss-gris);
+  display: inline-block;
+  margin: 6px 0 12px;
+}
+.previa {
+  background: var(--ss-fondo);
+  border-radius: 10px;
+  padding: 14px;
+}
+.previa p {
+  font-size: 14px;
+}
+.rojo {
+  color: var(--ss-rojo);
+}
+.dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.caja {
+  background: #f8fafc;
+  border: 1px solid var(--ss-borde);
+  border-radius: 12px;
+  padding: 16px;
+}
+.caja h3 {
+  font-size: 15px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tiempo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.azul {
+  color: var(--ss-azul);
+  font-weight: 600;
+}
+.acciones {
+  justify-content: space-between;
+}
+.fila-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+}
+.fila-switch.sensor {
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.fila-switch span {
+  display: flex;
+  flex-direction: column;
+}
+.fila-switch small {
+  color: var(--ss-gris);
+  font-size: 12px;
+}
+.fila-switch.grande h2 {
+  font-size: 17px;
+}
+.anomalia {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+.anomalia span {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.anomalia small {
+  color: var(--ss-gris);
+  font-size: 12px;
+}
+.ancho {
+  width: 100%;
+  margin-top: 6px;
+}
+@media (max-width: 900px) {
+  .grid-sos, .dos {
+    grid-template-columns: 1fr;
+  }
+}

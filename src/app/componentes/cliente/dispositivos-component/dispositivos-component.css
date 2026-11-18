@@ -1,0 +1,80 @@
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+.dispositivo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.icono {
+  background: #e3eefa;
+  color: var(--ss-azul);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dispositivo h3 {
+  font-size: 19px;
+}
+.bateria-cab {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.barra {
+  height: 7px;
+  background: #eef1f5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.relleno {
+  height: 100%;
+  border-radius: 999px;
+}
+.gris {
+  color: var(--ss-gris);
+  margin: 6px 0 10px;
+}
+.btn-peligro-borde {
+  --mat-button-outlined-label-text-color: #c0392b;
+  --mat-button-outlined-outline-color: #f3c1bc;
+  --mat-button-outlined-container-shape: 8px;
+  height: 44px;
+}
+.edicion {
+  margin-top: 6px;
+}
+.nuevo {
+  border: 2px dashed #c9d3df;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 24px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ss-gris);
+  min-height: 200px;
+}
+.nuevo:hover {
+  border-color: var(--ss-azul);
+}
+.nuevo mat-icon {
+  font-size: 34px;
+  width: 34px;
+  height: 34px;
+}

@@ -1,0 +1,85 @@
+<section class="pagina">
+  <div class="barra">
+    <a routerLink="/reportes" class="volver"><mat-icon>chevron_left</mat-icon> Volver a reportes</a>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta-ok">{{ mensaje }}</div>
+  }
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  @if (incidente) {
+    <div class="grid-2">
+      <div class="pila">
+        <div class="tarjeta-ss">
+          <div class="etiquetas">
+            <span class="badge" [class]="'badge ' + clase(incidente.nivel_riesgo)">{{ incidente.nivel_riesgo }}</span>
+            <span class="badge badge-gris">#REP-{{ incidente.id_incidente }}</span>
+            <span class="badge badge-azul">{{ incidente.estado }}</span>
+            <small class="gris derecha">{{ incidente.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} ({{ hace(incidente.fecha_hora) }})</small>
+          </div>
+          <h1 class="titulo-reporte">{{ incidente.tipo_incidente }}</h1>
+          <p class="ubicacion"><mat-icon>location_on</mat-icon> {{ incidente.direccion }} · {{ incidente.distrito }}</p>
+          <p class="etiqueta">DESCRIPCIÓN DEL SUCESO</p>
+          <p class="texto">{{ incidente.descripcion }}</p>
+
+          <div class="validacion">
+            <div><strong class="grande">{{ votosConfirmados }}</strong> ciudadanos validaron este incidente <span class="badge badge-verde">{{ porcentajeVeracidad }}% veracidad</span></div>
+            <div class="acciones">
+              <button mat-raised-button class="btn-primario" (click)="votar('CONFIRMADO')">Validar reporte (+1)</button>
+              <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Denunciar inconsistencia ({{ votosFalsos }})</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tarjeta-ss">
+          <h3>Feed de Testigos &amp; Actualizaciones <span class="badge badge-azul">{{ comentarios.length }} aportes</span></h3>
+          <textarea [(ngModel)]="nuevoComentario" rows="2" placeholder="Añadir testimonio o información adicional sobre este hecho..." class="area"></textarea>
+          <div class="acciones fin"><button mat-raised-button class="btn-primario" (click)="comentar()">Comentar</button></div>
+          @for (c of comentarios; track c.id_comentario) {
+            <div class="comentario">
+              <div class="cab"><strong>Vecino #{{ c.id_usuario }}</strong><small class="gris">{{ hace(c.fecha_hora) }}</small></div>
+              <p>{{ c.texto }}</p>
+            </div>
+          } @empty {
+            <p class="vacio">Aún no hay aportes. ¡Sé el primero en comentar!</p>
+          }
+        </div>
+      </div>
+
+      <div class="pila">
+        <div class="tarjeta-ss">
+          <h3>GEORREFERENCIACIÓN &amp; RADAR @if (zona) { <span class="badge badge-rojo">Zona: {{ zona.radio_metros }} m</span> }</h3>
+          @if (incidente.latitud != null) {
+            <app-mapa-component
+              [centro]="[incidente.latitud, incidente.longitud]"
+              [circulos]="[{ lat: incidente.latitud, lng: incidente.longitud, radio: 300, color: colorRiesgo(incidente.nivel_riesgo) }]"
+              [marcadores]="[{ lat: incidente.latitud, lng: incidente.longitud, color: colorRiesgo(incidente.nivel_riesgo), etiqueta: 'Punto del incidente' }]"
+              [zoom]="15"
+              altura="230px"
+            ></app-mapa-component>
+          }
+        </div>
+        @if (zona) {
+          <div class="tarjeta-ss">
+            <h3>DIAGNÓSTICO DEL SECTOR</h3>
+            <div class="diagnostico" [style.border-color]="colorRiesgo(zona.nivel_riesgo)">
+              <small>Nivel de peligrosidad ({{ zona.nombre }})</small>
+              <strong [style.color]="colorRiesgo(zona.nivel_riesgo)">{{ zona.puntaje_riesgo }} <small>/10</small></strong>
+              <span class="badge" [class]="'badge ' + clase(zona.nivel_riesgo)">Riesgo {{ zona.nivel_riesgo }}</span>
+            </div>
+          </div>
+        }
+        <div class="tarjeta-ss recomendacion">
+          <h3>RECOMENDACIÓN PREVENTIVA ACTIVA</h3>
+          <p>Evita cruzar a pie por este punto. Revisa el mapa de riesgo para elegir un corredor seguro con patrullaje y cámaras.</p>
+          <a mat-raised-button routerLink="/mapa-riesgo" class="btn-primario">Trazar ruta alternativa segura</a>
+        </div>
+      </div>
+    </div>
+  } @else if (!error) {
+    <p class="vacio">Cargando reporte...</p>
+  }
+</section>

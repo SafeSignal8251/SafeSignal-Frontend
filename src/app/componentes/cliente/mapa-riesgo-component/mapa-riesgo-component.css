@@ -1,0 +1,108 @@
+.advertencia {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fffaf0;
+  border: 1px solid #f1dca0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.advertencia mat-icon {
+  color: #d97706;
+}
+.advertencia .texto {
+  flex: 1;
+  min-width: 240px;
+}
+.advertencia strong {
+  color: #8a6100;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+}
+.advertencia p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #5a4a2a;
+}
+.mapa-caja {
+  position: relative;
+}
+.leyenda {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: rgba(26, 58, 92, 0.92);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  gap: 12px;
+  z-index: 500;
+}
+.p {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.p.verde { background: #1e9a5e; }
+.p.amarillo { background: #e6a817; }
+.p.rojo { background: #c0392b; }
+.ruta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eef1f5;
+  flex-wrap: wrap;
+}
+.ruta div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+}
+.ruta small, .incidente small {
+  color: var(--ss-gris);
+  font-size: 12px;
+}
+.chico {
+  vertical-align: middle;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: var(--ss-azul);
+}
+.con-boton {
+  display: flex;
+  gap: 8px;
+}
+.con-boton input {
+  flex: 1;
+}
+.coord {
+  color: var(--ss-gris);
+  font-size: 11px;
+}
+.ancho {
+  width: 100%;
+}
+.incidente {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef1f5;
+}
+.incidente div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+.incidente .p {
+  margin-top: 6px;
+}

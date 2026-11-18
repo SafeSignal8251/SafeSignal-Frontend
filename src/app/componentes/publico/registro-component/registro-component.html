@@ -1,0 +1,110 @@
+<app-publico-header-component></app-publico-header-component>
+
+<main class="fondo">
+  <section class="tarjeta">
+    <h1>Crear cuenta</h1>
+    <p class="subtitulo">Únete a la red de seguridad ciudadana más confiable de Lima.</p>
+
+    <div class="tipo">
+      <strong>Cliente</strong>
+      <small>Ciudadano</small>
+    </div>
+
+    @if (error) {
+      <div class="alerta-error">{{ error }}</div>
+    }
+
+    <form [formGroup]="registroForm" class="formulario" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombres y Apellidos</mat-label>
+        <input matInput formControlName="nombreCompleto" placeholder="Ej. Juan Pérez Ramos" />
+        @if (registroForm.get('nombreCompleto')?.hasError('required')) {
+          <mat-error>Ingresa tus nombres y apellidos</mat-error>
+        } @else if (registroForm.get('nombreCompleto')?.hasError('pattern')) {
+          <mat-error>Escribe al menos un nombre y un apellido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico institucional o personal</mat-label>
+        <input matInput type="email" formControlName="correo" placeholder="usuario@ejemplo.com" />
+        @if (registroForm.get('correo')?.hasError('required')) {
+          <mat-error>El correo es obligatorio</mat-error>
+        } @else if (registroForm.get('correo')?.hasError('email')) {
+          <mat-error>Ingresa un correo válido</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="fila">
+        <mat-form-field appearance="outline">
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni" placeholder="Ej. 74581290" maxlength="8" />
+          @if (registroForm.get('dni')?.hasError('required')) {
+            <mat-error>El DNI es obligatorio</mat-error>
+          } @else if (registroForm.get('dni')?.hasError('pattern')) {
+            <mat-error>Debe tener 8 dígitos</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono móvil</mat-label>
+          <input matInput formControlName="telefono" placeholder="Ej. 987 654 321" />
+          @if (registroForm.get('telefono')?.hasError('pattern')) {
+            <mat-error>Teléfono no válido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Distrito de residencia</mat-label>
+        <select matNativeControl formControlName="distrito">
+          <option value="" disabled>Selecciona tu distrito (Lima)</option>
+          @for (d of distritos; track d) {
+            <option [value]="d">{{ d }}</option>
+          }
+        </select>
+        @if (registroForm.get('distrito')?.hasError('required')) {
+          <mat-error>Selecciona tu distrito</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="fila">
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="verPassword ? 'text' : 'password'" formControlName="contrasena" placeholder="Mínimo 8 caracteres" />
+          <button mat-icon-button matSuffix type="button" (click)="verPassword = !verPassword" aria-label="Mostrar u ocultar contraseña">
+            <mat-icon>{{ verPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (registroForm.get('contrasena')?.hasError('required')) {
+            <mat-error>La contraseña es obligatoria</mat-error>
+          } @else if (registroForm.get('contrasena')?.hasError('minlength')) {
+            <mat-error>Mínimo 8 caracteres</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput [type]="verConfirmar ? 'text' : 'password'" formControlName="confirmar" placeholder="Mínimo 8 caracteres" />
+          <button mat-icon-button matSuffix type="button" (click)="verConfirmar = !verConfirmar" aria-label="Mostrar u ocultar contraseña">
+            <mat-icon>{{ verConfirmar ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      @if (registroForm.hasError('noCoinciden') && registroForm.get('confirmar')?.touched) {
+        <p class="error-grupo">Las contraseñas no coinciden</p>
+      }
+
+      <label class="terminos">
+        <input type="checkbox" formControlName="aceptaTerminos" />
+        Acepto los <a routerLink="/terminos" target="_blank">Términos y Condiciones</a>
+      </label>
+      @if (registroForm.get('aceptaTerminos')?.invalid && registroForm.get('aceptaTerminos')?.touched) {
+        <p class="error-grupo">Debes aceptar los términos y condiciones para crear tu cuenta</p>
+      }
+
+      <button type="submit" mat-raised-button class="btn-primario enviar" [disabled]="cargando">
+        {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <p class="pie">¿Ya tienes una cuenta? <a routerLink="/login">Iniciar sesión</a></p>
+  </section>
+</main>

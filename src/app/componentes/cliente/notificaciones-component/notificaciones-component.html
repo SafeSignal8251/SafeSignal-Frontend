@@ -1,0 +1,33 @@
+<section class="pagina">
+  <div class="cabecera tarjeta-ss">
+    <span class="campana"><mat-icon>notifications</mat-icon></span>
+    <div>
+      <h1>Notificaciones @if (noLeidas > 0) { <span class="badge badge-rojo">{{ noLeidas }} nuevas</span> }</h1>
+      <p class="sub">Registro y alertas en tiempo real de tu cuenta</p>
+    </div>
+    @if (noLeidas > 0) {
+      <button mat-stroked-button class="btn-secundario" (click)="marcarTodas()">Marcar todas como leídas</button>
+    }
+  </div>
+
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  @for (n of notificaciones; track n.id_notificacion) {
+    <article class="notificacion" [class.leida]="n.estado === 'LEIDA'" (click)="marcarLeida(n)">
+      <span class="icono" [class]="'icono ' + clase(n)"><mat-icon>{{ icono(n) }}</mat-icon></span>
+      <div class="cuerpo">
+        <div class="linea">
+          <strong>{{ n.tipo === 'AVISO' ? 'Aviso de SafeSignal' : n.id_alerta ? 'Alerta SOS' : 'Notificación' }}</strong>
+          @if (n.estado !== 'LEIDA') { <span class="badge badge-rojo">NO LEÍDA</span> }
+          <small>{{ hace(n.fecha_envio) }}</small>
+        </div>
+        <p>{{ n.mensaje }}</p>
+        <small class="gris">Severidad: {{ n.severidad || 'NORMAL' }} @if (n.id_alerta) { · Alerta #{{ n.id_alerta }} · <a routerLink="/historial" class="boton-enlace">Ver historial</a> }</small>
+      </div>
+    </article>
+  } @empty {
+    <div class="tarjeta-ss vacio">No tienes notificaciones por ahora.</div>
+  }
+</section>

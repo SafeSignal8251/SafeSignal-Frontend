@@ -1,0 +1,110 @@
+.barra {
+  margin-bottom: 14px;
+}
+.etiquetas {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.derecha {
+  margin-left: auto;
+}
+.gris {
+  color: var(--ss-gris);
+}
+.titulo-reporte {
+  font-size: 28px;
+  margin: 14px 0 6px;
+}
+.ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ss-gris);
+  margin: 0;
+}
+.ubicacion mat-icon {
+  color: var(--ss-rojo);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.etiqueta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin: 18px 0 6px;
+}
+.texto {
+  background: var(--ss-fondo);
+  border-radius: 10px;
+  padding: 14px;
+  line-height: 1.55;
+  margin: 0;
+}
+.validacion {
+  background: #f4f9ff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.grande {
+  font-size: 24px;
+  font-family: Inter, sans-serif;
+}
+.area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Roboto, sans-serif;
+  margin-top: 10px;
+}
+.fin {
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+.comentario {
+  background: var(--ss-fondo);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+.cab {
+  display: flex;
+  justify-content: space-between;
+}
+.comentario p {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+.diagnostico {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff7f6;
+}
+.diagnostico strong {
+  font-size: 30px;
+  font-family: Inter, sans-serif;
+}
+.recomendacion {
+  background: #fffaf0;
+  border-color: #f1dca0;
+}
+.recomendacion h3 {
+  color: #8a6100;
+  font-size: 13px;
+}
+.recomendacion p {
+  font-size: 14px;
+}

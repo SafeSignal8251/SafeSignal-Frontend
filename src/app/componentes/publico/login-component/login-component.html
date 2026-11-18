@@ -1,0 +1,65 @@
+<app-publico-header-component></app-publico-header-component>
+
+<main class="fondo">
+  <section class="tarjeta">
+    <h1>Iniciar sesión</h1>
+    <p class="subtitulo">Ingresa a la red de seguridad ciudadana más confiable de Lima.</p>
+
+    <div class="tipos">
+      <button type="button" [class.activo]="tipo === 'CLIENTE'" (click)="cambiarTipo('CLIENTE')">
+        <strong>Cliente</strong>
+        <small>Ciudadano</small>
+      </button>
+      <button type="button" [class.activo]="tipo === 'ADMIN'" (click)="cambiarTipo('ADMIN')">
+        <strong>Administrador</strong>
+        <small>Central de Monitoreo</small>
+      </button>
+    </div>
+
+    @if (aviso) {
+      <div class="alerta-ok">{{ aviso }}</div>
+    }
+    @if (error) {
+      <div class="alerta-error">{{ error }}</div>
+    }
+
+    <form [formGroup]="loginForm" class="formulario" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico institucional o personal</mat-label>
+        <input matInput type="email" formControlName="correo" placeholder="usuario@ejemplo.com" />
+        @if (loginForm.get('correo')?.hasError('required')) {
+          <mat-error>El correo es obligatorio</mat-error>
+        } @else if (loginForm.get('correo')?.hasError('email')) {
+          <mat-error>Ingresa un correo válido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" placeholder="Ej. 74581290" maxlength="8" />
+        @if (loginForm.get('dni')?.hasError('pattern')) {
+          <mat-error>El DNI debe tener 8 dígitos</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="verPassword ? 'text' : 'password'" formControlName="contrasena" placeholder="********" />
+        <button mat-icon-button matSuffix type="button" (click)="verPassword = !verPassword" aria-label="Mostrar u ocultar contraseña">
+          <mat-icon>{{ verPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (loginForm.get('contrasena')?.hasError('required')) {
+          <mat-error>La contraseña es obligatoria</mat-error>
+        }
+      </mat-form-field>
+
+      <a routerLink="/recuperar-password" class="olvido">¿Olvidaste tu contraseña?</a>
+
+      <button type="submit" mat-raised-button class="btn-primario enviar" [disabled]="cargando">
+        {{ cargando ? 'Ingresando...' : 'Iniciar sesión' }}
+      </button>
+    </form>
+
+    <p class="pie">¿No tienes una cuenta? <a routerLink="/registro">Regístrate aquí</a></p>
+  </section>
+</main>

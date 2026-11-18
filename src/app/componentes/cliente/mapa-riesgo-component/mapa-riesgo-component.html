@@ -1,0 +1,138 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Mapa de Riesgo y Rutas Seguras</h1>
+      <p>Monitorea zonas de peligro en tiempo real, planifica trayectos asistidos y evita puntos críticos.</p>
+    </div>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta-ok">{{ mensaje }}</div>
+  }
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  @if (rutaActiva && riesgoDe(rutaActiva.id_ruta) && riesgoDe(rutaActiva.id_ruta) !== 'BAJO') {
+    <div class="advertencia">
+      <mat-icon>warning</mat-icon>
+      <div class="texto">
+        <strong>ADVERTENCIA DE TRAYECTO DETECTADA</strong>
+        <p>
+          La ruta «{{ rutaActiva.nombre }}» tiene riesgo <b>{{ riesgoDe(rutaActiva.id_ruta) }}</b>
+          ({{ riesgos[rutaActiva.id_ruta].incidentes_cercanos }} incidentes cercanos).
+          @if (alternativa) {
+            SafeSignal encontró una ruta más segura: <b>{{ alternativa.nombre }}</b>.
+          } @else if (avisoAlternativa) {
+            {{ avisoAlternativa }}
+          }
+        </p>
+      </div>
+      @if (alternativa) {
+        <button mat-raised-button class="btn-primario" (click)="aceptarAlternativa()">Aceptar Ruta Segura</button>
+      }
+    </div>
+  }
+
+  <div class="grid-2">
+    <div class="pila">
+      <div class="filtros">
+        <button class="chip" [class.activo]="filtro === 'todos'" (click)="cambiarFiltro('todos')">Todos los incidentes ({{ incidentes.length }})</button>
+        <button class="chip" [class.activo]="filtro === 'alto'" (click)="cambiarFiltro('alto')">Riesgo alto</button>
+        <button class="chip" [class.activo]="filtro === 'robo'" (click)="cambiarFiltro('robo')">Solo Robo / Asalto</button>
+      </div>
+
+      <div class="mapa-caja">
+        <app-mapa-component
+          [centro]="centro"
+          [circulos]="circulos"
+          [marcadores]="marcadores"
+          [linea]="linea"
+          [seleccionable]="true"
+          (puntoElegido)="elegirDestino($event)"
+          altura="430px"
+        ></app-mapa-component>
+        <div class="leyenda">
+          <span><i class="p verde"></i> Seguro</span>
+          <span><i class="p amarillo"></i> Advertencia</span>
+          <span><i class="p rojo"></i> Peligro</span>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><small>Incidentes en la ruta</small><strong>{{ rutaActiva && riesgos[rutaActiva.id_ruta] ? riesgos[rutaActiva.id_ruta].incidentes_cercanos : 0 }}</strong></div>
+        <div class="kpi rojo"><small>Zonas de riesgo alto</small><strong>{{ zonasAltas }}</strong></div>
+        <div class="kpi verde"><small>Tiempo estimado</small><strong>{{ rutaActiva ? rutaActiva.tiempo_estimado + ' min' : '—' }}</strong></div>
+      </div>
+
+      @if (rutaActiva) {
+        <button mat-raised-button class="btn-primario" (click)="iniciarTrayecto()">Iniciar trayecto seguro ahora</button>
+      }
+
+      <div class="tarjeta-ss">
+        <h3>Rutas Frecuentes Guardadas</h3>
+        @for (r of rutas; track r.id_ruta) {
+          <div class="ruta">
+            <div>
+              <strong>{{ r.nombre }}</strong>
+              <small>{{ r.distancia }} km · {{ r.tiempo_estimado }} min</small>
+            </div>
+            @if (riesgoDe(r.id_ruta)) {
+              <span class="badge" [class]="'badge ' + clase(riesgoDe(r.id_ruta))">Riesgo {{ riesgoDe(r.id_ruta) }}</span>
+            }
+            <button mat-stroked-button class="btn-secundario" (click)="usarRuta(r)">Usar ruta</button>
+            <button class="boton-enlace" (click)="eliminarRuta(r)">Eliminar</button>
+          </div>
+        } @empty {
+          <p class="vacio">Aún no tienes rutas guardadas. Calcula una ruta y se guardará aquí.</p>
+        }
+      </div>
+    </div>
+
+    <div class="pila">
+      <div class="tarjeta-ss">
+        <h3><mat-icon class="chico">map</mat-icon> Calcular Ruta Segura</h3>
+        <form [formGroup]="rutaForm" (ngSubmit)="buscarRutas()">
+          <div class="campo">
+            <label>Punto de origen</label>
+            <div class="con-boton">
+              <input formControlName="origen" placeholder="Ej. Av. Larco 740, Miraflores" />
+              <button type="button" class="chip" (click)="usarMiUbicacion()">Actual</button>
+            </div>
+            @if (rutaForm.get('origen_latitud')?.value !== null) {
+              <small class="coord">{{ rutaForm.value.origen_latitud | number: '1.4-4' }}, {{ rutaForm.value.origen_longitud | number: '1.4-4' }}</small>
+            }
+          </div>
+          <div class="campo">
+            <label>Destino asistido (haz clic en el mapa para marcarlo)</label>
+            <input formControlName="destino" placeholder="Ej. Av. Javier Prado Este 2400, San Borja" />
+            @if (rutaForm.get('destino_latitud')?.value !== null) {
+              <small class="coord">{{ rutaForm.value.destino_latitud | number: '1.4-4' }}, {{ rutaForm.value.destino_longitud | number: '1.4-4' }}</small>
+            }
+          </div>
+          <button type="submit" mat-raised-button class="btn-primario ancho" [disabled]="buscando">
+            {{ buscando ? 'Calculando...' : 'Buscar Rutas Seguras' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3>Incidentes en tu Radio</h3>
+        @for (i of cercanos; track i.id_incidente) {
+          <div class="incidente">
+            <i class="p" [class.rojo]="i.nivel_riesgo === 'ALTO'" [class.amarillo]="i.nivel_riesgo === 'MEDIO'" [class.verde]="i.nivel_riesgo === 'BAJO'"></i>
+            <div>
+              <strong>{{ i.tipo_incidente }}</strong>
+              <small>{{ i.direccion || i.distrito }}</small>
+              <span class="badge" [class]="'badge ' + clase(i.nivel_riesgo)">{{ i.nivel_riesgo }}</span>
+              <small>{{ hace(i.fecha_hora) }}</small>
+            </div>
+          </div>
+        } @empty {
+          <p class="vacio">Sin incidentes registrados.</p>
+        }
+        <a routerLink="/reportes" class="boton-enlace">Ver reporte comunitario completo →</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,145 @@
+.campana {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #d97706;
+  text-decoration: none;
+}
+.contador {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--ss-rojo);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 10px;
+  min-width: 16px;
+  text-align: center;
+  padding: 1px 4px;
+}
+.banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+.banner.aviso {
+  background: #fffaf0;
+  border: 1px solid #f1dca0;
+}
+.banner.sos {
+  background: #fdeceb;
+  border: 1px solid #f3c1bc;
+}
+.banner-texto strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: Inter, sans-serif;
+}
+.banner.sos strong {
+  color: var(--ss-rojo);
+}
+.banner.aviso strong {
+  color: #8a6100;
+}
+.banner-texto p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #5a4a2a;
+}
+.etiqueta {
+  background: var(--ss-rojo);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 10px;
+  padding: 2px 6px;
+}
+.mapa-caja {
+  position: relative;
+}
+.leyenda {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: rgba(26, 58, 92, 0.92);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  gap: 12px;
+  z-index: 500;
+}
+.p {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.p.verde { background: #1e9a5e; }
+.p.amarillo { background: #e6a817; }
+.p.rojo { background: #c0392b; }
+.estado {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e7b4b;
+}
+.estado.malo {
+  color: var(--ss-rojo);
+}
+.prioritaria {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+  align-items: flex-start;
+}
+.prioritaria div {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.prioritaria small {
+  color: var(--ss-gris);
+}
+.prioritaria .p {
+  margin-top: 6px;
+}
+.kpis {
+  margin-top: 18px;
+}
+.kpi strong.chico {
+  font-size: 22px;
+  margin-top: 10px;
+}
+.accesos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+.acceso {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  color: var(--ss-azul-oscuro);
+}
+.acceso:hover {
+  border-color: var(--ss-azul);
+}
+.acceso div {
+  display: flex;
+  flex-direction: column;
+}
+.acceso small {
+  color: var(--ss-gris);
+}

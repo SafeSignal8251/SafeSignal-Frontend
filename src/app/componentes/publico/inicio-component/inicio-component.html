@@ -1,0 +1,114 @@
+<header class="barra">
+  <div class="marca">
+    <strong>SafeSignal</strong>
+    <small>SEGURIDAD CIUDADANA</small>
+  </div>
+  <nav class="enlaces">
+    <a (click)="irA('funciones')">Características</a>
+    <a (click)="irA('como-funciona')">Cómo funciona</a>
+    <a (click)="irA('comenzar')">Comenzar</a>
+    <a (click)="irA('sobre-nosotros')">Sobre nosotros</a>
+  </nav>
+  <div class="acciones">
+    <a mat-stroked-button routerLink="/login" class="btn-secundario">Iniciar sesión</a>
+    <a mat-raised-button routerLink="/registro" class="btn-primario">Registrarse</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-texto">
+    <span class="etiqueta">Red de seguridad ciudadana #1 en Lima</span>
+    <h1>Tu seguridad, <span class="rojo">siempre conectada</span></h1>
+    <p>
+      SafeSignal te protege con alertas en tiempo real, seguimiento de recorridos y contactos de
+      emergencia. Porque tu tranquilidad es lo primero.
+    </p>
+    <div class="botones">
+      <a mat-raised-button routerLink="/registro" class="btn-primario">Registrarse</a>
+      <a mat-stroked-button routerLink="/login" class="btn-secundario">Iniciar Sesión</a>
+    </div>
+    <div class="cifras">
+      <div><strong>12,400+</strong><span>Ciudadanos protegidos</span></div>
+      <div><strong>340 km</strong><span>Cobertura en Lima</span></div>
+      <div><strong>4.2 min</strong><span>Tiempo de respuesta</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-cab">
+      <span>PANEL DE CONTROL</span>
+      <span class="en-linea">En línea</span>
+    </div>
+    <p class="zona"><span class="punto"></span> Zona actualmente segura</p>
+    <div class="incidentes">
+      <small>INCIDENTES HOY</small>
+      <div><strong>12</strong> <span class="baja">-18% vs ayer</span></div>
+    </div>
+    <div class="mini">
+      <div><small>Respuesta</small><strong>4.2 min</strong></div>
+      <div><small>Rutas ok</small><strong>98%</strong></div>
+    </div>
+    <div class="sos"><span class="punto-blanco"></span> SOS - Emergencia</div>
+  </div>
+</section>
+
+<section class="seccion gris" id="funciones">
+  <h2>Todo lo que necesitas para estar seguro</h2>
+  <p class="sub">Tecnología de vigilancia ciudadana en la palma de tu mano.</p>
+  <div class="rejilla">
+    @for (f of funciones; track f.titulo) {
+      <article class="funcion">
+        <span class="icono {{ f.color }}"><mat-icon>{{ f.icono }}</mat-icon></span>
+        <h3>{{ f.titulo }}</h3>
+        <p>{{ f.texto }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="seccion" id="como-funciona">
+  <h2>¿Cómo funciona?</h2>
+  <p class="sub">Tres pasos para estar protegido desde hoy.</p>
+  <div class="pasos">
+    @for (p of pasos; track p.numero) {
+      <article class="paso">
+        <span class="numero">{{ p.numero }}</span>
+        <h3>{{ p.titulo }}</h3>
+        <p>{{ p.texto }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="cta" id="comenzar">
+  <h2>¿Listo para estar más seguro?</h2>
+  <p>Únete a más de 12,000 ciudadanos que ya confían en SafeSignal.</p>
+  <a mat-raised-button routerLink="/registro" class="boton-cta">Crear mi cuenta gratis →</a>
+</section>
+
+<footer class="pie" id="sobre-nosotros">
+  <div class="pie-grid">
+    <div>
+      <strong class="pie-marca">SafeSignal</strong>
+      <p>Plataforma comunitaria de vigilancia ciudadana y respuesta de emergencia en tiempo real para Lima Metropolitana.</p>
+    </div>
+    <div>
+      <h4>PLATAFORMA</h4>
+      <a>Alertas SOS</a>
+      <a>Mapa Comunitario</a>
+      <a>Dispositivos Compatibles</a>
+      <a>Centros de Serenazgo</a>
+    </div>
+    <div>
+      <h4>SOPORTE &amp; LEGAL</h4>
+      <a>Centro de Ayuda</a>
+      <a routerLink="/terminos">Términos de Servicio</a>
+      <a>Política de Privacidad</a>
+      <a>Contacto 24/7</a>
+    </div>
+  </div>
+  <div class="pie-base">
+    <span>© 2026 SafeSignal Technologies S.A.C. Todos los derechos reservados.</span>
+    <span>Iniciativa de tecnología para la seguridad comunitaria en Lima, Perú.</span>
+  </div>
+</footer>
