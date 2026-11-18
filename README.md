@@ -1,47 +1,35 @@
-# SafeSignal
-SafeSignal es una plataforma web de seguridad ciudadana que permite reportar incidentes, visualizar zonas de riesgo, gestionar rutas seguras, recibir alertas y notificaciones, y consultar estadísticas. Incluye herramientas para usuarios y administradores.
-# Índice
-* [Descripción](#descripción)
-* [Características](#características)
-* [Tecnologías](#tecnologías)
-* [Validación](#validación)
-* [Equipo](#equipo)
-# Descripción
-SafeSignal es un startup tecnológico orientado a mejorar la seguridad personal durante los desplazamientos urbanos. La plataforma combina Inteligencia Artificial, dispositivos IoT, geolocalización y mapas interactivos para facilitar la prevención y respuesta ante situaciones de peligro.
+SafeSignal – Frontend
+SafeSignal es una plataforma web de seguridad ciudadana que permite reportar incidentes, visualizar zonas de riesgo en un mapa, gestionar contactos de confianza y dispositivos IoT, activar alertas SOS y consultar estadísticas. Incluye un panel para administradores.
 
-La solución permite activar alertas de emergencia, compartir la ubicación en tiempo real con contactos de confianza, identificar zonas de riesgo, consultar mapas de seguridad y recibir recomendaciones de rutas seguras. Asimismo, SafeSignal contempla herramientas de administración para gestionar información, usuarios, reportes y estadísticas relacionadas con la seguridad.
-# Características
-* Activación de alertas de emergencia mediante botón SOS.
-* Alertas silenciosas para situaciones de riesgo.
-* Compartir ubicación en tiempo real con contactos de confianza.
-* Identificación y visualización de zonas de riesgo.
-* Notificaciones y alertas preventivas.
-* Integración con dispositivos y sensores IoT.
-* Gestión de contactos de confianza.
-* Estadísticas y análisis de seguridad.
-* Herramientas de administración de usuarios y reportes.
-* Configuración y personalización de funciones de seguridad.
-# Tecnologías
-* Diseño UI/UX: Figma.
-* Desarrollo: HTML, CSS y JavaScript.
-* IDE: Visual Studio Code.
-* Control de versiones: Git y GitHub.
-* Gestión y comunicación: WhatsApp, Trello y Zoom.
-* Gestión del proyecto: herramientas de coordinación y trabajo colaborativo.
-# Validación
-Para evaluar la propuesta y mejorar la experiencia de usuario, se realizaron diferentes actividades de validación:
-* Entrevistas con usuarios.
-* Validación de la propuesta.
-* Pruebas de aceptación.
-* Pruebas de usabilidad.
-* Evaluaciones heurísticas.
-* Auditoría UX/UI.
-* Validación de prototipos.
-Los resultados de las evaluaciones permitieron realizar mejoras en aspectos como la jerarquía visual del botón SOS, filtros del mapa de riesgo, confirmaciones visuales y claridad de las interacciones.
-# Equipo
-Proyecto desarrollado para el curso Arquitectura de Aplicaciones Web por:
-* Aramburu Dias, Adrian 
-* Caballero Loayza, Gonzalo Fabian
-* Curay Rodriguez, Sebastian Alonso
-* Guerrero Rojas, Pablo David
-* Silva Guerrero, Brandon Andre
+Este repositorio contiene el frontend en Angular. El backend (Spring Boot) está en SafeSignal-Backend.
+
+Tecnologías
+Angular 22 y TypeScript
+Angular Material (interfaz) y formularios reactivos
+Leaflet (mapas)
+Guards de ruta e interceptor HTTP para el token JWT
+Vitest (pruebas)
+Requisitos
+Node.js 22 o superior y npm
+El backend en ejecución (por defecto en http://localhost:8080)
+
+La aplicación queda en http://localhost:4200.
+
+La URL del backend se configura en src/environments/environment.ts (desarrollo) y src/environments/environment.prod.ts (producción), en la propiedad apiURL.
+
+Pruebas y compilación
+npm test
+npm run build
+Estructura
+src/app/
+  componentes/
+    publico/      inicio, login, registro, recuperar contraseña, términos
+    cliente/      dashboard, mapa de riesgo, reportes, contactos, dispositivos, notificaciones, perfil
+    admin/        dashboard, usuarios, moderación, umbrales de riesgo, estadísticas, comunicación
+    compartido/   diálogos, menús de navegación y mapa
+  core/           guard de autenticación, interceptor, mensajes y utilidades
+  model/          interfaces de datos
+  services/       servicios HTTP hacia la API
+Roles
+CLIENTE: usuario que reporta incidentes, usa el mapa y las alertas.
+ADMIN: gestiona usuarios, modera reportes y administra umbrales y estadísticas.
