@@ -1,0 +1,98 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Estadísticas de Seguridad Ciudadana</h1>
+      <p>Monitoreo analítico de incidencias, patrones geoespaciales y tendencias para la prevención ciudadana coordinada.</p>
+    </div>
+    <button mat-stroked-button class="btn-secundario no-imprimir" (click)="exportarPdf()">Exportar Informe (PDF)</button>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta-ok">{{ mensaje }}</div>
+  }
+  @if (error) {
+    <div class="alerta-error">{{ error }}</div>
+  }
+
+  <div class="filtros tarjeta-ss no-imprimir">
+    <div class="campo">
+      <label>Distrito / Sector</label>
+      <select [(ngModel)]="distrito" (ngModelChange)="aplicar()">
+        <option value="">Todos los distritos</option>
+        @for (d of distritos; track d) { <option [value]="d">{{ d }}</option> }
+      </select>
+    </div>
+    <div class="campo">
+      <label>Tipología</label>
+      <select [(ngModel)]="tipologia" (ngModelChange)="aplicar()">
+        <option value="">Todos los incidentes</option>
+        @for (t of tipologias; track t) { <option [value]="t">{{ t }}</option> }
+      </select>
+    </div>
+    <div class="campo">
+      <label>Fecha</label>
+      <select [(ngModel)]="dias" (ngModelChange)="aplicar()">
+        <option value="7">Últimos 7 días</option>
+        <option value="30">Últimos 30 días</option>
+        <option value="90">Últimos 90 días</option>
+        <option value="">Todo el período</option>
+      </select>
+    </div>
+    <button mat-stroked-button class="btn-secundario" (click)="filtrosGuardados()">Aplicar filtros guardados</button>
+    <button mat-stroked-button class="btn-secundario" (click)="guardarFiltro()">Guardar filtro</button>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><small>TOTAL INCIDENTES</small><strong>{{ total }}</strong><span>en el período seleccionado</span></div>
+    <div class="kpi rojo"><small>INCIDENTES DE RIESGO ALTO</small><strong>{{ altos }}</strong><span>requieren atención prioritaria</span></div>
+    <div class="kpi"><small>ÍNDICE DE RIESGO GLOBAL</small><strong>{{ indice }} <span>/ 10</span></strong><span class="badge" [class]="'badge ' + (indice >= 7 ? 'badge-rojo' : indice >= 4 ? 'badge-naranja' : 'badge-verde')">{{ indice >= 7 ? 'Crítico' : indice >= 4 ? 'Moderado' : 'Bajo' }}</span></div>
+    <div class="kpi verde"><small>REPORTES VERIFICADOS</small><strong>{{ porcentajeVerificados }}%</strong><span>{{ verificados }} de {{ total }} reportes</span></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="tarjeta-ss">
+      <h3>Evolución de Incidencias en el Tiempo</h3>
+      <p class="sub">Comportamiento semanal continuo y detección de picos de criticidad</p>
+      <svg viewBox="0 0 400 180" class="grafico" role="img" aria-label="Evolución semanal de incidencias">
+        <line x1="20" y1="140" x2="390" y2="140" stroke="#d9e0e8" />
+        <polyline [attr.points]="puntosLinea" fill="none" stroke="#2e75b6" stroke-width="3" stroke-linejoin="round" />
+        @for (p of puntosCirculo; track $index) {
+          <circle [attr.cx]="p.x" [attr.cy]="p.y" r="5" fill="#2e75b6" />
+          <text [attr.x]="p.x" [attr.y]="p.y - 10" text-anchor="middle" font-size="11" fill="#1a3a5c">{{ semanas[$index].total }}</text>
+        }
+        @for (s of semanas; track $index) {
+          <text [attr.x]="30 + $index * 113" y="162" text-anchor="middle" font-size="11" fill="#6b6b6b">{{ s.etiqueta }}</text>
+        }
+      </svg>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h3>Nivel de Gravedad</h3>
+      <p class="sub">Clasificación según impacto vecinal</p>
+      <svg viewBox="0 0 160 160" class="dona" role="img" aria-label="Distribución por nivel de gravedad">
+        <circle cx="80" cy="80" r="60" fill="none" stroke="#eef1f5" stroke-width="22" />
+        @for (s of donut; track s.etiqueta) {
+          <circle cx="80" cy="80" r="60" fill="none" [attr.stroke]="s.color" stroke-width="22" [attr.stroke-dasharray]="s.dash" [attr.stroke-dashoffset]="s.offset" transform="rotate(-90 80 80)" />
+        }
+        <text x="80" y="82" text-anchor="middle" font-size="26" font-weight="700" fill="#1a3a5c">{{ total }}</text>
+        <text x="80" y="98" text-anchor="middle" font-size="9" fill="#6b6b6b">AUDITADOS</text>
+      </svg>
+      @for (s of donut; track s.etiqueta) {
+        <div class="leyenda-fila"><span><i [style.background]="s.color"></i> {{ s.etiqueta }}</span><strong>{{ s.pct }}% ({{ s.total }})</strong></div>
+      }
+    </div>
+  </div>
+
+  <div class="tarjeta-ss espacio">
+    <h3>Tipología Delictiva más Frecuente</h3>
+    <p class="sub">Desglose de modalidades con mayor recurrencia</p>
+    @for (b of barras; track b.tipo) {
+      <div class="barra-fila">
+        <div class="barra-cab"><span>{{ b.tipo }}</span><strong>{{ b.total }} casos</strong></div>
+        <div class="barra"><div class="relleno" [style.width.%]="b.pct"></div></div>
+      </div>
+    } @empty {
+      <p class="vacio">No hay incidentes para los filtros seleccionados.</p>
+    }
+  </div>
+</section>
