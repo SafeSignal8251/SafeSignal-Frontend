@@ -1,0 +1,108 @@
+.buscador {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.buscador input {
+  flex: 1;
+  min-width: 200px;
+}
+.buscador input, .buscador select {
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #fff;
+}
+.niveles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.nivel {
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-left-width: 4px;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.nivel small { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--ss-gris); }
+.nivel strong { display: block; font-family: Inter, sans-serif; font-size: 28px; margin: 4px 0; }
+.nivel strong span { font-size: 12px; font-weight: 400; color: var(--ss-gris); }
+.nivel p { margin: 0; font-size: 13px; color: var(--ss-gris); }
+.nivel.alto { border-left-color: #c0392b; }
+.nivel.alto strong { color: #c0392b; }
+.nivel.medio { border-left-color: #e6a817; }
+.nivel.medio strong { color: #d97706; }
+.nivel.bajo { border-left-color: #1e9a5e; }
+.nivel.bajo strong { color: #1e9a5e; }
+.caja {
+  background: var(--ss-fondo);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cab small { color: var(--ss-gris); font-size: 11px; }
+.slider {
+  width: 100%;
+  margin: 12px 0 4px;
+  accent-color: #1a3a5c;
+}
+.dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.etq {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 3px;
+}
+.seg button {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+}
+.seg button.activo {
+  background: var(--ss-azul-oscuro);
+  color: #fff;
+}
+.impacto {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 14px;
+}
+.rojo { color: #c0392b; }
+.verde { color: #1e9a5e; }
+.barra {
+  height: 7px;
+  background: #eef1f5;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.relleno { height: 100%; }
+.rojo-f { background: #c0392b; }
+.verde-f { background: #1e9a5e; }
+@media (max-width: 900px) {
+  .niveles, .dos { grid-template-columns: 1fr; }
+}

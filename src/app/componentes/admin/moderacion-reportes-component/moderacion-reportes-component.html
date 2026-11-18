@@ -1,0 +1,68 @@
+<section class="pagina">
+  <div class="pagina-titulo"><div><h1>Moderación de Reportes Comunitarios</h1></div></div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="kpis">
+    <div class="kpi"><small>En cola de moderación</small><strong class="rojo">{{ denunciados.length }}</strong><span>con denuncias acumuladas</span></div>
+    <div class="kpi"><small>Falsas alarmas confirmadas</small><strong>{{ descartados }}</strong><span>reportes descartados</span></div>
+    <div class="kpi verde"><small>Reportes legítimos verificados</small><strong>{{ verificados }}</strong><span>aprobados en mapa vecinal</span></div>
+    <div class="kpi"><small>Índice de confiabilidad ciudadana</small><strong class="azul">{{ indice }}</strong><span>precisión comunitaria global</span></div>
+  </div>
+
+  <div class="grid-2b">
+    <div class="pila">
+      <p class="etq">CASOS EN REVISIÓN PENDIENTE <span>{{ denunciados.length }} mostrados</span></p>
+      @for (i of denunciados; track i.id_incidente) {
+        <article class="caso" [class.activo]="seleccionado?.id_incidente === i.id_incidente" (click)="seleccionar(i)">
+          <div class="cab"><span class="badge badge-gris mono">#REP-{{ i.id_incidente }}</span><small>{{ hace(i.fecha_hora) }}</small></div>
+          <h3>{{ i.tipo_incidente }}</h3>
+          <p class="cita">«{{ i.descripcion }}»</p>
+          <small class="gris">{{ i.direccion || i.distrito }}</small>
+        </article>
+      } @empty {
+        <div class="tarjeta-ss vacio">No hay reportes denunciados pendientes de moderación. 🎉</div>
+      }
+    </div>
+
+    <div class="tarjeta-ss">
+      @if (seleccionado) {
+        <div class="cab"><span class="badge badge-gris mono">#REP-{{ seleccionado.id_incidente }}</span><span class="badge badge-rojo">ALTA PRIORIDAD</span></div>
+        <h2 class="titulo">{{ seleccionado.tipo_incidente }}</h2>
+        <p class="coord">GPS: {{ seleccionado.latitud }}, {{ seleccionado.longitud }} · {{ seleccionado.distrito }}</p>
+
+        <div class="dos">
+          @if (seleccionado.latitud != null) {
+            <app-mapa-component
+              [centro]="[seleccionado.latitud, seleccionado.longitud]"
+              [marcadores]="[{ lat: seleccionado.latitud, lng: seleccionado.longitud, color: '#c0392b', etiqueta: 'Punto denunciado' }]"
+              [zoom]="15"
+              altura="170px"
+            ></app-mapa-component>
+          }
+          <div class="verdicto">
+            <strong><mat-icon>verified_user</mat-icon> Datos del autor</strong>
+            @if (autor) {
+              <p>{{ autor.nombres }} {{ autor.apellidos }}<br /><small>Estado de la cuenta: {{ autor.estado }}</small></p>
+            }
+            <p class="cita">{{ seleccionado.descripcion }}</p>
+          </div>
+        </div>
+
+        <p class="etq">DENUNCIAS VECINALES ACUMULADAS</p>
+        <p class="votos"><span class="badge badge-rojo">{{ falsas }} marcaron falso</span> <span class="badge badge-verde">{{ confirmadas }} confirmaron</span></p>
+        @for (c of comentarios; track c.id_comentario) {
+          <div class="denuncia"><small class="gris">Vecino #{{ c.id_usuario }} · {{ hace(c.fecha_hora) }}</small><p>{{ c.texto }}</p></div>
+        }
+
+        <div class="acciones fin">
+          <button mat-stroked-button class="btn-secundario" (click)="mantener()">Mantener como Válido</button>
+          <button mat-raised-button class="btn-peligro" (click)="descartar()">Descartar Reporte</button>
+        </div>
+      } @else {
+        <p class="vacio">Selecciona un caso de la lista para revisarlo.</p>
+      }
+    </div>
+  </div>
+</section>
