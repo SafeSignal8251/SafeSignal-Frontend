@@ -1,0 +1,125 @@
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.paso {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.paso span {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: #eef1f5;
+  color: var(--ss-gris);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.paso div {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.paso small {
+  color: var(--ss-gris);
+}
+.paso.activo {
+  border: 2px solid var(--ss-azul);
+  background: #eaf2fb;
+}
+.paso.activo span {
+  background: var(--ss-azul);
+  color: #fff;
+}
+.paso.hecho {
+  background: #e8f6ee;
+  border-color: #b9e2c8;
+}
+.paso.hecho span {
+  background: #1e9a5e;
+  color: #fff;
+}
+.con-boton {
+  display: flex;
+  gap: 8px;
+}
+.con-boton input {
+  flex: 1;
+}
+.etq {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ss-gris);
+  margin: 6px 0;
+}
+.nota {
+  background: var(--ss-fondo);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--ss-gris);
+  margin: 12px 0 16px;
+}
+.chicos {
+  margin: 12px 0 0;
+}
+.kpi strong.txt {
+  font-size: 15px;
+}
+.categoria {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.categoria.activa {
+  border-color: var(--ss-azul);
+  background: #f4f9ff;
+}
+.categoria span, .canal span {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+.categoria small, .canal small {
+  color: var(--ss-gris);
+  font-size: 12px;
+}
+.canal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.fila-horas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fin {
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+@media (max-width: 800px) {
+  .pasos {
+    grid-template-columns: 1fr;
+  }
+}

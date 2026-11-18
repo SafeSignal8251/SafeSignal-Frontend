@@ -1,0 +1,77 @@
+<section class="pagina estrecha">
+  <a routerLink="/dispositivos" class="volver"><mat-icon>chevron_left</mat-icon> Volver a Dispositivos</a>
+
+  @if (vinculado) {
+    <div class="tarjeta-ss resultado">
+      <mat-icon class="grande ok">check_circle</mat-icon>
+      <h1>¡Dispositivo Vinculado con Éxito!</h1>
+      <p class="sub">Tu dispositivo físico SafeSignal ha sido enlazado correctamente con tu central de monitoreo.</p>
+      <div class="detalle">
+        <div><small>Nombre del dispositivo</small><strong>{{ vinculado.nombre }}</strong></div>
+        <div><small>Tipo de equipo</small><strong>{{ vinculado.tipo_dispositivo }}</strong></div>
+        <div><small>ID de enlace</small><strong class="mono">{{ vinculado.codigo_dispositivo }}</strong></div>
+        <div><small>Estado de conexión</small><span class="badge badge-verde">{{ vinculado.estado }}</span></div>
+        <div><small>Nivel de batería</small><strong>{{ vinculado.nivel_bateria }}%</strong></div>
+      </div>
+      @if (mensajePrueba) { <div class="alerta-ok">{{ mensajePrueba }}</div> }
+      <div class="acciones">
+        <button mat-stroked-button class="btn-secundario" (click)="pruebaSenal()">Hacer prueba de pulsación</button>
+        <a mat-raised-button routerLink="/dispositivos" class="btn-primario">Listo, continuar</a>
+      </div>
+    </div>
+  } @else if (fallo) {
+    <div class="tarjeta-ss resultado">
+      <mat-icon class="grande mal">error</mat-icon>
+      <h1>Error de Vinculación</h1>
+      <p class="sub">No se pudo completar el enlace con el dispositivo {{ elegido?.nombre }}.</p>
+      <div class="alerta-error">{{ error }}</div>
+      <div class="causas">
+        <strong>Causas probables y sugerencias</strong>
+        <ul>
+          <li>El código (S/N) ya está vinculado a otra cuenta o fue escrito de forma incorrecta.</li>
+          <li>Verifica que el código impreso en el dispositivo coincida exactamente.</li>
+          <li>Comprueba que tu sesión siga activa e inténtalo nuevamente.</li>
+        </ul>
+      </div>
+      <div class="acciones">
+        <a mat-stroked-button routerLink="/dispositivos" class="btn-secundario">Cancelar</a>
+        <button mat-raised-button class="btn-primario" (click)="reintentar()">Reintentar vinculación</button>
+      </div>
+    </div>
+  } @else {
+    <h1>Vincular Dispositivo</h1>
+    <p class="sub">Conecta tu botón SOS o pulsera de emergencia a tu cuenta.</p>
+
+    <div class="tarjeta-ss">
+      <div class="busqueda"><mat-icon>bluetooth_searching</mat-icon> <strong>Dispositivos compatibles</strong> <small>{{ catalogo.length }} disponibles</small></div>
+      @for (c of catalogo; track c.tipo) {
+        <div class="item" [class.activo]="elegido?.tipo === c.tipo">
+          <mat-icon>{{ c.icono }}</mat-icon>
+          <div class="datos"><strong>{{ c.nombre }}</strong><small>{{ c.detalle }}</small></div>
+          @if (c.etiqueta) { <span class="badge badge-verde">{{ c.etiqueta }}</span> }
+          <button mat-stroked-button class="btn-secundario" (click)="vincular(c)">Vincular</button>
+        </div>
+      }
+    </div>
+
+    @if (elegido) {
+      <form [formGroup]="vinculoForm" (ngSubmit)="confirmar()" class="tarjeta-ss formulario">
+        <h3>Datos del dispositivo: {{ elegido.nombre }}</h3>
+        <p class="sub">Ingresa el código S/N impreso en el dispositivo para enlazarlo.</p>
+        <div class="campo">
+          <label>Nombre para identificarlo</label>
+          <input formControlName="nombre" />
+        </div>
+        <div class="campo">
+          <label>Código del dispositivo (S/N)</label>
+          <input formControlName="codigo_dispositivo" placeholder="Ej. SW-001" />
+          @if (vinculoForm.get('codigo_dispositivo')?.touched && vinculoForm.get('codigo_dispositivo')?.invalid) {
+            <span class="error-texto">Ingresa el código S/N (mínimo 4 caracteres).</span>
+          }
+        </div>
+        <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">{{ cargando ? 'Vinculando...' : 'Confirmar vinculación' }}</button>
+      </form>
+    }
+    <p class="nota">Mantén presionado el dispositivo durante 3 segundos para que sea detectable.</p>
+  }
+</section>

@@ -1,0 +1,100 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>{{ paso === 3 ? 'Suscripción a Nueva Zona' : 'Suscribir Nueva Zona' }}</h1>
+      <p>Selecciona el punto central en el mapa, define qué incidentes te interesan y por qué canales quieres recibir los avisos.</p>
+    </div>
+  </div>
+
+  <div class="pasos">
+    <div class="paso" [class.activo]="paso === 1" [class.hecho]="paso > 1"><span>{{ paso > 1 ? '✓' : '1' }}</span><div><strong>Ubicación y Geocerca</strong><small>Punto central y radio de acción</small></div></div>
+    <div class="paso" [class.activo]="paso === 2" [class.hecho]="paso > 2"><span>{{ paso > 2 ? '✓' : '2' }}</span><div><strong>Filtro de Incidentes</strong><small>Configuración de criticidad</small></div></div>
+    <div class="paso" [class.activo]="paso === 3"><span>3</span><div><strong>Canales y Horarios</strong><small>Push, WhatsApp y alertas</small></div></div>
+  </div>
+
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  @if (paso === 1) {
+    <div class="grid-2b">
+      <div class="tarjeta-ss">
+        <h3>Delimitación Geográfica</h3>
+        <p class="sub">Indica el punto de la zona que frecuentas o deseas vigilar activamente.</p>
+        <div class="campo">
+          <label>Punto central de referencia</label>
+          <div class="con-boton">
+            <input readonly [value]="latitud != null ? latitud!.toFixed(5) + ', ' + longitud!.toFixed(5) : 'Haz clic en el mapa o usa Localizar'" />
+            <button type="button" mat-raised-button class="btn-primario" (click)="localizar()">Localizar</button>
+          </div>
+        </div>
+        <label class="etq">Radio del perímetro de alerta</label>
+        <div class="acciones">
+          @for (r of [250, 500, 1000, 2000]; track r) {
+            <button type="button" class="chip" [class.activo]="radio === r" (click)="radio = r">{{ r >= 1000 ? (r / 1000) + ' km' : r + ' m' }}</button>
+          }
+        </div>
+        <div class="nota">Un radio de {{ radio }} metros equilibra notificaciones oportunas y reduce falsos avisos por saturación fuera de tu entorno caminable.</div>
+        <div class="campo">
+          <label>Etiqueta identificadora de la geocerca</label>
+          <input [(ngModel)]="etiqueta" placeholder="Ej. Ruta Universidad - Av. Colonial" />
+        </div>
+        <div class="campo">
+          <label>Zona de riesgo asociada (se detecta la más cercana)</label>
+          <select [(ngModel)]="idZona">
+            @for (z of zonas; track z.id_zona) { <option [ngValue]="z.id_zona">{{ z.nombre }} ({{ z.nivel_riesgo }})</option> }
+          </select>
+        </div>
+        <button type="button" mat-raised-button class="btn-primario" (click)="siguiente()">Continuar →</button>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3>Vista Cartográfica</h3>
+        <app-mapa-component [centro]="centro" [circulos]="circulos" [marcadores]="marcadores" [seleccionable]="true" (puntoElegido)="elegirEnMapa($event)" altura="320px"></app-mapa-component>
+        <div class="kpis chicos">
+          <div class="kpi"><small>SUPERFICIE CUBIERTA</small><strong>{{ superficie }} km²</strong></div>
+          <div class="kpi"><small>ZONA ASOCIADA</small><strong class="txt">{{ nombreZona }}</strong></div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (paso === 2) {
+    <div class="tarjeta-ss">
+      <h3>Paso 2: Categorías de incidentes y sensibilidad de notificación</h3>
+      <p class="sub">Selecciona qué tipos de incidentes quieres recibir para la zona «{{ etiqueta }}».</p>
+      @for (c of categorias; track c.clave) {
+        <label class="categoria" [class.activa]="c.activa">
+          <input type="checkbox" [(ngModel)]="c.activa" />
+          <span><strong>{{ c.titulo }}</strong><small>{{ c.detalle }}</small></span>
+        </label>
+      }
+      <div class="acciones fin">
+        <button type="button" mat-stroked-button class="btn-secundario" (click)="atras()">← Volver</button>
+        <button type="button" mat-raised-button class="btn-primario" (click)="siguiente()">Continuar a Canales y Horarios →</button>
+      </div>
+    </div>
+  }
+
+  @if (paso === 3) {
+    <div class="grid-2b">
+      <div class="tarjeta-ss">
+        <h3>Paso 3: Vías de Difusión y Programación</h3>
+        <p class="sub">Selecciona por cuáles medios deseas recibir los avisos.</p>
+        <label class="canal"><span><strong>Notificaciones Push Web / Móvil</strong><small>Alertas sonoras instantáneas en tu navegador y smartphone.</small></span><input type="checkbox" class="interruptor" [(ngModel)]="push" /></label>
+        <label class="canal"><span><strong>Alertas por WhatsApp / SMS</strong><small>Mensajes con enlace de geolocalización en vivo.</small></span><input type="checkbox" class="interruptor" [(ngModel)]="whatsapp" /></label>
+        <label class="canal"><span><strong>Correo Electrónico Semanal / Resumen</strong><small>Opcional: boletín con el consolidado de incidencias.</small></span><input type="checkbox" class="interruptor" [(ngModel)]="correo" /></label>
+      </div>
+      <div class="tarjeta-ss">
+        <h3>Horarios de monitoreo de alerta</h3>
+        <p class="sub">Establece en qué momentos del día requieres que el cuadrante emita avisos críticos.</p>
+        <div class="fila-horas">
+          <div class="campo"><label>Desde</label><input type="time" [(ngModel)]="horaDesde" /></div>
+          <div class="campo"><label>Hasta</label><input type="time" [(ngModel)]="horaHasta" /></div>
+        </div>
+        <div class="acciones fin">
+          <button type="button" mat-stroked-button class="btn-secundario" (click)="atras()">← Volver</button>
+          <button type="button" mat-raised-button class="btn-primario" (click)="guardar()" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Suscribirme a la zona' }}</button>
+        </div>
+      </div>
+    </div>
+  }
+</section>
