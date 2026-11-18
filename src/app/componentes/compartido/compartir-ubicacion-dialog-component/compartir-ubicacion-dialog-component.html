@@ -1,0 +1,38 @@
+<h2 mat-dialog-title class="titulo"><mat-icon>share_location</mat-icon> Compartir Ubicación en Tiempo Real</h2>
+<mat-dialog-content>
+  <div class="aviso">
+    <mat-icon>info</mat-icon>
+    <div>
+      <strong>¿Deseas confirmar el inicio del uso de tu ubicación?</strong>
+      <p>El sistema iniciará la transmisión de tu posición GPS mientras dure el seguimiento.</p>
+    </div>
+  </div>
+
+  <p class="etiqueta">CONTACTOS DE CONFIANZA DESTINATARIOS ({{ datos.contactos.length }} registrados)</p>
+  @for (c of datos.contactos; track c.id_contacto) {
+    <div class="contacto">
+      <span class="avatar">{{ (c.nombres || '?').charAt(0) }}</span>
+      <div class="datos">
+        <strong>{{ c.nombres }} {{ c.apellidos }}</strong>
+        <small>{{ c.parentesco }} · {{ c.telefono }}</small>
+      </div>
+      <span class="listo">Listo para recibir</span>
+    </div>
+  } @empty {
+    <p class="vacio">Aún no tienes contactos. Puedes agregarlos desde la pantalla Contactos.</p>
+  }
+
+  <div class="campo">
+    <label>Duración del envío</label>
+    <select [(ngModel)]="minutos">
+      @for (o of opciones; track o.valor) {
+        <option [ngValue]="o.valor">{{ o.texto }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="acciones-dialogo">
+    <button mat-button class="btn-secundario" (click)="cancelar()">Cancelar</button>
+    <button mat-raised-button class="btn-primario" (click)="confirmar()">Confirmar e iniciar transmisión</button>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,75 @@
+.icono {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+.icono mat-icon {
+  color: var(--ss-azul);
+  background: #e3eefa;
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: content-box;
+}
+.icono.peligro mat-icon {
+  color: var(--ss-rojo);
+  background: #fdeceb;
+}
+h2 {
+  text-align: center;
+}
+.mensaje {
+  text-align: center;
+  color: var(--ss-gris);
+  font-size: 14px;
+  margin-top: 0;
+}
+.detalle {
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-weight: 600;
+  color: var(--ss-azul-oscuro);
+}
+.advertencia {
+  background: #fff6e0;
+  border: 1px solid #f1dca0;
+  color: #8a6100;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.subtitulo {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin: 14px 0 6px;
+  text-transform: uppercase;
+}
+.opcion {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid var(--ss-borde);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.texto {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Roboto, sans-serif;
+  resize: vertical;
+}
+.error {
+  color: var(--ss-rojo);
+  font-size: 12px;
+  margin: 4px 0 0;
+}
