@@ -1,0 +1,76 @@
+.buscar {
+  flex: 1;
+  min-width: 240px;
+}
+.tabla-material {
+  width: 100%;
+}
+.gris {
+  color: var(--ss-gris);
+}
+.persona {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ss-azul-claro);
+  color: var(--ss-azul-oscuro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.avatar.grande {
+  width: 44px;
+  height: 44px;
+  background: #e6a817;
+  color: #fff;
+}
+.fila {
+  cursor: pointer;
+}
+.fila:hover {
+  background: #f7f9fc;
+}
+.fila.seleccionada {
+  background: #eaf2fb;
+}
+.expediente {
+  background: var(--ss-fondo);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.fila-dato {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+.fila-dato span {
+  color: var(--ss-gris);
+}
+.etq {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+}
+.motivo {
+  background: #fff6e0;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+}
+.ancho {
+  width: 100%;
+}
+.espacio {
+  margin-top: 8px;
+}

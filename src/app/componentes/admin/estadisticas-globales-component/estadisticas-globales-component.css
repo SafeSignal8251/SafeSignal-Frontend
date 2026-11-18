@@ -1,0 +1,62 @@
+.publicada {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #e8f6ee;
+  border: 1px solid #b9e2c8;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.publicada mat-icon { color: #1e9a5e; }
+.publicada div { flex: 1; }
+.publicada p { margin: 2px 0 0; font-size: 13px; color: var(--ss-gris); }
+h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 17px; }
+.num {
+  background: var(--ss-azul-oscuro);
+  color: #fff;
+  border-radius: 6px;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.fila { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.fila3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.etq { font-size: 11px; font-weight: 700; letter-spacing: 0.4px; color: var(--ss-gris); margin: 6px 0; }
+.cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.cat {
+  border: 1px solid var(--ss-borde);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.cat.activa { border: 2px solid var(--ss-azul); background: #eaf2fb; }
+.espacio { margin-top: 14px; }
+.variable {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--ss-fondo);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.variable span { display: flex; flex-direction: column; font-size: 14px; }
+.variable small { color: var(--ss-gris); font-family: monospace; font-size: 11px; }
+.preview { background: var(--ss-fondo); border-radius: 10px; padding: 12px; }
+.barras { display: flex; align-items: flex-end; gap: 10px; height: 110px; margin: 12px 0 6px; }
+.col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+.barra-v { width: 100%; background: var(--ss-azul); border-radius: 4px 4px 0 0; min-height: 4px; }
+.gris { color: var(--ss-gris); }
+.pub { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eef1f5; gap: 8px; }
+.pub div { display: flex; flex-direction: column; }
+.pub small { color: var(--ss-gris); }
+@media (max-width: 900px) { .fila, .fila3, .cats { grid-template-columns: 1fr; } }

@@ -1,0 +1,97 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <h1>Crear Nueva Métrica y Reporte Estadístico</h1>
+    <div class="acciones">
+      <button mat-stroked-button class="btn-secundario" (click)="descartar()">Descartar Cambios</button>
+      <button mat-raised-button class="btn-primario" (click)="publicar()" [disabled]="guardando">{{ guardando ? 'Publicando...' : 'Publicar Estadística' }}</button>
+    </div>
+  </div>
+
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  @if (publicada) {
+    <div class="publicada">
+      <mat-icon>check_circle</mat-icon>
+      <div>
+        <strong>¡Reporte Estadístico Publicado Exitosamente!</strong>
+        <p>{{ publicada.titulo }} · Código {{ publicada.codigo }}</p>
+      </div>
+      <button mat-stroked-button class="btn-secundario" (click)="descargar(publicada)">Descargar CSV verificado</button>
+    </div>
+  }
+
+  <form [formGroup]="metricaForm" class="grid-2">
+    <div class="pila">
+      <div class="tarjeta-ss">
+        <h3><span class="num">1</span> Información General</h3>
+        <div class="fila">
+          <div class="campo"><label>Título oficial del informe estadístico</label><input formControlName="titulo" placeholder="Consolidado de Incidencias Nocturnas y Despliegue Serenazgo" />
+            @if (metricaForm.get('titulo')?.touched && metricaForm.get('titulo')?.invalid) { <span class="error-texto">El título es obligatorio</span> }
+          </div>
+          <div class="campo"><label>Código autogenerado</label><input [value]="codigo" readonly /></div>
+        </div>
+        <div class="campo"><label>Descripción u objetivo de auditoría</label><textarea formControlName="descripcion" rows="3" placeholder="Análisis cuantitativo de incidentes durante la franja crítica de Lima Metropolitana."></textarea>
+          @if (metricaForm.get('descripcion')?.touched && metricaForm.get('descripcion')?.invalid) { <span class="error-texto">La descripción es obligatoria</span> }
+        </div>
+        <p class="etq">CATEGORÍA TEMÁTICA PRINCIPAL</p>
+        <div class="cats">
+          @for (c of categorias; track c) {
+            <label class="cat" [class.activa]="metricaForm.get('categoria')?.value === c"><input type="radio" formControlName="categoria" [value]="c" /> {{ c }}</label>
+          }
+        </div>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3><span class="num">2</span> Territorial y Cuadrantes</h3>
+        <p class="etq">DISTRITOS DE LIMA METROPOLITANA INCLUIDOS</p>
+        <div class="acciones">
+          @for (d of distritos; track d) {
+            <button type="button" class="chip" [class.activo]="seleccionados.includes(d)" (click)="alternarDistrito(d)">{{ d }} {{ seleccionados.includes(d) ? '×' : '+' }}</button>
+          } @empty {
+            <span class="sub">Aún no hay incidentes con distrito registrado.</span>
+          }
+        </div>
+        <div class="campo espacio"><label>Radio perimetral / geocerca dinámica</label>
+          <select formControlName="radio"><option>Geocerca estricta por límite distrital INEI</option><option>Radio fijo de 500 m</option><option>Radio fijo de 1 km</option></select></div>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3><span class="num">3</span> Segmentación Horaria</h3>
+        <div class="fila3">
+          <div class="campo"><label>Rango de análisis</label><select formControlName="rango"><option>Últimos 7 días</option><option>Últimos 30 días móviles</option><option>Últimos 90 días</option></select></div>
+          <div class="campo"><label>Granularidad temporal</label><select formControlName="granularidad"><option>Bloques horarios (cada 3 horas)</option><option>Por hora</option><option>Por día</option></select></div>
+          <div class="campo"><label>Franja horaria crítica</label><input formControlName="franja" /></div>
+        </div>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3><span class="num">4</span> Variables y Fórmulas de Cálculo</h3>
+        @for (v of variables; track v.clave) {
+          <label class="variable"><input type="checkbox" [checked]="v.activa" (change)="v.activa = !v.activa" /><span><strong>{{ v.titulo }}</strong><small>Fórmula: {{ v.formula }}</small></span></label>
+        }
+      </div>
+    </div>
+
+    <div class="pila">
+      <div class="tarjeta-ss">
+        <h3>Previsualización en Tiempo Real</h3>
+        <p class="sub">Vista interactiva del panel a generar</p>
+        <div class="preview">
+          <strong>{{ metricaForm.value.titulo || 'Título del informe' }}</strong>
+          <div class="barras">
+            @for (b of barras; track b.tipo) {
+              <div class="col"><div class="barra-v" [style.height.%]="b.pct"></div><small>{{ b.total }}</small></div>
+            } @empty { <small class="gris">Sin datos de incidentes</small> }
+          </div>
+          <small class="gris">Cobertura: {{ seleccionados.length || 'todos los' }} distritos · {{ incidentes.length }} incidentes indexados</small>
+        </div>
+      </div>
+      <div class="tarjeta-ss">
+        <h3>Estadísticas publicadas</h3>
+        @for (e of publicadas; track e.id_estadistica) {
+          <div class="pub"><div><strong>{{ e.titulo }}</strong><small>{{ e.codigo }} · {{ e.fecha_publicacion | date: 'dd/MM/yyyy' }}</small></div><button type="button" class="boton-enlace" (click)="descargar(e)">CSV</button></div>
+        } @empty { <p class="vacio">Aún no hay estadísticas publicadas.</p> }
+      </div>
+    </div>
+  </form>
+</section>

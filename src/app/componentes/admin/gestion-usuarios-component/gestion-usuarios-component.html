@@ -1,0 +1,84 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Gestión de Usuarios</h1>
+      <p>Gestión de credenciales, verificación de identidad y control de sanciones de la red comunitaria.</p>
+    </div>
+  </div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="kpis">
+    <div class="kpi"><small>Total Registrados</small><strong>{{ total }}</strong></div>
+    <div class="kpi verde"><small>Cuentas Activas</small><strong>{{ activos }}</strong></div>
+    <div class="kpi rojo"><small>Cuentas Suspendidas</small><strong>{{ suspendidos }}</strong></div>
+    <div class="kpi"><small>Administradores</small><strong>{{ administradores }}</strong></div>
+  </div>
+
+  <div class="filtros tarjeta-ss">
+    <input [(ngModel)]="texto" (ngModelChange)="filtrar()" placeholder="Filtrar por nombre, DNI o correo..." class="buscar" />
+    <select [(ngModel)]="distrito" (ngModelChange)="filtrar()">
+      <option value="">Todos los Distritos</option>
+      @for (d of distritos; track d) { <option [value]="d">{{ d }}</option> }
+    </select>
+    <select [(ngModel)]="estado" (ngModelChange)="filtrar()">
+      <option value="">Todos los Estados</option>
+      <option value="ACTIVA">Activa</option>
+      <option value="SUSPENDIDA">Suspendida</option>
+    </select>
+  </div>
+
+  <div class="grid-2">
+    <div class="tarjeta-ss">
+      <h2>● Padrón Activo de Ciudadanos</h2>
+      <table mat-table [dataSource]="dataSource" matSort class="tabla-material">
+        <ng-container matColumnDef="nombres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>CIUDADANO / DNI</th>
+          <td mat-cell *matCellDef="let u"><div class="persona"><span class="avatar">{{ iniciales(u) }}</span><div><strong>{{ u.nombres }} {{ u.apellidos }}</strong><br /><small class="gris">DNI: {{ u.dni }}</small></div></div></td>
+        </ng-container>
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef>CONTACTO / DISTRITO</th>
+          <td mat-cell *matCellDef="let u">{{ u.telefono || '—' }}<br /><small class="gris">{{ u.distrito }}</small></td>
+        </ng-container>
+        <ng-container matColumnDef="fecha_registro">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>REGISTRO</th>
+          <td mat-cell *matCellDef="let u">{{ u.fecha_registro | date: 'dd MMM yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</th>
+          <td mat-cell *matCellDef="let u"><span class="badge" [class]="'badge ' + (u.estado === 'ACTIVA' ? 'badge-verde' : 'badge-rojo')">{{ u.estado === 'ACTIVA' ? 'Activo' : 'Suspendido' }}</span> @if (u.rol === 'ADMIN') { <span class="badge badge-azul">Admin</span> }</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="fila" [class.seleccionada]="seleccionado?.id_usuario === row.id_usuario" (click)="seleccionar(row)"></tr>
+      </table>
+      @if (dataSource.filteredData.length === 0) { <p class="vacio">No se encontraron usuarios.</p> }
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Página de usuarios"></mat-paginator>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h3>Auditoría de Cuenta</h3>
+      @if (seleccionado) {
+        <p class="sub">Expediente del usuario</p>
+        <div class="expediente">
+          <div class="persona"><span class="avatar grande">{{ iniciales(seleccionado) }}</span>
+            <div><strong>{{ seleccionado.nombres }} {{ seleccionado.apellidos }}</strong><br /><small class="gris">DNI {{ seleccionado.dni }} · {{ seleccionado.distrito }}</small></div></div>
+          <p class="fila-dato"><span>Correo</span><b>{{ seleccionado.correo }}</b></p>
+          <p class="fila-dato"><span>Rol</span><b>{{ seleccionado.rol }}</b></p>
+          <p class="fila-dato"><span>Estado</span><b>{{ seleccionado.estado }}</b></p>
+          <p class="fila-dato"><span>Registro</span><b>{{ seleccionado.fecha_registro | date: 'dd/MM/yyyy' }}</b></p>
+        </div>
+        @if (seleccionado.estado === 'SUSPENDIDA') {
+          <p class="etq">MOTIVO DE SUSPENSIÓN</p>
+          <p class="motivo">{{ seleccionado.motivo_suspension || 'No registrado' }}</p>
+          <button mat-raised-button class="btn-primario ancho" (click)="reactivar(seleccionado)">Reactivar cuenta</button>
+        } @else if (seleccionado.rol !== 'ADMIN') {
+          <button mat-raised-button class="btn-peligro ancho" (click)="suspender(seleccionado)">Suspender Cuenta</button>
+        }
+        <a mat-stroked-button routerLink="/admin/comunicacion" class="btn-secundario ancho espacio">Enviar Notificación</a>
+      } @else {
+        <p class="vacio">Selecciona un usuario de la tabla para auditar su cuenta.</p>
+      }
+    </div>
+  </div>
+</section>
