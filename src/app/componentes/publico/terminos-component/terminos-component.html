@@ -1,0 +1,20 @@
+<app-publico-header-component></app-publico-header-component>
+
+<main class="fondo">
+  <article class="tarjeta">
+    <h1>Términos y Condiciones</h1>
+    <p class="actualizado">Última actualización: {{ actualizado }}</p>
+
+    @for (s of secciones; track s.titulo) {
+      <section>
+        <h2>{{ s.titulo }}</h2>
+        <p>{{ s.texto }}</p>
+      </section>
+    }
+
+    <div class="acciones">
+      <a mat-raised-button class="btn-primario" routerLink="/registro">Volver al registro</a>
+      <a mat-stroked-button routerLink="/inicio">Ir al inicio</a>
+    </div>
+  </article>
+</main>
