@@ -1,0 +1,69 @@
+.vivo {
+  color: var(--ss-rojo);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.sync {
+  background: #fff;
+  border: 1px solid var(--ss-borde);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: monospace;
+}
+.cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.cab h2 {
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.punto {
+  width: 9px;
+  height: 9px;
+  background: var(--ss-rojo);
+  border-radius: 50%;
+}
+.tabla-material {
+  width: 100%;
+}
+.mono {
+  font-family: monospace;
+  color: var(--ss-gris);
+}
+.rojo {
+  color: var(--ss-rojo);
+}
+.gris {
+  color: var(--ss-gris);
+}
+.etq {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ss-gris);
+  margin: 14px 0 6px;
+}
+.zona {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--ss-borde);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.p {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 6px;
+}

@@ -1,0 +1,52 @@
+<section class="pagina">
+  <div class="pagina-titulo"><h1>Centro de Comunicación</h1></div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="grid-2">
+    <div class="tarjeta-ss">
+      <h2>Redactar nuevo aviso</h2>
+
+      <p class="etq">Zona de alcance</p>
+      <div class="acciones">
+        <button class="chip" [class.activo]="idZona === null" (click)="idZona = null">Todos los distritos</button>
+        @for (z of zonas; track z.id_zona) {
+          <button class="chip" [class.activo]="idZona === z.id_zona" (click)="idZona = z.id_zona">{{ z.nombre }}</button>
+        }
+      </div>
+
+      <p class="etq">Severidad</p>
+      <div class="acciones">
+        @for (s of severidades; track s.clave) {
+          <button class="chip" [class.activo]="severidad === s.clave" (click)="severidad = s.clave">{{ s.texto }}</button>
+        }
+      </div>
+
+      <p class="etq">Mensaje</p>
+      <textarea [(ngModel)]="texto" [maxlength]="maximo" rows="5" class="area" placeholder="Escribe el comunicado para los ciudadanos..."></textarea>
+      <small class="cont">{{ texto.length }} / {{ maximo }}</small>
+
+      <p class="etq">Vista previa</p>
+      <div class="previa">
+        <small>Así lo verá el usuario</small>
+        <div class="push"><span class="logo"></span><div><strong>SafeSignal · Aviso de zona</strong><p>{{ texto || 'Tu mensaje aparecerá aquí...' }}</p></div></div>
+      </div>
+
+      <button mat-raised-button class="btn-peligro ancho" (click)="enviar()" [disabled]="enviando">{{ enviando ? 'Enviando...' : 'Enviar aviso' }}</button>
+    </div>
+
+    <div class="tarjeta-ss">
+      <h2>Historial de avisos</h2>
+      @for (h of historial; track $index) {
+        <div class="aviso">
+          <div class="cab"><strong>{{ h.alcance }}</strong><span class="badge badge-verde">Entregado</span></div>
+          <small class="gris">{{ hace(h.fecha) }} · Alcance: {{ h.cantidad }} usuarios</small>
+          <p>{{ h.mensaje }}</p>
+        </div>
+      } @empty {
+        <p class="vacio">Aún no se enviaron avisos.</p>
+      }
+    </div>
+  </div>
+</section>

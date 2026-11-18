@@ -1,0 +1,75 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Umbrales de Riesgo</h1>
+      <p>Ajuste de parámetros y límites para activación de alertas automáticas.</p>
+    </div>
+    <div class="acciones">
+      <button mat-stroked-button class="btn-secundario" (click)="restablecer()"><mat-icon>restart_alt</mat-icon> Restablecer Valores</button>
+      <button mat-raised-button class="btn-primario" (click)="guardar()" [disabled]="!zona"><mat-icon>save</mat-icon> Guardar Cambios</button>
+    </div>
+  </div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <div class="buscador">
+    <input [(ngModel)]="busqueda" placeholder="Buscar ubicación..." />
+    <select [ngModel]="zona?.id_zona" (ngModelChange)="elegirPorId($event)">
+      @for (z of filtradas; track z.id_zona) { <option [ngValue]="z.id_zona">{{ z.nombre }} — {{ z.nivel_riesgo }}</option> }
+    </select>
+  </div>
+
+  @if (zona) {
+    <div class="niveles">
+      <div class="nivel alto"><small>RIESGO ALTO</small><strong>≥ {{ altoMin }} <span>incid/km²</span></strong><p>Disparo automático de alerta barrial</p></div>
+      <div class="nivel medio"><small>RIESGO MEDIO</small><strong>{{ medioMin }} – {{ medioMax }} <span>incid/km²</span></strong><p>Patrullaje preventivo de Serenazgo</p></div>
+      <div class="nivel bajo"><small>RIESGO BAJO</small><strong>0 – {{ bajoMax }} <span>incid/km²</span></strong><p>Monitoreo estándar en cuadrante</p></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="tarjeta-ss">
+        <h2>Calibración de Límites y Disparadores</h2>
+        <p class="sub">Establece los valores a partir de los cuales se reclasifica un cuadrante. Zona seleccionada: <strong>{{ zona.nombre }}</strong> (nivel actual: {{ zona.nivel_riesgo }}).</p>
+
+        <div class="caja">
+          <div class="cab"><strong>Límite de Activación de Alerta Crítica</strong><span class="badge badge-rojo">≥ {{ altoMin }} incidentes / km²</span></div>
+          <input type="range" min="5" max="30" [(ngModel)]="altoMin" class="slider" />
+          <div class="cab"><small>5 incid. (Alta sensibilidad)</small><small>Actual: {{ altoMin }}</small><small>30 incid. (Tolerante)</small></div>
+        </div>
+
+        <div class="caja">
+          <div class="cab"><strong>Límite superior del riesgo bajo</strong><span class="badge badge-verde">0 – {{ bajoMax }}</span></div>
+          <input type="range" min="1" max="12" [(ngModel)]="bajoMax" class="slider" />
+        </div>
+
+        <div class="dos">
+          <div>
+            <p class="etq">Ventana temporal de análisis</p>
+            <div class="seg">
+              <button [class.activo]="ventana === 1" (click)="ventana = 1">24 Horas</button>
+              <button [class.activo]="ventana === 7" (click)="ventana = 7">7 Días</button>
+            </div>
+          </div>
+          <div>
+            <p class="etq">Radio de geocerca de afectación</p>
+            <div class="seg">
+              <button [class.activo]="radioGeocerca === 500" (click)="radioGeocerca = 500">500 metros</button>
+              <button [class.activo]="radioGeocerca === 1000" (click)="radioGeocerca = 1000">1.0 km</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta-ss">
+        <h3>Impacto en Red C5 <span class="badge badge-verde">En Vivo</span></h3>
+        <div class="impacto"><span>Cuadrantes Críticos</span><strong class="rojo">{{ criticas }} / {{ zonas.length }}</strong></div>
+        <div class="barra"><div class="relleno rojo-f" [style.width.%]="zonas.length ? (criticas / zonas.length) * 100 : 0"></div></div>
+        <div class="impacto"><span>Cuadrantes Estables</span><strong class="verde">{{ estables }} / {{ zonas.length }}</strong></div>
+        <div class="barra"><div class="relleno verde-f" [style.width.%]="zonas.length ? (estables / zonas.length) * 100 : 0"></div></div>
+      </div>
+    </div>
+  } @else {
+    <div class="tarjeta-ss vacio">No hay zonas de riesgo registradas todavía.</div>
+  }
+</section>

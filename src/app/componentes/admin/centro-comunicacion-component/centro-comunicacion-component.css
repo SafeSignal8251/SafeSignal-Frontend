@@ -1,0 +1,30 @@
+.etq {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+.area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: Roboto, sans-serif;
+}
+.cont { display: block; text-align: right; color: var(--ss-gris); }
+.previa { background: var(--ss-fondo); border-radius: 10px; padding: 12px; margin-bottom: 16px; }
+.push {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 6px;
+}
+.push p { margin: 2px 0 0; font-size: 13px; color: var(--ss-gris); }
+.logo { width: 34px; height: 34px; background: #d93f31; border-radius: 6px; flex-shrink: 0; }
+.ancho { width: 100%; }
+.aviso { padding: 10px 0; border-bottom: 1px solid #eef1f5; }
+.aviso p { margin: 4px 0 0; font-size: 13px; }
+.cab { display: flex; justify-content: space-between; align-items: center; }
+.gris { color: var(--ss-gris); }
