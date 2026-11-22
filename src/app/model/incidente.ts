@@ -11,4 +11,6 @@ export class Incidente {
   distrito: string;
   id_zona: number;
   id_usuario: number;
+  // El backend lo marca true cuando el reporte ya fue validado por la comunidad o verificado por el admin
+  validado: boolean;
 }
