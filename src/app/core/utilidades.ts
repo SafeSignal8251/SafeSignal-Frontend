@@ -23,6 +23,18 @@ export function distanciaMetros(lat1: number, lng1: number, lat2: number, lng2: 
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
+// Distritos de Lima Metropolitana (43) y de la Provincia Constitucional del Callao (7).
+// Una sola lista para registro, perfil, reportes y búsqueda de direcciones.
+export const DISTRITOS_LIMA: string[] = [
+  'Ancón', 'Ate', 'Barranco', 'Bellavista', 'Breña', 'Callao', 'Carabayllo', 'Carmen de la Legua Reynoso', 'Chaclacayo',
+  'Chorrillos', 'Cieneguilla', 'Comas', 'El Agustino', 'Independencia', 'Jesús María', 'La Molina', 'La Perla', 'La Punta',
+  'La Victoria', 'Lima Cercado', 'Lince', 'Los Olivos', 'Lurigancho-Chosica', 'Lurín', 'Magdalena del Mar', 'Mi Perú',
+  'Miraflores', 'Pachacámac', 'Pucusana', 'Pueblo Libre', 'Puente Piedra', 'Punta Hermosa', 'Punta Negra', 'Rímac',
+  'San Bartolo', 'San Borja', 'San Isidro', 'San Juan de Lurigancho', 'San Juan de Miraflores', 'San Luis',
+  'San Martín de Porres', 'San Miguel', 'Santa Anita', 'Santa María del Mar', 'Santa Rosa', 'Santiago de Surco',
+  'Surquillo', 'Ventanilla', 'Villa El Salvador', 'Villa María del Triunfo',
+];
+
 // Centro de Lima: se usa cuando el navegador no da la ubicación
 export const LIMA: [number, number] = [-12.0464, -77.0428];
 
@@ -47,6 +59,20 @@ export function colorRiesgo(nivel: string | null | undefined): string {
   if (n === 'ALTO') { return '#c0392b'; }
   if (n === 'MEDIO') { return '#e6a817'; }
   return '#1e9a5e';
+}
+
+// Estado de un reporte comunitario: color propio para PENDIENTE, VERIFICADO y ELIMINADO
+export function claseEstadoReporte(estado: string | null | undefined): string {
+  const e = (estado ?? '').toUpperCase();
+  if (e === 'VERIFICADO') { return 'badge-verde'; }
+  if (e === 'ELIMINADO') { return 'badge-eliminado'; }
+  return 'badge-amarillo';
+}
+export function textoEstadoReporte(estado: string | null | undefined): string {
+  const e = (estado ?? '').toUpperCase();
+  if (e === 'VERIFICADO') { return 'Verificado'; }
+  if (e === 'ELIMINADO') { return 'Eliminado'; }
+  return 'Pendiente';
 }
 
 // Preferencias que el backend no guarda (se dejan en el navegador)
