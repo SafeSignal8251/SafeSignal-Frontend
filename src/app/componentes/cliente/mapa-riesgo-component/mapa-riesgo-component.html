@@ -28,9 +28,13 @@
           }
         </p>
       </div>
-      @if (alternativa) {
-        <button mat-raised-button class="btn-primario" (click)="aceptarAlternativa()">Aceptar Ruta Segura</button>
-      }
+      <div class="acciones">
+        @if (alternativa) {
+          <button mat-raised-button class="btn-primario" (click)="aceptarAlternativa()">Aceptar Ruta Segura</button>
+          <button mat-stroked-button class="btn-secundario" (click)="verDesvio()">Ver desvío</button>
+        }
+        <button mat-stroked-button class="btn-secundario" (click)="modificarDestino()">Modificar Destino</button>
+      </div>
     </div>
   }
 
@@ -38,7 +42,10 @@
     <div class="pila">
       <div class="filtros">
         <button class="chip" [class.activo]="filtro === 'todos'" (click)="cambiarFiltro('todos')">Todos los incidentes ({{ incidentes.length }})</button>
+        <button class="chip" [class.activo]="filtro === 'recientes'" (click)="cambiarFiltro('recientes')">Últimas 6 horas</button>
         <button class="chip" [class.activo]="filtro === 'alto'" (click)="cambiarFiltro('alto')">Riesgo alto</button>
+        <button class="chip" [class.activo]="filtro === 'medio'" (click)="cambiarFiltro('medio')">Riesgo medio</button>
+        <button class="chip" [class.activo]="filtro === 'bajo'" (click)="cambiarFiltro('bajo')">Riesgo bajo</button>
         <button class="chip" [class.activo]="filtro === 'robo'" (click)="cambiarFiltro('robo')">Solo Robo / Asalto</button>
       </div>
 
@@ -66,7 +73,11 @@
       </div>
 
       @if (rutaActiva) {
-        <button mat-raised-button class="btn-primario" (click)="iniciarTrayecto()">Iniciar trayecto seguro ahora</button>
+        <div class="acciones">
+          <button mat-raised-button class="btn-primario" (click)="iniciarTrayecto()">Iniciar trayecto seguro ahora</button>
+          <button mat-stroked-button class="btn-secundario" (click)="guardarRuta()">Guardar esta ruta</button>
+          <button mat-stroked-button class="btn-secundario" (click)="modificarDestino()">Modificar Destino</button>
+        </div>
       }
 
       <div class="tarjeta-ss">
@@ -96,16 +107,32 @@
           <div class="campo">
             <label>Punto de origen</label>
             <div class="con-boton">
-              <input formControlName="origen" placeholder="Ej. Av. Larco 740, Miraflores" />
+              <input formControlName="origen" placeholder="Ej. Av. Larco 740, Miraflores" autocomplete="off" (input)="escribirOrigen()" (blur)="buscadorOrigen.cerrar()" />
               <button type="button" class="chip" (click)="usarMiUbicacion()">Actual</button>
             </div>
+            @if (buscadorOrigen.buscando) { <span class="buscando-dir">Buscando direcciones...</span> }
+            @if (buscadorOrigen.sugerencias.length) {
+              <ul class="sugerencias">
+                @for (s of buscadorOrigen.sugerencias; track s.lat + ',' + s.lng) {
+                  <li><button type="button" (mousedown)="elegirOrigenSugerido(s)">{{ s.texto }}</button></li>
+                }
+              </ul>
+            }
             @if (rutaForm.get('origen_latitud')?.value !== null) {
               <small class="coord">{{ rutaForm.value.origen_latitud | number: '1.4-4' }}, {{ rutaForm.value.origen_longitud | number: '1.4-4' }}</small>
             }
           </div>
           <div class="campo">
-            <label>Destino asistido (haz clic en el mapa para marcarlo)</label>
-            <input formControlName="destino" placeholder="Ej. Av. Javier Prado Este 2400, San Borja" />
+            <label>Destino (escribe una dirección o haz clic en el mapa)</label>
+            <input formControlName="destino" placeholder="Ej. Av. Javier Prado Este 2400, San Borja" autocomplete="off" (input)="escribirDestino()" (blur)="buscadorDestino.cerrar()" />
+            @if (buscadorDestino.buscando) { <span class="buscando-dir">Buscando direcciones...</span> }
+            @if (buscadorDestino.sugerencias.length) {
+              <ul class="sugerencias">
+                @for (s of buscadorDestino.sugerencias; track s.lat + ',' + s.lng) {
+                  <li><button type="button" (mousedown)="elegirDestinoSugerido(s)">{{ s.texto }}</button></li>
+                }
+              </ul>
+            }
             @if (rutaForm.get('destino_latitud')?.value !== null) {
               <small class="coord">{{ rutaForm.value.destino_latitud | number: '1.4-4' }}, {{ rutaForm.value.destino_longitud | number: '1.4-4' }}</small>
             }
