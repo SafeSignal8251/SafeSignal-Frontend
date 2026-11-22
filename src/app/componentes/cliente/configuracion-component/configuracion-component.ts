@@ -8,7 +8,8 @@ import { UsuarioService } from '../../../services/usuario-service';
 import { DispositivoService } from '../../../services/dispositivo-service';
 import { DispositivoIoT } from '../../../model/dispositivo-iot';
 import { mensajeError } from '../../../core/mensajes';
-import { guardarPref, leerPref } from '../../../core/utilidades';
+import { guardarPref, leerPref, obtenerUbicacion } from '../../../core/utilidades';
+import { LugarSeguro, SeguimientoAutomaticoService } from '../../../services/seguimiento-automatico-service';
 
 @Component({
   imports: [RouterLink, FormsModule, MatButton],
@@ -21,6 +22,12 @@ export class ConfiguracionComponent {
   usuarioService: UsuarioService = inject(UsuarioService);
   dispositivoService: DispositivoService = inject(DispositivoService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  seguimientoAuto: SeguimientoAutomaticoService = inject(SeguimientoAutomaticoService);
+
+  // ---- Lugares seguros (HU-23) ----
+  lugares: LugarSeguro[] = [];
+  nombreLugar: string = '';
+  radioLugar: number = 200;
 
   // ---- Mensaje SOS (se guarda en el backend) ----
   readonly maxMensaje: number = 200;
@@ -30,9 +37,9 @@ export class ConfiguracionComponent {
   // ---- Preferencias que el backend no guarda (quedan en este navegador) ----
   horas: number = 0;
   minutos: number = 35;
-  seguimientoAutomatico: boolean = true;
-  ahorroBateria: boolean = true;
-  alarmaSilenciosa: boolean = true;
+  seguimientoAutomatico: boolean = false;
+  ahorroBateria: boolean = false;
+  alarmaSilenciosa: boolean = false;
 
   // ---- Dispositivos y anomalías (se guardan en el backend) ----
   dispositivos: DispositivoIoT[] = [];
@@ -73,9 +80,10 @@ export class ConfiguracionComponent {
     const total = Number(leerPref('tiempo_monitoreo', 35));
     this.horas = Math.floor(total / 60);
     this.minutos = total % 60;
-    this.seguimientoAutomatico = leerPref('seguimiento_automatico', true);
-    this.ahorroBateria = leerPref('ahorro_bateria', true);
-    this.alarmaSilenciosa = leerPref('alarma_silenciosa', true);
+    this.seguimientoAutomatico = leerPref('seguimiento_automatico', false);
+    this.ahorroBateria = leerPref('ahorro_bateria', false);
+    this.alarmaSilenciosa = leerPref('alarma_silenciosa', false);
+    this.lugares = this.seguimientoAuto.lugares();
   }
 
   private fallo(e: any) {
@@ -114,7 +122,37 @@ export class ConfiguracionComponent {
     guardarPref('ahorro_bateria', this.ahorroBateria);
     guardarPref('alarma_silenciosa', this.alarmaSilenciosa);
     guardarPref('seguimiento_automatico', this.seguimientoAutomatico);
+    this.seguimientoAuto.actualizar();
+    if (this.seguimientoAutomatico && this.lugares.length === 0) {
+      this.ok('Seguimiento automático activado. Marca al menos un lugar seguro para que funcione.');
+      return;
+    }
     this.ok('Preferencias guardadas en este navegador.');
+  }
+
+  // Marca la ubicación actual como lugar seguro (Casa, Trabajo...)
+  marcarLugarSeguro() {
+    const nombre = this.nombreLugar.trim();
+    if (nombre === '') {
+      this.fallo({ error: { message: 'Ponle un nombre al lugar (por ejemplo Casa o Trabajo).' } });
+      return;
+    }
+    obtenerUbicacion().then((u) => {
+      if (!u.real) {
+        this.fallo({ error: { message: 'No se pudo obtener tu ubicación. Activa el permiso de ubicación del navegador.' } });
+        return;
+      }
+      this.lugares = [...this.lugares, { nombre, lat: u.lat, lng: u.lng, radio: Number(this.radioLugar) }];
+      this.seguimientoAuto.guardarLugares(this.lugares);
+      this.nombreLugar = '';
+      this.ok('Lugar seguro guardado: ' + nombre + '.');
+    });
+  }
+
+  quitarLugarSeguro(i: number) {
+    this.lugares = this.lugares.filter((_, k) => k !== i);
+    this.seguimientoAuto.guardarLugares(this.lugares);
+    this.cdr.markForCheck();
   }
 
   guardarSensores() {
