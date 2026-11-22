@@ -1,0 +1,72 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Reporte Post-Emergencia</h1>
+      <p>Deja constancia de lo ocurrido después de una alerta. El reporte quedará pendiente hasta que un administrador lo verifique.</p>
+    </div>
+  </div>
+
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  <form [formGroup]="form" (ngSubmit)="enviar()" class="tarjeta-ss">
+    <div class="campo">
+      <label>Alerta sobre la que haces el reporte</label>
+      <select formControlName="id_alerta">
+        <option [ngValue]="null" disabled>Selecciona una alerta</option>
+        @for (a of alertas; track a.id_alerta) {
+          <option [ngValue]="a.id_alerta">{{ a.tipo_alerta }} · {{ a.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} · {{ a.direccion || 'Ubicación GPS' }}</option>
+        }
+      </select>
+      @if (campoInvalido('id_alerta')) { <span class="error-texto">Elige la alerta.</span> }
+      @if (alertas.length === 0) { <small class="gris">Todavía no tienes alertas registradas.</small> }
+    </div>
+
+    <div class="fila">
+      <div class="campo">
+        <label>Estado del incidente</label>
+        <select formControlName="estado">
+          <option value="" disabled>Selecciona</option>
+          @for (e of estados; track e) { <option [value]="e">{{ e }}</option> }
+        </select>
+        @if (campoInvalido('estado')) { <span class="error-texto">Indica cómo terminó el incidente.</span> }
+      </div>
+      <div class="campo">
+        <label>Tipo de incidente</label>
+        <select formControlName="tipo">
+          <option value="" disabled>Selecciona</option>
+          @for (t of tipos; track t) { <option [value]="t">{{ t }}</option> }
+        </select>
+        @if (campoInvalido('tipo')) { <span class="error-texto">Elige el tipo de incidente.</span> }
+      </div>
+    </div>
+
+    <div class="fila">
+      <div class="campo">
+        <label>¿Intervinieron autoridades?</label>
+        <select formControlName="autoridades">
+          <option value="" disabled>Selecciona</option>
+          <option value="Sí">Sí</option>
+          <option value="No">No</option>
+        </select>
+        @if (campoInvalido('autoridades')) { <span class="error-texto">Indica si intervinieron autoridades.</span> }
+      </div>
+      <div class="campo">
+        <label>Gravedad (1 a 10)</label>
+        <select formControlName="gravedad">
+          @for (g of gravedades; track g) { <option [ngValue]="g">{{ g }}</option> }
+        </select>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label>Descripción del incidente <small class="gris">({{ form.value.descripcion?.length || 0 }} / 400)</small></label>
+      <textarea formControlName="descripcion" rows="5" maxlength="400" placeholder="Cuenta qué ocurrió después de activar la alerta."></textarea>
+      @if (campoInvalido('descripcion')) { <span class="error-texto">La descripción es obligatoria.</span> }
+    </div>
+
+    <div class="pie">
+      <a routerLink="/reportes" class="cancelar">Cancelar</a>
+      <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">{{ cargando ? 'Enviando...' : 'Enviar reporte' }}</button>
+    </div>
+  </form>
+</section>
