@@ -25,6 +25,8 @@ export interface ConfirmarDatos {
   peligro?: boolean; // botón rojo
   tituloOpciones?: string;
   opciones?: string[]; // lista de motivos (se elige uno)
+  tituloDuraciones?: string;
+  duraciones?: string[]; // opcional: segunda lista (por ejemplo la duración de una suspensión)
   pedirTexto?: boolean; // muestra una caja de texto
   etiquetaTexto?: string;
   textoObligatorio?: boolean;
@@ -32,6 +34,7 @@ export interface ConfirmarDatos {
 
 export interface ConfirmarResultado {
   motivo: string;
+  duracion: string;
   texto: string;
 }
 
@@ -46,6 +49,7 @@ export class ConfirmarDialogComponent {
   dialogRef: MatDialogRef<ConfirmarDialogComponent> = inject(MatDialogRef);
 
   motivo: string = this.datos.opciones && this.datos.opciones.length > 0 ? this.datos.opciones[0] : '';
+  duracion: string = this.datos.duraciones && this.datos.duraciones.length > 0 ? this.datos.duraciones[0] : '';
   texto: string = '';
   intento: boolean = false;
 
@@ -54,7 +58,7 @@ export class ConfirmarDialogComponent {
     if (this.datos.pedirTexto && this.datos.textoObligatorio && this.texto.trim() === '') {
       return;
     }
-    const resultado: ConfirmarResultado = { motivo: this.motivo, texto: this.texto.trim() };
+    const resultado: ConfirmarResultado = { motivo: this.motivo, duracion: this.duracion, texto: this.texto.trim() };
     this.dialogRef.close(resultado);
   }
 
