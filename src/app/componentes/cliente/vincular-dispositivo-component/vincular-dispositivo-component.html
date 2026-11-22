@@ -43,7 +43,7 @@
     <p class="sub">Conecta tu botón SOS o pulsera de emergencia a tu cuenta.</p>
 
     <div class="tarjeta-ss">
-      <div class="busqueda"><mat-icon>bluetooth_searching</mat-icon> <strong>Dispositivos compatibles</strong> <small>{{ catalogo.length }} disponibles</small></div>
+      <div class="busqueda"><mat-icon>bluetooth_searching</mat-icon> <strong>Dispositivos compatibles</strong> <small>{{ escaneando ? 'Buscando dispositivos cercanos...' : catalogo.length + ' disponibles' }}</small> <button type="button" mat-stroked-button class="btn-secundario" [disabled]="escaneando" (click)="reescanear()">Reescanear</button></div>
       @for (c of catalogo; track c.tipo) {
         <div class="item" [class.activo]="elegido?.tipo === c.tipo">
           <mat-icon>{{ c.icono }}</mat-icon>

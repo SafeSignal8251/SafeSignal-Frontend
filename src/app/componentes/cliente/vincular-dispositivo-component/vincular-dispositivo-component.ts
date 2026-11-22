@@ -35,6 +35,19 @@ export class VincularDispositivoComponent {
   cargando: boolean = false;
   error: string = '';
   mensajePrueba: string = '';
+  escaneando: boolean = false;
+
+  // HU-31: el navegador no puede escanear Bluetooth de forma estándar, así que el escaneo es una simulación
+  // que vuelve a mostrar el catálogo de dispositivos compatibles.
+  reescanear() {
+    this.escaneando = true;
+    this.elegido = null;
+    this.cdr.markForCheck();
+    setTimeout(() => {
+      this.escaneando = false;
+      this.cdr.markForCheck();
+    }, 1500);
+  }
 
   constructor() {
     this.vinculoForm = this.fb.group({

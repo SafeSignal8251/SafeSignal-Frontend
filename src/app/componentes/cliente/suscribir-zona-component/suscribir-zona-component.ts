@@ -119,8 +119,8 @@ export class SuscribirZonaComponent {
 
   siguiente() {
     this.error = '';
-    if (this.paso === 1 && (this.latitud == null || !this.idZona)) {
-      this.error = 'Marca el punto central: usa «Localizar» o haz clic en el mapa. Además debe existir al menos una zona de riesgo.';
+    if (this.paso === 1 && this.latitud == null) {
+      this.error = 'Marca el punto central: usa «Localizar» o haz clic en el mapa.';
       return;
     }
     if (this.paso === 1 && this.etiqueta.trim() === '') {
@@ -142,9 +142,6 @@ export class SuscribirZonaComponent {
   guardar() {
     if (!this.push && !this.whatsapp && !this.correo) {
       this.error = 'Activa al menos un canal de recepción.';
-      return;
-    }
-    if (this.idZona == null) {
       return;
     }
     this.guardando = true;
