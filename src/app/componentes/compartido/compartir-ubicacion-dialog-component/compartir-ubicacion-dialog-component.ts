@@ -16,6 +16,13 @@ export class CompartirUbicacionDialogComponent {
   dialogRef: MatDialogRef<CompartirUbicacionDialogComponent> = inject(MatDialogRef);
 
   minutos: number = 60;
+  geocerca: number = 500;
+  opcionesGeocerca = [
+    { valor: 250, texto: '250 m' },
+    { valor: 500, texto: '500 m (Recomendado)' },
+    { valor: 1000, texto: '1 km' },
+    { valor: 2000, texto: '2 km' },
+  ];
   opciones = [
     { valor: 30, texto: '30 minutos' },
     { valor: 60, texto: '60 minutos (Recomendado)' },
@@ -24,7 +31,7 @@ export class CompartirUbicacionDialogComponent {
   ];
 
   confirmar() {
-    this.dialogRef.close({ minutos: Number(this.minutos) });
+    this.dialogRef.close({ minutos: Number(this.minutos), geocerca: Number(this.geocerca) });
   }
   cancelar() {
     this.dialogRef.close(null);

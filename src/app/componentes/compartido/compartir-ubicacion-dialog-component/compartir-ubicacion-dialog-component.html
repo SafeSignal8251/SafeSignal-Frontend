@@ -8,6 +8,9 @@
     </div>
   </div>
 
+  <p class="etiqueta">PUNTO DE PARTIDA</p>
+  <p class="sub">Tu ubicación actual (GPS del dispositivo)</p>
+
   <p class="etiqueta">CONTACTOS DE CONFIANZA DESTINATARIOS ({{ datos.contactos.length }} registrados)</p>
   @for (c of datos.contactos; track c.id_contacto) {
     <div class="contacto">
@@ -26,6 +29,15 @@
     <label>Duración del envío</label>
     <select [(ngModel)]="minutos">
       @for (o of opciones; track o.valor) {
+        <option [ngValue]="o.valor">{{ o.texto }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="campo">
+    <label>Geocerca de protección</label>
+    <select [(ngModel)]="geocerca">
+      @for (o of opcionesGeocerca; track o.valor) {
         <option [ngValue]="o.valor">{{ o.texto }}</option>
       }
     </select>
