@@ -24,7 +24,27 @@
     <div class="alerta-error">{{ error }}</div>
   }
 
-  @if (alertaActiva) {
+  @if (alertaActiva && alertaActiva.tipo_alerta === 'ANOMALIA') {
+    <div class="banner sos">
+      <div class="banner-texto">
+        <strong>
+          <mat-icon>sensors</mat-icon>
+          Posible situación inusual detectada
+          <span class="etiqueta">AUTOMÁTICA</span>
+        </strong>
+        <p>
+          <b>Ubicación:</b> {{ alertaActiva.direccion || 'Ubicación GPS registrada' }} &nbsp;·&nbsp;
+          <b>Hora:</b> {{ alertaActiva.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} &nbsp;·&nbsp;
+          <b>Motivo:</b> anomalía detectada por tu dispositivo vinculado
+        </p>
+      </div>
+      <div class="acciones">
+        <button mat-raised-button class="btn-peligro" (click)="activarSos()">Alarma silenciosa</button>
+        <button mat-stroked-button class="btn-secundario" (click)="estoyBien()">Estoy bien</button>
+        <button mat-stroked-button class="btn-secundario" (click)="compartirUbicacion()">Compartir ubicación</button>
+      </div>
+    </div>
+  } @else if (alertaActiva) {
     <div class="banner sos">
       <div class="banner-texto">
         <strong>
@@ -81,13 +101,13 @@
       <div class="tarjeta-ss">
         <h3>Alertas Prioritarias</h3>
         @for (i of prioritarias; track i.id_incidente) {
-          <div class="prioritaria">
+          <a class="prioritaria" [routerLink]="['/reportes', i.id_incidente]" style="text-decoration:none;color:inherit">
             <i class="p" [class.rojo]="i.nivel_riesgo === 'ALTO'" [class.amarillo]="i.nivel_riesgo !== 'ALTO'"></i>
             <div>
-              <strong>{{ i.tipo_incidente }}</strong>
+              <strong>{{ i.tipo_incidente }}</strong> <span class="badge" [class]="'badge ' + claseEstadoReporte(i.estado)">{{ textoEstadoReporte(i.estado) }}</span>
               <small>{{ i.direccion || i.distrito }} · {{ hace(i.fecha_hora) }}</small>
             </div>
-          </div>
+          </a>
         } @empty {
           <p class="sub">Sin incidentes recientes.</p>
         }
@@ -106,7 +126,7 @@
   <div class="accesos">
     <a routerLink="/contactos" class="acceso"><mat-icon>group_add</mat-icon><div><strong>Contactos</strong><small>{{ accesos.contactos.length }} configurados</small></div></a>
     <a routerLink="/dispositivos" class="acceso"><mat-icon>sensors</mat-icon><div><strong>Dispositivos</strong><small>{{ accesos.dispositivos.length }} configurados</small></div></a>
-    <a routerLink="/mapa-riesgo" class="acceso"><mat-icon>route</mat-icon><div><strong>Seguimiento</strong><small>{{ seguimientoActivo ? 'Activo' : 'Planifica una ruta' }}</small></div></a>
+    <a routerLink="/seguimiento" class="acceso"><mat-icon>route</mat-icon><div><strong>Seguimiento</strong><small>{{ seguimientoActivo ? 'Activo' : 'Planifica una ruta' }}</small></div></a>
     <a routerLink="/reportes/nuevo" class="acceso"><mat-icon>report</mat-icon><div><strong>Reportar</strong><small>Nuevo incidente</small></div></a>
   </div>
 </section>

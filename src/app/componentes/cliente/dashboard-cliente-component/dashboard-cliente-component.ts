@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
@@ -17,7 +17,8 @@ import { Incidente } from '../../../model/incidente';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { ContactoConfianza } from '../../../model/contacto-confianza';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, hace, leerPref, LIMA, obtenerUbicacion } from '../../../core/utilidades';
+import { claseEstadoReporte, colorRiesgo, guardarPref, hace, leerPref, LIMA, obtenerUbicacion, textoEstadoReporte } from '../../../core/utilidades';
+import { GeocodificacionService } from '../../../services/geocodificacion-service';
 import { CirculoMapa, MapaComponent, MarcadorMapa } from '../../compartido/mapa-component/mapa-component';
 import { ConfirmarSosDialogComponent } from '../../compartido/confirmar-sos-dialog-component/confirmar-sos-dialog-component';
 import { CompartirUbicacionDialogComponent } from '../../compartido/compartir-ubicacion-dialog-component/compartir-ubicacion-dialog-component';
@@ -29,7 +30,7 @@ import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-comp
   styleUrl: './dashboard-cliente-component.css',
   templateUrl: './dashboard-cliente-component.html',
 })
-export class DashboardClienteComponent {
+export class DashboardClienteComponent implements OnDestroy {
   auth: AuthService = inject(AuthService);
   usuarioService: UsuarioService = inject(UsuarioService);
   alertaService: AlertaService = inject(AlertaService);
@@ -42,6 +43,7 @@ export class DashboardClienteComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  geo: GeocodificacionService = inject(GeocodificacionService);
 
   hace = hace;
   accesos: any = { contactos: [], dispositivos: [], seguimiento_activo: [], alertas_activas: [] };
@@ -58,12 +60,19 @@ export class DashboardClienteComponent {
   incidentesHoy: number = 0;
   zonasAltas: number = 0;
   prioritarias: Incidente[] = [];
+  claseEstadoReporte = claseEstadoReporte;
+  textoEstadoReporte = textoEstadoReporte;
 
   mensaje: string = '';
   error: string = '';
 
+  // El dashboard se actualiza solo: cada 10 s (60 s con el modo ahorro de batería) vuelve a pedir alertas, reportes y zonas.
+  // Así aparece una alarma nueva y desaparece un reporte que el administrador descartó.
+  private refresco: ReturnType<typeof setInterval> | null = null;
+
   ngOnInit() {
     this.cargar();
+    this.refresco = setInterval(() => this.cargar(), leerPref('ahorro_bateria', false) === true ? 60000 : 10000);
     // El botón "Reportar Emergencia" del menú llega con ?sos=1
     this.route.queryParams.subscribe((params) => {
       if (params['sos']) {
@@ -75,10 +84,30 @@ export class DashboardClienteComponent {
 
   cargar() {
     const id = this.auth.usuarioId();
+    // HU-23: aviso cuando el seguimiento se inició solo al salir de una zona segura
+    const aviso = leerPref('aviso_seguimiento_auto', '');
+    if (aviso && Date.now() - new Date(aviso).getTime() < 6 * 3600000) {
+      this.mensaje = 'Seguimiento iniciado automáticamente: saliste de tu zona segura.';
+      guardarPref('aviso_seguimiento_auto', '');
+    }
     this.usuarioService.accesosRapidos(id).subscribe({
       next: (a) => {
+        const previa = this.alertaActiva;
         this.accesos = { contactos: [], dispositivos: [], seguimiento_activo: [], alertas_activas: [], ...a };
         this.alertaActiva = this.accesos.alertas_activas[0] ?? null;
+        // Si la alerta activa dejó de estarlo, se avisa cómo terminó (por ejemplo, que el administrador la despachó)
+        if (previa && (!this.alertaActiva || this.alertaActiva.id_alerta !== previa.id_alerta)) {
+          this.alertaService.listId(previa.id_alerta).subscribe({
+            next: (al) => {
+              if (al.estado === 'DESPACHADA') {
+                this.ok('Tu alerta fue atendida' + (al.codigo_despacho ? ' (unidad ' + al.codigo_despacho + ')' : '') + '.');
+              } else if (al.estado === 'CANCELADA') {
+                this.ok('Tu alerta fue cancelada.');
+              }
+            },
+            error: () => {},
+          });
+        }
         this.seguimientoActivo = this.accesos.seguimiento_activo[0] ?? null;
         this.armarMapa();
         this.cdr.markForCheck();
@@ -99,8 +128,10 @@ export class DashboardClienteComponent {
         this.incidentes = lista.filter((i) => i.estado !== 'ELIMINADO');
         const hoy = new Date().toDateString();
         this.incidentesHoy = this.incidentes.filter((i) => new Date(i.fecha_hora).toDateString() === hoy).length;
+        // Prioritarias: primero las de riesgo ALTO y, dentro de cada nivel, las más recientes
+        const peso = (n: string) => (n === 'ALTO' ? 0 : n === 'MEDIO' ? 1 : 2);
         this.prioritarias = [...this.incidentes]
-          .sort((a, b) => (b.fecha_hora ?? '').localeCompare(a.fecha_hora ?? ''))
+          .sort((a, b) => peso(a.nivel_riesgo) - peso(b.nivel_riesgo) || (b.fecha_hora ?? '').localeCompare(a.fecha_hora ?? ''))
           .slice(0, 3);
         this.armarMapa();
         this.cdr.markForCheck();
@@ -114,6 +145,12 @@ export class DashboardClienteComponent {
       },
       error: () => {},
     });
+  }
+
+  ngOnDestroy() {
+    if (this.refresco) {
+      clearInterval(this.refresco);
+    }
   }
 
   // Zonas de riesgo como círculos y los últimos incidentes y la alerta activa como puntos
@@ -161,7 +198,8 @@ export class DashboardClienteComponent {
       .afterClosed()
       .subscribe((confirmado) => {
         if (confirmado) {
-          this.enviarAlerta('SOS');
+          // HU-09: con la opción «Alarma silenciosa» de Configuración, el SOS se registra como silencioso
+          this.enviarAlerta(leerPref('alarma_silenciosa', false) === true ? 'SILENCIOSA' : 'SOS');
         }
       });
   }
@@ -171,13 +209,16 @@ export class DashboardClienteComponent {
   }
 
   private enviarAlerta(tipo: string) {
-    obtenerUbicacion().then((u) => {
+    obtenerUbicacion().then(async (u) => {
+      // En una emergencia no se espera mucho: si la dirección real no llega en 2 s, se envía el texto genérico
+      const espera = new Promise<null>((r) => setTimeout(() => r(null), 2000));
+      const real = await Promise.race([this.geo.inversa(u.lat, u.lng), espera]);
       this.alertaService
         .insert(this.auth.usuarioId(), {
           tipo_alerta: tipo,
           latitud: u.lat,
           longitud: u.lng,
-          direccion: u.real ? 'Ubicación GPS del dispositivo' : 'Lima (ubicación aproximada)',
+          direccion: real ? real.texto : u.real ? 'Ubicación GPS del dispositivo' : 'Lima (ubicación aproximada)',
         })
         .subscribe({
           next: () => {
@@ -236,7 +277,7 @@ export class DashboardClienteComponent {
       .afterClosed()
       .subscribe((r) => {
         if (r) {
-          this.iniciarSeguimiento('Ubicación compartida en tiempo real', r.minutos);
+          this.iniciarSeguimiento('Ubicación compartida en tiempo real (geocerca ' + r.geocerca + ' m)', r.minutos);
         }
       });
   }
