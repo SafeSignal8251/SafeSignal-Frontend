@@ -33,8 +33,14 @@ export class IncidenteService {
     return this.httpClient.get<Incidente[]>(this.url + '/filtrar', { params });
   }
   // El backend exige tanto la zona como el usuario
-  insert(id_zona: number, id_usuario: number, incidente: Partial<Incidente>): Observable<Incidente> {
-    return this.httpClient.post<Incidente>(this.url, incidente, { params: { id_zona, id_usuario } });
+  insert(id_zona: number | null, id_usuario: number, incidente: Partial<Incidente>): Observable<Incidente> {
+    // Si no hay zona detectada, el backend usa la más cercana o crea una
+    const params: { [k: string]: number } = id_zona != null ? { id_zona, id_usuario } : { id_usuario };
+    return this.httpClient.post<Incidente>(this.url, incidente, { params });
+  }
+  // HU-16: reporte después de una emergencia, asociado a una alerta propia
+  postEmergencia(id_usuario: number, id_alerta: number, descripcion: string): Observable<Incidente> {
+    return this.httpClient.post<Incidente>(this.url + '/post-emergencia', null, { params: { id_usuario, id_alerta, descripcion } });
   }
   // Solo se puede editar la descripción de un reporte propio
   update(id: number, id_usuario: number, descripcion: string): Observable<Incidente> {
