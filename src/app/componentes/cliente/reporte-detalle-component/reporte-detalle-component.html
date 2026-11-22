@@ -17,7 +17,7 @@
           <div class="etiquetas">
             <span class="badge" [class]="'badge ' + clase(incidente.nivel_riesgo)">{{ incidente.nivel_riesgo }}</span>
             <span class="badge badge-gris">#REP-{{ incidente.id_incidente }}</span>
-            <span class="badge badge-azul">{{ incidente.estado }}</span>
+            <span class="badge" [class]="'badge ' + claseEstadoReporte(incidente.estado)">{{ textoEstadoReporte(incidente.estado) }}</span>
             <small class="gris derecha">{{ incidente.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} ({{ hace(incidente.fecha_hora) }})</small>
           </div>
           <h1 class="titulo-reporte">{{ incidente.tipo_incidente }}</h1>
@@ -27,10 +27,21 @@
 
           <div class="validacion">
             <div><strong class="grande">{{ votosConfirmados }}</strong> ciudadanos validaron este incidente <span class="badge badge-verde">{{ porcentajeVeracidad }}% veracidad</span></div>
-            <div class="acciones">
-              <button mat-raised-button class="btn-primario" (click)="votar('CONFIRMADO')">Validar reporte (+1)</button>
-              <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Denunciar inconsistencia ({{ votosFalsos }})</button>
-            </div>
+            @if (esMio) {
+              <p class="vacio">Este es tu reporte: no puedes validarlo, lo validan otros vecinos.</p>
+              <div class="acciones">
+                @if (puedeEditar) {
+                  <a mat-stroked-button class="btn-secundario" [routerLink]="['/reportes/editar', incidente.id_incidente]">Editar mi reporte</a>
+                } @else {
+                  <small class="gris">Ya fue validado: no se puede editar.</small>
+                }
+              </div>
+            } @else {
+              <div class="acciones">
+                <button mat-raised-button class="btn-primario" (click)="votar('CONFIRMADO')">Validar reporte (+1)</button>
+                <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Denunciar inconsistencia ({{ votosFalsos }})</button>
+              </div>
+            }
           </div>
         </div>
 

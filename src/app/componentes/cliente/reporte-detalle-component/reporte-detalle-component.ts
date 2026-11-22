@@ -13,7 +13,7 @@ import { Incidente } from '../../../model/incidente';
 import { Comentario } from '../../../model/comentario';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, hace } from '../../../core/utilidades';
+import { claseEstadoReporte, colorRiesgo, hace, textoEstadoReporte } from '../../../core/utilidades';
 import { MapaComponent } from '../../compartido/mapa-component/mapa-component';
 
 @Component({
@@ -33,6 +33,8 @@ export class ReporteDetalleComponent {
 
   hace = hace;
   colorRiesgo = colorRiesgo;
+  claseEstadoReporte = claseEstadoReporte;
+  textoEstadoReporte = textoEstadoReporte;
   incidente: Incidente | null = null;
   zona: ZonaRiesgo | null = null;
   comentarios: Comentario[] = [];
@@ -127,6 +129,14 @@ export class ReporteDetalleComponent {
       },
       error: (e) => this.fallo(e),
     });
+  }
+
+  // El autor no puede validar su propio reporte, y solo lo puede editar mientras no esté validado
+  get esMio(): boolean {
+    return this.incidente?.id_usuario === this.auth.usuarioId();
+  }
+  get puedeEditar(): boolean {
+    return this.esMio && this.incidente?.estado === 'PENDIENTE' && !this.incidente?.validado;
   }
 
   get porcentajeVeracidad(): number {
