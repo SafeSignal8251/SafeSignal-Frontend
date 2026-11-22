@@ -1,0 +1,14 @@
+.kpi strong.chico {
+  font-size: 20px;
+  margin-top: 8px;
+}
+.acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.vacio {
+  text-align: center;
+  padding: 28px 16px;
+}

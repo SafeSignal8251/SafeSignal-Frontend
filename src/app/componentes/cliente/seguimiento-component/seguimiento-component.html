@@ -1,0 +1,47 @@
+<section class="pagina">
+  <div class="pagina-titulo">
+    <div>
+      <h1>Seguimiento Activo</h1>
+      <p>Tu ubicación se comparte en vivo con tus contactos de confianza mientras dure el trayecto.</p>
+    </div>
+  </div>
+
+  @if (mensaje) { <div class="alerta-ok">{{ mensaje }}</div> }
+  @if (error) { <div class="alerta-error">{{ error }}</div> }
+
+  @if (cargando) {
+    <p class="vacio">Cargando seguimiento...</p>
+  } @else if (seguimiento) {
+    <div class="grid-2">
+      <div class="tarjeta-ss">
+        <app-mapa-component [centro]="centro" [marcadores]="marcadores" [zoom]="15" altura="380px"></app-mapa-component>
+        <p class="sub">
+          @if (ultima) { Última ubicación enviada: {{ ultima.fecha_hora | date: 'HH:mm:ss' }} } @else { Esperando la primera ubicación... }
+        </p>
+      </div>
+      <div class="pila">
+        <div class="kpis">
+          <div class="kpi"><small>Destino</small><strong class="chico">{{ seguimiento.destino }}</strong><span>desde {{ seguimiento.fecha_inicio | date: 'HH:mm' }}</span></div>
+          <div class="kpi" [class.rojo]="demorado">
+            <small>{{ demorado ? 'Tiempo excedido' : 'Tiempo restante' }}</small>
+            <strong class="chico">{{ restante }}</strong>
+            <span>duración configurada: {{ seguimiento.tiempo_monitoreo }} min</span>
+          </div>
+        </div>
+        @if (demorado) {
+          <div class="alerta-error">Te estás demorando más de lo previsto. Si ya llegaste, pulsa «Llegué con seguridad».</div>
+        }
+        <div class="acciones">
+          <button mat-raised-button class="btn-primario" (click)="finalizar(true)">Llegué con seguridad</button>
+          <button mat-stroked-button class="btn-secundario" (click)="finalizar(false)">Finalizar</button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="tarjeta-ss vacio">
+      <p>No tienes un seguimiento activo.</p>
+      <p class="sub">Inícialo desde el Dashboard con «Activar Monitoreo» o «Compartir ubicación», o desde una ruta en el Mapa de Riesgo.</p>
+      <a routerLink="/dashboard" mat-raised-button class="btn-primario">Ir al Dashboard</a>
+    </div>
+  }
+</section>
