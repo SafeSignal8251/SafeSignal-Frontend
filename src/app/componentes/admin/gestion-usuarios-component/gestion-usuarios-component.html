@@ -27,6 +27,13 @@
       <option value="ACTIVA">Activa</option>
       <option value="SUSPENDIDA">Suspendida</option>
     </select>
+    <select [(ngModel)]="reputacion" (ngModelChange)="filtrar()">
+      <option value="">Toda reputación</option>
+      <option value="Alta">Reputación alta</option>
+      <option value="Media">Reputación media</option>
+      <option value="Baja">Reputación baja</option>
+      <option value="Sin historial">Sin historial de reportes</option>
+    </select>
   </div>
 
   <div class="grid-2">
@@ -47,7 +54,7 @@
         </ng-container>
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</th>
-          <td mat-cell *matCellDef="let u"><span class="badge" [class]="'badge ' + (u.estado === 'ACTIVA' ? 'badge-verde' : 'badge-rojo')">{{ u.estado === 'ACTIVA' ? 'Activo' : 'Suspendido' }}</span> @if (u.rol === 'ADMIN') { <span class="badge badge-azul">Admin</span> }</td>
+          <td mat-cell *matCellDef="let u"><span class="badge" [class]="'badge ' + (u.estado === 'ACTIVA' ? 'badge-verde' : 'badge-rojo')">{{ u.estado === 'ACTIVA' ? 'Activo' : 'Suspendido' }}</span> @if (u.rol === 'ADMIN') { <span class="badge badge-azul">Admin</span> } @else { <span class="badge" [class]="'badge ' + claseReputacion(reputacionDe(u))">{{ reputacionDe(u) === 'Sin historial' ? 'Sin historial' : 'Reputación ' + reputacionDe(u) }}</span> }</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="fila" [class.seleccionada]="seleccionado?.id_usuario === row.id_usuario" (click)="seleccionar(row)"></tr>

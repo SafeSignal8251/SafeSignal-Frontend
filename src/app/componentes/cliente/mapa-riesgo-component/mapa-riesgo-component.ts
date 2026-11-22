@@ -14,7 +14,8 @@ import { Incidente } from '../../../model/incidente';
 import { Ruta } from '../../../model/ruta';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, distanciaMetros, hace, LIMA, obtenerUbicacion } from '../../../core/utilidades';
+import { colorRiesgo, distanciaMetros, hace, LIMA, leerPref, obtenerUbicacion } from '../../../core/utilidades';
+import { BuscadorDirecciones, Direccion, GeocodificacionService } from '../../../services/geocodificacion-service';
 import { CirculoMapa, MapaComponent, MarcadorMapa } from '../../compartido/mapa-component/mapa-component';
 import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-component/confirmar-dialog-component';
 
@@ -37,6 +38,9 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
   dialog: MatDialog = inject(MatDialog);
   router: Router = inject(Router);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  geo: GeocodificacionService = inject(GeocodificacionService);
+  buscadorOrigen: BuscadorDirecciones = new BuscadorDirecciones(this.geo, () => this.cdr.markForCheck());
+  buscadorDestino: BuscadorDirecciones = new BuscadorDirecciones(this.geo, () => this.cdr.markForCheck());
 
   hace = hace;
   rutaForm: FormGroup;
@@ -72,7 +76,8 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cargar();
-    this.refresco = setInterval(() => this.cargarMapa(), 15000);
+    // HU-50: con el modo ahorro de batería el mapa se actualiza menos seguido (60 s en vez de 15 s)
+    this.refresco = setInterval(() => this.cargarMapa(), leerPref('ahorro_bateria', false) === true ? 60000 : 15000);
   }
 
   ngOnDestroy() {
@@ -142,8 +147,12 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
   }
 
   get incidentesFiltrados(): Incidente[] {
-    if (this.filtro === 'alto') {
-      return this.incidentes.filter((i) => i.nivel_riesgo === 'ALTO');
+    if (this.filtro === 'alto' || this.filtro === 'medio' || this.filtro === 'bajo') {
+      return this.incidentes.filter((i) => i.nivel_riesgo === this.filtro.toUpperCase());
+    }
+    if (this.filtro === 'recientes') {
+      const desde = Date.now() - 6 * 3600000;
+      return this.incidentes.filter((i) => i.fecha_hora && new Date(i.fecha_hora).getTime() >= desde);
     }
     if (this.filtro === 'robo') {
       return this.incidentes.filter((i) => /ROBO|ASALTO/i.test(i.tipo_incidente ?? ''));
@@ -165,7 +174,9 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
   }
 
   private dibujar() {
-    this.circulos = this.zonas.map((z) => ({
+    // HU-29: el filtro por nivel también aplica a las zonas dibujadas
+    const zonasVisibles = ['alto', 'medio', 'bajo'].includes(this.filtro) ? this.zonas.filter((z) => z.nivel_riesgo === this.filtro.toUpperCase()) : this.zonas;
+    this.circulos = zonasVisibles.map((z) => ({
       lat: z.latitud,
       lng: z.longitud,
       radio: z.radio_metros || 300,
@@ -208,6 +219,13 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
         this.rutaForm.patchValue({ origen: u.real ? 'Mi ubicación actual' : 'Centro de Lima' });
       }
       this.cdr.markForCheck();
+      // Dirección real del punto (si no se encuentra, queda el texto anterior)
+      this.geo.inversa(u.lat, u.lng).then((d) => {
+        if (d) {
+          this.rutaForm.patchValue({ origen: d.texto });
+          this.cdr.markForCheck();
+        }
+      });
     });
   }
 
@@ -215,12 +233,44 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
   elegirDestino(p: { lat: number; lng: number }) {
     this.rutaForm.patchValue({ destino_latitud: p.lat, destino_longitud: p.lng });
     this.cdr.markForCheck();
+    this.geo.inversa(p.lat, p.lng).then((d) => {
+      this.rutaForm.patchValue({ destino: d ? d.texto : 'Punto marcado en el mapa' });
+      this.cdr.markForCheck();
+    });
+  }
+
+  // El usuario escribe el origen o el destino: se muestran sugerencias de OpenStreetMap
+  escribirOrigen() {
+    this.buscadorOrigen.escribir(this.rutaForm.get('origen')?.value ?? '');
+  }
+  escribirDestino() {
+    this.buscadorDestino.escribir(this.rutaForm.get('destino')?.value ?? '');
+  }
+  elegirOrigenSugerido(s: Direccion) {
+    this.rutaForm.patchValue({ origen: s.texto, origen_latitud: s.lat, origen_longitud: s.lng });
+    this.buscadorOrigen.cerrar();
+    this.cdr.markForCheck();
+  }
+  elegirDestinoSugerido(s: Direccion) {
+    this.rutaForm.patchValue({ destino: s.texto, destino_latitud: s.lat, destino_longitud: s.lng });
+    this.buscadorDestino.cerrar();
+    this.cdr.markForCheck();
   }
 
   buscarRutas() {
+    // HU-17: si no se indicó el origen, se usa la ubicación actual
+    if (this.rutaForm.get('origen_latitud')?.value == null) {
+      this.buscando = true;
+      obtenerUbicacion().then((u) => {
+        this.rutaForm.patchValue({ origen_latitud: u.lat, origen_longitud: u.lng, origen: this.rutaForm.value.origen || (u.real ? 'Mi ubicación actual' : 'Centro de Lima') });
+        this.buscando = false;
+        this.buscarRutas();
+      });
+      return;
+    }
     if (this.rutaForm.invalid) {
       this.rutaForm.markAllAsTouched();
-      this.error = 'Completa el origen y el destino. Usa "Actual" para tu ubicación y haz clic en el mapa para marcar el destino.';
+      this.error = 'Completa el origen y el destino: escribe una dirección y elige una sugerencia, usa "Actual" o haz clic en el mapa.';
       return;
     }
     this.buscando = true;
@@ -278,6 +328,73 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     this.avisoAlternativa = '';
     this.dibujar();
     this.cdr.markForCheck();
+  }
+
+  // HU-19: muestra el desvío recomendado en el mapa sin aceptarlo todavía
+  verDesvio() {
+    const alt = this.alternativa;
+    if (!alt || alt.origen_latitud == null || alt.destino_latitud == null) {
+      return;
+    }
+    this.linea = [
+      [alt.origen_latitud, alt.origen_longitud],
+      [alt.destino_latitud, alt.destino_longitud],
+    ];
+    this.marcadores = [
+      ...this.marcadores,
+      { lat: alt.destino_latitud, lng: alt.destino_longitud, color: '#1e9a5e', etiqueta: 'Desvío: ' + alt.destino },
+    ];
+    this.centro = [(alt.origen_latitud + alt.destino_latitud) / 2, (alt.origen_longitud + alt.destino_longitud) / 2];
+    this.mensaje = 'Mostrando el desvío recomendado: ' + alt.nombre;
+    this.cdr.markForCheck();
+  }
+
+  // HU-17: vuelve a elegir el destino
+  modificarDestino() {
+    this.rutaActiva = null;
+    this.alternativa = null;
+    this.avisoAlternativa = '';
+    this.rutaForm.patchValue({ destino: '', destino_latitud: null, destino_longitud: null });
+    this.dibujar();
+    this.mensaje = 'Escribe una dirección de destino o haz clic en el mapa para marcarlo.';
+    this.cdr.markForCheck();
+  }
+
+  // HU-21: guardar la ruta actual con un nombre elegido por el cliente
+  guardarRuta() {
+    const ruta = this.rutaActiva;
+    if (!ruta) {
+      return;
+    }
+    this.dialog
+      .open(ConfirmarDialogComponent, {
+        width: '460px',
+        data: {
+          titulo: 'Guardar ruta frecuente',
+          mensaje: 'Ponle un nombre para reutilizarla después desde tus rutas guardadas.',
+          detalle: ruta.origen + ' → ' + ruta.destino,
+          icono: 'bookmark',
+          pedirTexto: true,
+          textoObligatorio: true,
+          etiquetaTexto: 'Nombre de la ruta (ej. Casa - Trabajo)',
+          textoConfirmar: 'Guardar',
+        },
+      })
+      .afterClosed()
+      .subscribe((r) => {
+        if (r && r.texto) {
+          this.rutaService.update(ruta.id_ruta, { ...ruta, nombre: r.texto }).subscribe({
+            next: (guardada) => {
+              this.rutaActiva = guardada;
+              this.mensaje = 'Ruta guardada como «' + guardada.nombre + '».';
+              this.error = '';
+              this.cargarRutas();
+              this.cdr.markForCheck();
+            },
+            error: (e) => this.fallo(e),
+          });
+        }
+      });
   }
 
   aceptarAlternativa() {

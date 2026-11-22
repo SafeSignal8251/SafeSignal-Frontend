@@ -5,15 +5,108 @@
     <h1>Crear cuenta</h1>
     <p class="subtitulo">Únete a la red de seguridad ciudadana más confiable de Lima.</p>
 
-    <div class="tipo">
-      <strong>Cliente</strong>
-      <small>Ciudadano</small>
+    <div class="tipos">
+      <button type="button" [class.activo]="tipo === 'CLIENTE'" (click)="cambiarTipo('CLIENTE')">
+        <strong>Cliente</strong>
+        <small>Ciudadano</small>
+      </button>
+      <button type="button" [class.activo]="tipo === 'ADMIN'" (click)="cambiarTipo('ADMIN')">
+        <strong>Administrador</strong>
+        <small>Central de Monitoreo</small>
+      </button>
     </div>
 
     @if (error) {
       <div class="alerta-error">{{ error }}</div>
     }
 
+    @if (tipo === 'ADMIN') {
+      <form [formGroup]="adminForm" class="formulario" (ngSubmit)="onSubmitAdmin()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombres y Apellidos</mat-label>
+          <input matInput formControlName="nombreCompleto" placeholder="Ej. Rosa Quispe Mamani" />
+          @if (adminForm.get('nombreCompleto')?.hasError('required')) {
+            <mat-error>Ingresa tus nombres y apellidos</mat-error>
+          } @else if (adminForm.get('nombreCompleto')?.hasError('pattern')) {
+            <mat-error>Escribe al menos un nombre y un apellido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico institucional</mat-label>
+          <input matInput type="email" formControlName="correo" placeholder="usuario@municipalidad.gob.pe" />
+          @if (adminForm.get('correo')?.hasError('required')) {
+            <mat-error>El correo es obligatorio</mat-error>
+          } @else if (adminForm.get('correo')?.hasError('email')) {
+            <mat-error>Ingresa un correo válido</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="fila">
+          <mat-form-field appearance="outline">
+            <mat-label>Código de placa / Id operativo</mat-label>
+            <input matInput formControlName="codigo_placa" placeholder="Ej. SER2026001" maxlength="15" />
+            @if (adminForm.get('codigo_placa')?.hasError('required')) {
+              <mat-error>El código es obligatorio</mat-error>
+            } @else if (adminForm.get('codigo_placa')?.hasError('pattern')) {
+              <mat-error>Entre 8 y 15 letras o números</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono institucional</mat-label>
+            <input matInput formControlName="telefono" placeholder="Ej. 014567890" />
+            @if (adminForm.get('telefono')?.hasError('pattern')) {
+              <mat-error>Teléfono no válido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Municipalidad o central de monitoreo</mat-label>
+          <input matInput formControlName="entidad" placeholder="Ej. Serenazgo de Miraflores" />
+          @if (adminForm.get('entidad')?.hasError('required')) {
+            <mat-error>Indica tu municipalidad o central</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Código de autorización institucional</mat-label>
+          <input matInput formControlName="codigo_autorizacion" placeholder="Te lo entrega tu institución" />
+          @if (adminForm.get('codigo_autorizacion')?.hasError('required')) {
+            <mat-error>Sin este código no se puede crear una cuenta de administrador</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="fila">
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput [type]="verPassword ? 'text' : 'password'" formControlName="contrasena" placeholder="Mínimo 8 caracteres" />
+            <button mat-icon-button matSuffix type="button" (click)="verPassword = !verPassword" aria-label="Mostrar u ocultar contraseña">
+              <mat-icon>{{ verPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (adminForm.get('contrasena')?.hasError('required')) {
+              <mat-error>La contraseña es obligatoria</mat-error>
+            } @else if (adminForm.get('contrasena')?.hasError('minlength')) {
+              <mat-error>Mínimo 8 caracteres</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Confirmar contraseña</mat-label>
+            <input matInput [type]="verConfirmar ? 'text' : 'password'" formControlName="confirmar" placeholder="Mínimo 8 caracteres" />
+            <button mat-icon-button matSuffix type="button" (click)="verConfirmar = !verConfirmar" aria-label="Mostrar u ocultar contraseña">
+              <mat-icon>{{ verConfirmar ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        @if (adminForm.hasError('noCoinciden') && adminForm.get('confirmar')?.touched) {
+          <p class="error-grupo">Las contraseñas no coinciden</p>
+        }
+
+        <button type="submit" mat-raised-button class="btn-primario enviar" [disabled]="cargando">
+          {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </button>
+      </form>
+    } @else {
     <form [formGroup]="registroForm" class="formulario" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>Nombres y Apellidos</mat-label>
@@ -104,6 +197,7 @@
         {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
       </button>
     </form>
+    }
 
     <p class="pie">¿Ya tienes una cuenta? <a routerLink="/login">Iniciar sesión</a></p>
   </section>

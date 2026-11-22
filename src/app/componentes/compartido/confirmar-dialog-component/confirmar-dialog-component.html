@@ -22,6 +22,16 @@
     }
   }
 
+  @if (datos.duraciones && datos.duraciones.length > 0) {
+    <p class="subtitulo">{{ datos.tituloDuraciones ?? 'Duración' }}</p>
+    @for (d of datos.duraciones; track d) {
+      <label class="opcion">
+        <input type="radio" name="duracion" [value]="d" [(ngModel)]="duracion" />
+        <span>{{ d }}</span>
+      </label>
+    }
+  }
+
   @if (datos.pedirTexto) {
     <p class="subtitulo">{{ datos.etiquetaTexto ?? 'Comentario' }}</p>
     <textarea rows="3" [(ngModel)]="texto" class="texto"></textarea>

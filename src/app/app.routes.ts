@@ -14,6 +14,8 @@ import { MapaRiesgoComponent } from './componentes/cliente/mapa-riesgo-component
 import { HistorialComponent } from './componentes/cliente/historial-component/historial-component';
 import { ReportesComponent } from './componentes/cliente/reportes-component/reportes-component';
 import { ReporteNuevoEditComponent } from './componentes/cliente/reporte-nuevo-edit-component/reporte-nuevo-edit-component';
+import { SeguimientoComponent } from './componentes/cliente/seguimiento-component/seguimiento-component';
+import { ReportePostEmergenciaComponent } from './componentes/cliente/reporte-post-emergencia-component/reporte-post-emergencia-component';
 import { ReporteDetalleComponent } from './componentes/cliente/reporte-detalle-component/reporte-detalle-component';
 import { EstadisticasComponent } from './componentes/cliente/estadisticas-component/estadisticas-component';
 import { NotificacionesComponent } from './componentes/cliente/notificaciones-component/notificaciones-component';
@@ -53,7 +55,9 @@ export const routes: Routes = [
   { path: 'reportes', component: ReportesComponent, canActivate: [clienteGuard] },
   { path: 'reportes/nuevo', component: ReporteNuevoEditComponent, canActivate: [clienteGuard] },
   { path: 'reportes/editar/:id', component: ReporteNuevoEditComponent, canActivate: [clienteGuard] },
+  { path: 'reportes/post-emergencia', component: ReportePostEmergenciaComponent, canActivate: [clienteGuard] },
   { path: 'reportes/:id', component: ReporteDetalleComponent, canActivate: [clienteGuard] },
+  { path: 'seguimiento', component: SeguimientoComponent, canActivate: [clienteGuard] },
   { path: 'estadisticas', component: EstadisticasComponent, canActivate: [clienteGuard] },
   { path: 'notificaciones', component: NotificacionesComponent, canActivate: [clienteGuard] },
   { path: 'configuracion', component: ConfiguracionComponent, canActivate: [clienteGuard] },

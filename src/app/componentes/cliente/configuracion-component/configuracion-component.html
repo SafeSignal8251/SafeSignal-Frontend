@@ -45,6 +45,17 @@
           <h3>Seguimiento al salir de zona segura <span class="badge badge-verde">{{ seguimientoAutomatico ? 'ESTADO: ACTIVO' : 'INACTIVO' }}</span></h3>
           <p class="sub">El monitoreo asistido por GPS se iniciará de forma autónoma cada vez que salgas del radio de tus zonas seguras.</p>
           <label class="fila-switch">Activar seguimiento automático <input type="checkbox" class="interruptor" [(ngModel)]="seguimientoAutomatico" (change)="guardarPreferencias()" /></label>
+          <p class="etq">LUGARES SEGUROS (Casa, Trabajo...)</p>
+          @for (l of lugares; track $index) {
+            <div class="fila-switch"><span><strong>{{ l.nombre }}</strong><small>radio {{ l.radio }} m</small></span><button type="button" class="boton-enlace" (click)="quitarLugarSeguro($index)">Quitar</button></div>
+          } @empty {
+            <p class="sub">Aún no marcaste ningún lugar seguro. Estando en el lugar, ponle un nombre y pulsa «Marcar mi ubicación actual».</p>
+          }
+          <div class="tiempo">
+            <div class="campo"><label>NOMBRE</label><input [(ngModel)]="nombreLugar" placeholder="Casa" /></div>
+            <div class="campo"><label>RADIO</label><select [(ngModel)]="radioLugar"><option [ngValue]="100">100 m</option><option [ngValue]="200">200 m</option><option [ngValue]="500">500 m</option></select></div>
+          </div>
+          <button type="button" mat-stroked-button class="btn-secundario" (click)="marcarLugarSeguro()">Marcar mi ubicación actual como lugar seguro</button>
         </div>
       </div>
     </div>

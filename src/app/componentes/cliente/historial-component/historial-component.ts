@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
@@ -16,7 +17,7 @@ import { MapaComponent, MarcadorMapa } from '../../compartido/mapa-component/map
 
 @Component({
   imports: [
-    FormsModule, DatePipe, DecimalPipe, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCell, MatHeaderCellDef,
+    FormsModule, RouterLink, DatePipe, DecimalPipe, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCell, MatHeaderCellDef,
     MatCell, MatCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatPaginator, MatButton, MatIcon, MapaComponent,
   ],
   selector: 'app-historial-component',
@@ -117,6 +118,17 @@ export class HistorialComponent {
     if (estado === 'CANCELADA') { return 'badge-gris'; }
     return 'badge-verde';
   }
+  textoTipo(tipo: string): string {
+    if (tipo === 'SOS') { return 'Alerta SOS'; }
+    if (tipo === 'ANOMALIA') { return 'Alerta automática (anomalía)'; }
+    return 'Alerta Silenciosa';
+  }
+
+  // El navegador permite «Guardar como PDF» desde el cuadro de impresión
+  descargarPdf() {
+    window.print();
+  }
+
   textoEstado(estado: string): string {
     if (estado === 'ACTIVA') { return 'Activa'; }
     if (estado === 'DESPACHADA') { return 'Atendida por Serenazgo'; }

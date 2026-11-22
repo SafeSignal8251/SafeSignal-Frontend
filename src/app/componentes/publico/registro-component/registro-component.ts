@@ -15,6 +15,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { UsuarioService } from '../../../services/usuario-service';
 import { mensajeError } from '../../../core/mensajes';
+import { DISTRITOS_LIMA } from '../../../core/utilidades';
 import { PublicoHeaderComponent } from '../../compartido/publico-header-component/publico-header-component';
 
 // Valida a nivel de formulario que las dos contraseñas sean iguales
@@ -47,17 +48,14 @@ export class RegistroComponent {
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   registroForm: FormGroup;
+  adminForm: FormGroup;
+  tipo: string = 'CLIENTE'; // CLIENTE o ADMIN
   verPassword: boolean = false;
   verConfirmar: boolean = false;
   cargando: boolean = false;
   error: string = '';
 
-  distritos: string[] = [
-    'Ate', 'Barranco', 'Breña', 'Callao', 'Chorrillos', 'Comas', 'Jesús María', 'La Molina',
-    'La Victoria', 'Lima Cercado', 'Lince', 'Magdalena del Mar', 'Miraflores', 'Pueblo Libre',
-    'Rímac', 'San Borja', 'San Isidro', 'San Juan de Lurigancho', 'San Juan de Miraflores',
-    'San Miguel', 'Santiago de Surco', 'Surquillo', 'Villa El Salvador',
-  ];
+  distritos: string[] = DISTRITOS_LIMA;
 
   constructor() {
     this.registroForm = this.fb.group(
@@ -73,6 +71,29 @@ export class RegistroComponent {
       },
       { validators: contrasenasIguales }
     );
+    this.adminForm = this.crearFormAdmin();
+  }
+
+  // HU-01 (escenario 2): cuenta de administrador
+  private crearFormAdmin() {
+    return this.fb.group(
+      {
+        nombreCompleto: ['', [Validators.required, Validators.pattern(/^\S+(\s+\S+)+$/)]],
+        correo: ['', [Validators.required, Validators.email]],
+        codigo_placa: ['', [Validators.required, Validators.pattern(/^[0-9A-Za-z]{8,15}$/)]],
+        telefono: ['', [Validators.pattern(/^\+?[0-9 ]{9,15}$/)]],
+        entidad: ['', [Validators.required, Validators.maxLength(50)]],
+        codigo_autorizacion: ['', Validators.required],
+        contrasena: ['', [Validators.required, Validators.minLength(8)]],
+        confirmar: ['', Validators.required],
+      },
+      { validators: contrasenasIguales }
+    );
+  }
+
+  cambiarTipo(tipo: string) {
+    this.tipo = tipo;
+    this.error = '';
   }
 
   // El mockup tiene un solo campo "Nombres y Apellidos", pero el backend pide los dos por separado.
@@ -84,6 +105,39 @@ export class RegistroComponent {
       nombres: partes.slice(0, partes.length - cantApellidos).join(' '),
       apellidos: partes.slice(partes.length - cantApellidos).join(' '),
     };
+  }
+
+  onSubmitAdmin() {
+    if (this.adminForm.invalid) {
+      this.adminForm.markAllAsTouched();
+      return;
+    }
+    this.cargando = true;
+    this.error = '';
+    const v = this.adminForm.value;
+    const nombre = this.separarNombre(v.nombreCompleto);
+    this.usuarioService
+      .registrarAdmin({
+        nombres: nombre.nombres,
+        apellidos: nombre.apellidos,
+        correo: v.correo,
+        codigo_placa: v.codigo_placa,
+        telefono: v.telefono,
+        entidad: v.entidad,
+        contrasena: v.contrasena,
+        codigo_autorizacion: v.codigo_autorizacion,
+      })
+      .subscribe({
+        next: () => {
+          this.cargando = false;
+          this.router.navigate(['/login'], { queryParams: { registrado: 1 } });
+        },
+        error: (e) => {
+          this.cargando = false;
+          this.error = mensajeError(e);
+          this.cdr.markForCheck();
+        },
+      });
   }
 
   onSubmit() {

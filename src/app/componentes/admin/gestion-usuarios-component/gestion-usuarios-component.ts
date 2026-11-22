@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuarioService } from '../../../services/usuario-service';
+import { IncidenteService } from '../../../services/incidente-service';
 import { Usuario } from '../../../model/usuario';
 import { mensajeError } from '../../../core/mensajes';
 import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-component/confirmar-dialog-component';
@@ -23,6 +24,7 @@ import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-comp
 })
 export class GestionUsuariosComponent {
   usuarioService: UsuarioService = inject(UsuarioService);
+  incidenteService: IncidenteService = inject(IncidenteService);
   dialog: MatDialog = inject(MatDialog);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
@@ -35,6 +37,9 @@ export class GestionUsuariosComponent {
   texto: string = '';
   estado: string = '';
   distrito: string = '';
+  reputacion: string = '';
+  // Reportes verificados y descartados de cada usuario: de ahí sale su reputación
+  private conteo: { [id: number]: { verificados: number; descartados: number } } = {};
   seleccionado: Usuario | null = null;
   mensaje: string = '';
   error: string = '';
@@ -49,6 +54,19 @@ export class GestionUsuariosComponent {
   }
 
   cargar() {
+    this.incidenteService.list().subscribe({
+      next: (lista) => {
+        this.conteo = {};
+        for (const i of lista) {
+          const c = (this.conteo[i.id_usuario] ??= { verificados: 0, descartados: 0 });
+          if (i.estado === 'VERIFICADO') { c.verificados++; }
+          if (i.estado === 'ELIMINADO') { c.descartados++; }
+        }
+        this.filtrar();
+        this.cdr.markForCheck();
+      },
+      error: () => {},
+    });
     this.usuarioService.list().subscribe({
       next: (u) => {
         this.usuarios = u;
@@ -74,13 +92,25 @@ export class GestionUsuariosComponent {
   get administradores(): number { return this.usuarios.filter((u) => u.rol === 'ADMIN').length; }
   get distritos(): string[] { return [...new Set(this.usuarios.map((u) => u.distrito).filter((d) => !!d))]; }
 
+  // Reputación: Alta (solo reportes verificados), Baja (más descartados que verificados), Media (el resto) o sin reportes
+  reputacionDe(u: Usuario): string {
+    const c = this.conteo[u.id_usuario];
+    if (!c || c.verificados + c.descartados === 0) { return 'Sin historial'; }
+    if (c.descartados === 0) { return 'Alta'; }
+    return c.descartados > c.verificados ? 'Baja' : 'Media';
+  }
+  claseReputacion(r: string): string {
+    return r === 'Alta' ? 'badge-verde' : r === 'Baja' ? 'badge-rojo' : r === 'Media' ? 'badge-naranja' : 'badge-gris';
+  }
+
   filtrar() {
     const t = this.texto.trim().toLowerCase();
     this.dataSource.data = this.usuarios.filter(
       (u) =>
         (t === '' || (u.nombres + ' ' + u.apellidos + ' ' + u.dni + ' ' + u.correo).toLowerCase().includes(t)) &&
         (this.estado === '' || u.estado === this.estado) &&
-        (this.distrito === '' || u.distrito === this.distrito)
+        (this.distrito === '' || u.distrito === this.distrito) &&
+        (this.reputacion === '' || this.reputacionDe(u) === this.reputacion)
     );
     this.dataSource._updateChangeSubscription();
   }
@@ -108,13 +138,15 @@ export class GestionUsuariosComponent {
           pedirTexto: true,
           textoObligatorio: false,
           etiquetaTexto: 'Observaciones del administrador (opcional)',
+          tituloDuraciones: 'Duración de la suspensión',
+          duraciones: ['30 días', '90 días', 'Permanente'],
           textoConfirmar: 'Confirmar suspensión inmediata',
         },
       })
       .afterClosed()
       .subscribe((r) => {
         if (r) {
-          const motivo = r.motivo + (r.texto ? ': ' + r.texto : '');
+          const motivo = r.motivo + ' (' + r.duracion + ')' + (r.texto ? ': ' + r.texto : '');
           this.usuarioService.suspender(u.id_usuario, motivo).subscribe({
             next: () => {
               this.mensaje = 'Cuenta de ' + u.nombres + ' suspendida.';
