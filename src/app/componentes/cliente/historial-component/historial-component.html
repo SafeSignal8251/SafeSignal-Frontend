@@ -4,6 +4,9 @@
       <h1>Historial de Alertas</h1>
       <p>Consulta y audita todos los eventos de emergencia emitidos desde tu cuenta personal con detalle de trazabilidad por geolocalización.</p>
     </div>
+    <div class="acciones no-imprimir">
+      <button mat-stroked-button class="btn-secundario" (click)="descargarPdf()">Descargar como PDF</button>
+    </div>
   </div>
 
   @if (error) {
@@ -43,7 +46,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Y ALERTA</th>
           <td mat-cell *matCellDef="let a">
             <strong>#ALT-{{ a.id_alerta }}</strong><br />
-            <small>{{ a.tipo_alerta === 'SOS' ? 'Alerta SOS' : 'Alerta Silenciosa' }}</small><br />
+            <small>{{ textoTipo(a.tipo_alerta) }}</small><br />
             <small class="gris">Origen: {{ a.origen === 'DISPOSITIVO' ? 'Dispositivo IoT' : 'App web' }}</small>
           </td>
         </ng-container>
@@ -76,11 +79,12 @@
     <div class="tarjeta-ss panel">
       @if (seleccionada) {
         <p class="rojo-txt">EVENTO INSPECCIONADO</p>
-        <h3>{{ seleccionada.tipo_alerta === 'SOS' ? 'Alerta SOS Sonora' : 'Alerta Silenciosa' }} (#ALT-{{ seleccionada.id_alerta }})</h3>
+        <h3>{{ textoTipo(seleccionada.tipo_alerta) }} (#ALT-{{ seleccionada.id_alerta }})</h3>
         @if (marcadores.length > 0) {
           <app-mapa-component [centro]="[marcadores[0].lat, marcadores[0].lng]" [marcadores]="marcadores" [zoom]="15" altura="200px"></app-mapa-component>
         }
         <p class="sub">{{ seleccionada.direccion || 'Sin dirección registrada' }}</p>
+        <a mat-stroked-button class="btn-secundario no-imprimir" routerLink="/reportes/post-emergencia" [queryParams]="{ alerta: seleccionada.id_alerta }">Crear reporte post-emergencia</a>
         <p class="etiqueta">CONTACTOS NOTIFICADOS ({{ notificados.length }})</p>
         @for (n of notificados; track n.id_notificacion) {
           <div class="notificado"><span>{{ n.mensaje }}</span><span class="badge badge-verde">{{ n.estado }}</span></div>
