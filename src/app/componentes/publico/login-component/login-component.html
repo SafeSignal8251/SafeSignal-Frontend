@@ -35,10 +35,10 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>DNI</mat-label>
-        <input matInput formControlName="dni" placeholder="Ej. 74581290" maxlength="8" />
+        <mat-label>{{ tipo === 'ADMIN' ? 'Código de placa / Id operativo' : 'DNI' }}</mat-label>
+        <input matInput formControlName="dni" [placeholder]="tipo === 'ADMIN' ? 'Ej. SER2026001' : 'Ej. 74581290'" [attr.maxlength]="tipo === 'ADMIN' ? 15 : 8" />
         @if (loginForm.get('dni')?.hasError('pattern')) {
-          <mat-error>El DNI debe tener 8 dígitos</mat-error>
+          <mat-error>{{ tipo === 'ADMIN' ? 'Debe tener entre 8 y 15 letras o números' : 'El DNI debe tener 8 dígitos' }}</mat-error>
         }
       </mat-form-field>
 

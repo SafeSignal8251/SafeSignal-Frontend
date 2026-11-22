@@ -63,6 +63,10 @@ export class LoginComponent {
   cambiarTipo(tipo: string) {
     this.tipo = tipo;
     this.error = '';
+    // El cliente usa su DNI (8 dígitos); el administrador, su código de placa / Id operativo (8 a 15 caracteres)
+    const patron = tipo === 'ADMIN' ? /^[0-9A-Za-z]{8,15}$/ : /^[0-9]{8}$/;
+    this.loginForm.get('dni')?.setValidators([Validators.pattern(patron)]);
+    this.loginForm.get('dni')?.updateValueAndValidity();
   }
 
   onSubmit() {
