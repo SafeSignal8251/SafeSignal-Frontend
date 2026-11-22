@@ -144,6 +144,11 @@ export class EstadisticasGlobalesComponent {
   }
 
   // NO VISTO EN CLASE: Blob y URL.createObjectURL (para descargar el CSV que devuelve el backend)
+  // El navegador permite «Guardar como PDF» desde el cuadro de impresión
+  descargarPdf() {
+    window.print();
+  }
+
   descargar(e: EstadisticaPublicada) {
     this.estadisticaService.exportar(e.id_estadistica).subscribe({
       next: (csv) => {

@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -8,7 +9,7 @@ import { FiltroGuardado } from '../../../model/filtro-guardado';
 import { mensajeError } from '../../../core/mensajes';
 
 @Component({
-  imports: [MatDialogTitle, MatDialogContent, MatButton, MatIcon],
+  imports: [FormsModule, MatDialogTitle, MatDialogContent, MatButton, MatIcon],
   selector: 'app-filtros-guardados-dialog-component',
   styleUrl: './filtros-guardados-dialog-component.css',
   templateUrl: './filtros-guardados-dialog-component.html',
@@ -22,6 +23,15 @@ export class FiltrosGuardadosDialogComponent {
 
   filtros: FiltroGuardado[] = [...this.datos.filtros];
   error: string = '';
+  buscar: string = '';
+
+  get filtrados(): FiltroGuardado[] {
+    const t = this.buscar.trim().toLowerCase();
+    if (t === '') {
+      return this.filtros;
+    }
+    return this.filtros.filter((f) => ((f.nombre ?? '') + ' ' + (f.distrito ?? '') + ' ' + (f.tipologia ?? '')).toLowerCase().includes(t));
+  }
 
   aplicar(f: FiltroGuardado) {
     this.dialogRef.close(f);

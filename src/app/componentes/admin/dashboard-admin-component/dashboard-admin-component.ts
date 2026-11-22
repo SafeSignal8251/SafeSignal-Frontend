@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatButton } from '@angular/material/button';
@@ -15,9 +16,10 @@ import { Alerta } from '../../../model/alerta';
 import { Incidente } from '../../../model/incidente';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, hace } from '../../../core/utilidades';
+import { claseEstadoReporte, colorRiesgo, hace, textoEstadoReporte } from '../../../core/utilidades';
 import { CirculoMapa, MapaComponent, MarcadorMapa } from '../../compartido/mapa-component/mapa-component';
 import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-component/confirmar-dialog-component';
+import { VerUbicacionDialogComponent } from '../../compartido/ver-ubicacion-dialog-component/ver-ubicacion-dialog-component';
 
 // Una fila de la tabla "Incidencias en vivo": puede ser una alerta SOS o un reporte pendiente
 interface FilaVivo {
@@ -38,6 +40,7 @@ interface FilaVivo {
 @Component({
   imports: [
     FormsModule,
+    RouterLink,
     MatTable,
     MatColumnDef,
     MatHeaderCell,
@@ -65,9 +68,13 @@ export class DashboardAdminComponent implements OnDestroy {
   zonaService: ZonaRiesgoService = inject(ZonaRiesgoService);
   dialog: MatDialog = inject(MatDialog);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  router: Router = inject(Router);
 
   hace = hace;
-  displayedColumns: string[] = ['id', 'tipo', 'ubicacion', 'estado', 'despacho'];
+  claseEstadoReporte = claseEstadoReporte;
+  textoEstadoReporte = textoEstadoReporte;
+  denunciados: number = 0; // reportes en la cola de moderación (los mismos que ve Moderación de Reportes)
+  displayedColumns: string[] = ['id', 'tipo', 'ubicacion', 'estado', 'ver', 'despacho'];
   dataSource: MatTableDataSource<FilaVivo> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -106,6 +113,13 @@ export class DashboardAdminComponent implements OnDestroy {
         this.cdr.markForCheck();
       },
       error: (e) => this.fallo(e),
+    });
+    this.incidenteService.denunciados().subscribe({
+      next: (d) => {
+        this.denunciados = d.length;
+        this.cdr.markForCheck();
+      },
+      error: () => {},
     });
     this.zonaService.list().subscribe({
       next: (z) => {
@@ -152,7 +166,7 @@ export class DashboardAdminComponent implements OnDestroy {
       detalle: (i.descripcion ?? '').slice(0, 40),
       ubicacion: i.direccion || i.distrito,
       distrito: i.distrito,
-      estado: i.nivel_riesgo === 'ALTO' ? 'CRITICO' : 'MODERADO',
+      estado: i.estado, // PENDIENTE: el color y el texto salen del estado real del reporte
       nivel: i.nivel_riesgo,
       fecha: i.fecha_hora,
       lat: i.latitud,
@@ -192,6 +206,19 @@ export class DashboardAdminComponent implements OnDestroy {
     this.error = mensajeError(e);
     this.mensaje = '';
     this.cdr.markForCheck();
+  }
+
+  // HU-14: «Ver Ruta» muestra en un mapa el punto de la alerta para despachar la unidad
+  verRuta(f: FilaVivo) {
+    this.dialog.open(VerUbicacionDialogComponent, {
+      width: '640px',
+      data: { titulo: f.titulo, codigo: f.codigo, direccion: f.ubicacion, lat: f.lat, lng: f.lng },
+    });
+  }
+
+  // Abre el reporte completo (descripción, autor, votos y comentarios) en Moderación de Reportes
+  verReporte(f: FilaVivo) {
+    this.router.navigate(['/admin/moderacion'], { queryParams: { reporte: f.id } });
   }
 
   accionPrincipal(f: FilaVivo) {

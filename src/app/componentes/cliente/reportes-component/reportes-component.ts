@@ -12,7 +12,7 @@ import { Incidente } from '../../../model/incidente';
 import { Comentario } from '../../../model/comentario';
 import { SuscripcionZona } from '../../../model/suscripcion-zona';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, hace } from '../../../core/utilidades';
+import { claseEstadoReporte, colorRiesgo, hace, textoEstadoReporte } from '../../../core/utilidades';
 import { MapaComponent } from '../../compartido/mapa-component/mapa-component';
 
 @Component({
@@ -31,6 +31,8 @@ export class ReportesComponent {
 
   hace = hace;
   colorRiesgo = colorRiesgo;
+  claseEstadoReporte = claseEstadoReporte;
+  textoEstadoReporte = textoEstadoReporte;
   todos: Incidente[] = [];
   suscripciones: SuscripcionZona[] = [];
   pestana: string = 'todos'; // todos | mios
@@ -80,6 +82,14 @@ export class ReportesComponent {
     this.error = mensajeError(e);
     this.mensaje = '';
     this.cdr.markForCheck();
+  }
+
+  // El autor no puede validar su propio reporte, y solo lo puede editar mientras no esté validado
+  esMio(i: Incidente | null): boolean {
+    return !!i && i.id_usuario === this.auth.usuarioId();
+  }
+  puedeEditar(i: Incidente | null): boolean {
+    return this.esMio(i) && i?.estado === 'PENDIENTE' && !i?.validado;
   }
 
   get mios(): Incidente[] {

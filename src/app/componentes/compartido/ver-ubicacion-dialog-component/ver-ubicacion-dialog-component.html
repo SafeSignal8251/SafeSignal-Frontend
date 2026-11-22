@@ -1,0 +1,15 @@
+<h2 mat-dialog-title class="titulo"><mat-icon>route</mat-icon> {{ datos.titulo }} <small>{{ datos.codigo }}</small></h2>
+<mat-dialog-content>
+  <p class="direccion">{{ datos.direccion || 'Ubicación GPS registrada' }}</p>
+  <p class="coord">GPS: {{ datos.lat }}, {{ datos.lng }}</p>
+  <app-mapa-component
+    [centro]="[datos.lat, datos.lng]"
+    [marcadores]="[{ lat: datos.lat, lng: datos.lng, color: '#c0392b', etiqueta: datos.codigo }]"
+    [zoom]="16"
+    altura="300px"
+  ></app-mapa-component>
+  <div class="acciones-dialogo">
+    <a mat-stroked-button class="btn-secundario" [href]="enlaceMapa" target="_blank" rel="noopener">Abrir en OpenStreetMap</a>
+    <button mat-raised-button class="btn-primario" (click)="cerrar()">Cerrar</button>
+  </div>
+</mat-dialog-content>

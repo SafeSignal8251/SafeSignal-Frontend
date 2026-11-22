@@ -9,7 +9,8 @@ import { ZonaRiesgoService } from '../../../services/zona-riesgo-service';
 import { Incidente } from '../../../model/incidente';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { mensajeError } from '../../../core/mensajes';
-import { distanciaMetros, LIMA, obtenerUbicacion } from '../../../core/utilidades';
+import { DISTRITOS_LIMA, distanciaMetros, LIMA, obtenerUbicacion } from '../../../core/utilidades';
+import { BuscadorDirecciones, Direccion, GeocodificacionService } from '../../../services/geocodificacion-service';
 import { MapaComponent } from '../../compartido/mapa-component/mapa-component';
 
 @Component({
@@ -26,9 +27,12 @@ export class ReporteNuevoEditComponent {
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  geo: GeocodificacionService = inject(GeocodificacionService);
+  buscador: BuscadorDirecciones = new BuscadorDirecciones(this.geo, () => this.cdr.markForCheck());
 
   incidenteForm: FormGroup;
   edicion: boolean = false;
+  bloqueado: boolean = false; // reporte ya validado: se puede ver pero no editar
   id: number = 0;
   zonas: ZonaRiesgo[] = [];
   zonaDetectada: ZonaRiesgo | null = null;
@@ -50,11 +54,7 @@ export class ReporteNuevoEditComponent {
     { valor: 'MEDIO', titulo: 'RIESGO MEDIO', detalle: 'Robo sin violencia o aglomeraciones hostiles. Prioridad P2: intervención < 8 min.' },
     { valor: 'BAJO', titulo: 'PREVENTIVO / LEVE', detalle: 'Luminaria rota, bache severo o sospecha latente. Prioridad P3: patrullaje programado.' },
   ];
-  distritos: string[] = [
-    'Ate', 'Barranco', 'Breña', 'Callao', 'Chorrillos', 'Comas', 'Jesús María', 'La Molina', 'La Victoria', 'Lima Cercado',
-    'Lince', 'Magdalena del Mar', 'Miraflores', 'Pueblo Libre', 'Rímac', 'San Borja', 'San Isidro', 'San Juan de Lurigancho',
-    'San Juan de Miraflores', 'San Miguel', 'Santiago de Surco', 'Surquillo', 'Villa El Salvador',
-  ];
+  distritos: string[] = DISTRITOS_LIMA;
 
   constructor() {
     this.incidenteForm = this.fb.group({
@@ -85,6 +85,11 @@ export class ReporteNuevoEditComponent {
         this.incidenteService.listId(this.id).subscribe({
           next: (data: Incidente) => {
             this.incidenteForm.patchValue(data);
+            // Un reporte ya validado (por vecinos o por el administrador) no se puede editar
+            if (data.validado || data.estado !== 'PENDIENTE') {
+              this.bloqueado = true;
+              this.error = 'Este reporte ya fue validado y no se puede editar.';
+            }
             // En edición solo se puede cambiar la descripción (regla del backend)
             for (const campo of ['tipo_incidente', 'nivel_riesgo', 'direccion', 'distrito', 'latitud', 'longitud']) {
               this.incidenteForm.get(campo)?.disable();
@@ -122,6 +127,7 @@ export class ReporteNuevoEditComponent {
       }
       this.ubicar(u.lat, u.lng);
       this.cdr.markForCheck();
+      this.completarDireccion(u.lat, u.lng);
     });
   }
 
@@ -131,6 +137,37 @@ export class ReporteNuevoEditComponent {
     }
     this.incidenteForm.patchValue({ latitud: p.lat, longitud: p.lng });
     this.ubicar(p.lat, p.lng);
+    this.cdr.markForCheck();
+    this.completarDireccion(p.lat, p.lng);
+  }
+
+  // Busca la dirección real del punto y la escribe en el formulario (si no se encuentra, se deja lo anterior)
+  private completarDireccion(lat: number, lng: number) {
+    this.geo.inversa(lat, lng).then((d) => {
+      if (d) {
+        this.incidenteForm.patchValue({ direccion: d.texto });
+        if (d.distrito) {
+          this.incidenteForm.patchValue({ distrito: d.distrito });
+        }
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  // El usuario escribe una dirección: se muestran sugerencias de OpenStreetMap
+  escribirDireccion() {
+    if (!this.edicion) {
+      this.buscador.escribir(this.incidenteForm.get('direccion')?.value ?? '');
+    }
+  }
+
+  elegirSugerencia(s: Direccion) {
+    this.incidenteForm.patchValue({ direccion: s.texto, latitud: s.lat, longitud: s.lng });
+    if (s.distrito) {
+      this.incidenteForm.patchValue({ distrito: s.distrito });
+    }
+    this.buscador.cerrar();
+    this.ubicar(s.lat, s.lng);
     this.cdr.markForCheck();
   }
 
@@ -172,14 +209,14 @@ export class ReporteNuevoEditComponent {
     this.error = '';
     const v = this.incidenteForm.getRawValue();
     if (this.edicion) {
+      if (this.bloqueado) {
+        this.cargando = false;
+        return;
+      }
       this.incidenteService.update(this.id, this.auth.usuarioId(), v.descripcion).subscribe({
         next: () => this.router.navigate(['/reportes']),
         error: (e) => this.fallo(e),
       });
-      return;
-    }
-    if (!this.zonaDetectada) {
-      this.fallo({ error: { message: 'No hay zonas de riesgo registradas todavía. Pide al administrador que cree una.' } });
       return;
     }
     const incidente: Partial<Incidente> = {
@@ -191,7 +228,7 @@ export class ReporteNuevoEditComponent {
       latitud: v.latitud,
       longitud: v.longitud,
     };
-    this.incidenteService.insert(this.zonaDetectada.id_zona, this.auth.usuarioId(), incidente).subscribe({
+    this.incidenteService.insert(this.zonaDetectada?.id_zona ?? null, this.auth.usuarioId(), incidente).subscribe({
       next: () => this.router.navigate(['/reportes']),
       error: (e) => this.fallo(e),
     });

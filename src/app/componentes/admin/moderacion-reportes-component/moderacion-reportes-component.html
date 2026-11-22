@@ -13,30 +13,44 @@
 
   <div class="grid-2b">
     <div class="pila">
-      <p class="etq">CASOS EN REVISIÓN PENDIENTE <span>{{ denunciados.length }} mostrados</span></p>
-      @for (i of denunciados; track i.id_incidente) {
+      <div class="acciones">
+        <button type="button" class="chip" [class.activo]="vista === 'denunciados'" (click)="cambiarVista('denunciados')">Denunciados ({{ denunciados.length }})</button>
+        <button type="button" class="chip" [class.activo]="vista === 'todos'" (click)="cambiarVista('todos')">Todos los reportes ({{ todos.length }})</button>
+      </div>
+      <p class="sub">{{ vista === 'todos' ? 'Todos los reportes que hicieron los usuarios, con cualquier estado: pendientes, verificados y eliminados.' : 'Reportes que otros vecinos marcaron como falsa alarma y esperan tu decisión.' }}</p>
+      <p class="etq">{{ vista === 'todos' ? 'TODOS LOS REPORTES' : 'CASOS EN REVISIÓN PENDIENTE' }} <span>{{ lista.length }} mostrados</span></p>
+      @for (i of lista; track i.id_incidente) {
         <article class="caso" [class.activo]="seleccionado?.id_incidente === i.id_incidente" (click)="seleccionar(i)">
-          <div class="cab"><span class="badge badge-gris mono">#REP-{{ i.id_incidente }}</span><small>{{ hace(i.fecha_hora) }}</small></div>
+          <div class="cab"><span class="badge badge-gris mono">#REP-{{ i.id_incidente }}</span><span class="badge" [class]="'badge ' + claseEstadoReporte(i.estado)">{{ textoEstadoReporte(i.estado) }}</span><small>{{ hace(i.fecha_hora) }}</small></div>
           <h3>{{ i.tipo_incidente }}</h3>
           <p class="cita">«{{ i.descripcion }}»</p>
           <small class="gris">{{ i.direccion || i.distrito }}</small>
         </article>
       } @empty {
-        <div class="tarjeta-ss vacio">No hay reportes denunciados pendientes de moderación. 🎉</div>
+        <div class="tarjeta-ss vacio">
+          {{ vista === 'todos' ? 'Todavía no hay reportes registrados.' : 'No hay reportes denunciados pendientes de moderación. 🎉' }}
+        </div>
       }
     </div>
 
     <div class="tarjeta-ss">
       @if (seleccionado) {
-        <div class="cab"><span class="badge badge-gris mono">#REP-{{ seleccionado.id_incidente }}</span><span class="badge badge-rojo">ALTA PRIORIDAD</span></div>
+        <div class="cab">
+          <span class="badge badge-gris mono">#REP-{{ seleccionado.id_incidente }}</span>
+          <span class="badge" [class]="'badge ' + (seleccionado.nivel_riesgo === 'ALTO' ? 'badge-rojo' : seleccionado.nivel_riesgo === 'MEDIO' ? 'badge-naranja' : 'badge-azul')">RIESGO {{ seleccionado.nivel_riesgo || 'SIN NIVEL' }}</span>
+          <span class="badge" [class]="'badge ' + claseEstadoReporte(seleccionado.estado)">{{ textoEstadoReporte(seleccionado.estado) }}</span>
+          @if (seleccionado.validado) { <span class="badge badge-verde">VALIDADO</span> }
+        </div>
         <h2 class="titulo">{{ seleccionado.tipo_incidente }}</h2>
-        <p class="coord">GPS: {{ seleccionado.latitud }}, {{ seleccionado.longitud }} · {{ seleccionado.distrito }}</p>
+        <p class="coord">{{ seleccionado.fecha_hora | date: 'dd/MM/yyyy HH:mm' }} ({{ hace(seleccionado.fecha_hora) }})</p>
+        <p class="coord">{{ seleccionado.direccion }} · {{ seleccionado.distrito }}</p>
+        <p class="coord">GPS: {{ seleccionado.latitud }}, {{ seleccionado.longitud }}@if (zona) { · Zona: {{ zona.nombre }} (riesgo {{ zona.nivel_riesgo }}) }</p>
 
         <div class="dos">
           @if (seleccionado.latitud != null) {
             <app-mapa-component
               [centro]="[seleccionado.latitud, seleccionado.longitud]"
-              [marcadores]="[{ lat: seleccionado.latitud, lng: seleccionado.longitud, color: '#c0392b', etiqueta: 'Punto denunciado' }]"
+              [marcadores]="[{ lat: seleccionado.latitud, lng: seleccionado.longitud, color: colorRiesgo(seleccionado.nivel_riesgo), etiqueta: 'Punto del reporte' }]"
               [zoom]="15"
               altura="170px"
             ></app-mapa-component>
@@ -44,24 +58,32 @@
           <div class="verdicto">
             <strong><mat-icon>verified_user</mat-icon> Datos del autor</strong>
             @if (autor) {
-              <p>{{ autor.nombres }} {{ autor.apellidos }}<br /><small>Estado de la cuenta: {{ autor.estado }}</small></p>
+              <p>{{ autor.nombres }} {{ autor.apellidos }}<br /><small>{{ autor.correo }} · DNI {{ autor.dni }}</small><br /><small>Estado de la cuenta: {{ autor.estado }}</small></p>
+            } @else {
+              <p><small>Cargando datos del autor...</small></p>
             }
-            <p class="cita">{{ seleccionado.descripcion }}</p>
           </div>
         </div>
 
-        <p class="etq">DENUNCIAS VECINALES ACUMULADAS</p>
-        <p class="votos"><span class="badge badge-rojo">{{ falsas }} marcaron falso</span> <span class="badge badge-verde">{{ confirmadas }} confirmaron</span></p>
+        <p class="etq">DESCRIPCIÓN COMPLETA DEL REPORTE</p>
+        <p class="cita">{{ seleccionado.descripcion }}</p>
+
+        <p class="etq">VALIDACIONES VECINALES</p>
+        <p class="votos"><span class="badge badge-verde">{{ confirmadas }} confirmaron</span> <span class="badge badge-rojo">{{ falsas }} marcaron falso</span></p>
+
+        <p class="etq">APORTES Y COMENTARIOS ({{ comentarios.length }})</p>
         @for (c of comentarios; track c.id_comentario) {
           <div class="denuncia"><small class="gris">Vecino #{{ c.id_usuario }} · {{ hace(c.fecha_hora) }}</small><p>{{ c.texto }}</p></div>
+        } @empty {
+          <p class="vacio">Este reporte todavía no tiene comentarios.</p>
         }
 
         <div class="acciones fin">
-          <button mat-stroked-button class="btn-secundario" (click)="mantener()">Mantener como Válido</button>
-          <button mat-raised-button class="btn-peligro" (click)="descartar()">Descartar Reporte</button>
+          <button mat-stroked-button class="btn-secundario" [disabled]="seleccionado.estado === 'VERIFICADO'" (click)="mantener()">Mantener como Válido</button>
+          <button mat-raised-button class="btn-peligro" [disabled]="seleccionado.estado === 'ELIMINADO'" (click)="descartar()">Descartar Reporte</button>
         </div>
       } @else {
-        <p class="vacio">Selecciona un caso de la lista para revisarlo.</p>
+        <p class="vacio">Selecciona un reporte de la lista para revisarlo.</p>
       }
     </div>
   </div>

@@ -16,7 +16,8 @@
   <div class="kpis">
     <div class="kpi"><small>Usuarios Activos</small><strong>{{ resumen.total_usuarios ?? '—' }}</strong><span>registrados en la plataforma</span></div>
     <div class="kpi rojo"><small>Alertas SOS activas</small><strong>{{ resumen.alertas_activas ?? '—' }}</strong><span>esperando despacho</span></div>
-    <div class="kpi"><small>Reportes por Revisar</small><strong>{{ resumen.incidentes_pendientes ?? '—' }}</strong><span>cola de moderación</span></div>
+    <div class="kpi"><small>Reportes por Revisar</small><strong>{{ resumen.incidentes_pendientes ?? '—' }}</strong><span>pendientes de verificar</span></div>
+    <a class="kpi" routerLink="/admin/moderacion" style="text-decoration:none"><small>Cola de moderación</small><strong class="rojo">{{ denunciados }}</strong><span>denunciados como falsa alarma · revisar →</span></a>
     <div class="kpi naranja"><small>Cuadrantes de Riesgo Alto</small><strong>{{ resumen.zonas_riesgo_alto ?? '—' }}</strong><span>patrullas reforzadas</span></div>
   </div>
 
@@ -45,7 +46,8 @@
         <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>ID</th><td mat-cell *matCellDef="let f"><span class="mono">{{ f.codigo }}</span></td></ng-container>
         <ng-container matColumnDef="tipo"><th mat-header-cell *matHeaderCellDef>ALERTA / TIPO</th><td mat-cell *matCellDef="let f"><strong>{{ f.titulo }}</strong><br /><small class="rojo">{{ f.detalle }} · {{ hace(f.fecha) }}</small></td></ng-container>
         <ng-container matColumnDef="ubicacion"><th mat-header-cell *matHeaderCellDef>UBICACIÓN</th><td mat-cell *matCellDef="let f">{{ f.ubicacion }}<br /><small class="gris">{{ f.distrito }}</small></td></ng-container>
-        <ng-container matColumnDef="estado"><th mat-header-cell *matHeaderCellDef>ESTADO</th><td mat-cell *matCellDef="let f"><span class="badge" [class]="'badge ' + claseEstado(f.estado)">{{ f.estado }}</span></td></ng-container>
+        <ng-container matColumnDef="estado"><th mat-header-cell *matHeaderCellDef>ESTADO</th><td mat-cell *matCellDef="let f">@if (f.tipo === 'REPORTE') { <span class="badge" [class]="'badge ' + claseEstadoReporte(f.estado)">{{ textoEstadoReporte(f.estado) }}</span><br /><small class="gris">Riesgo {{ f.nivel }}</small> } @else { <span class="badge" [class]="'badge ' + claseEstado(f.estado)">{{ f.estado }}</span> }</td></ng-container>
+        <ng-container matColumnDef="ver"><th mat-header-cell *matHeaderCellDef>REPORTE</th><td mat-cell *matCellDef="let f">@if (f.tipo === 'REPORTE') { <button mat-stroked-button class="btn-secundario" (click)="verReporte(f)">Ver reporte</button> } @else if (f.lat != null && f.lng != null) { <button mat-stroked-button class="btn-secundario" (click)="verRuta(f)">Ver Ruta</button> }</td></ng-container>
         <ng-container matColumnDef="despacho"><th mat-header-cell *matHeaderCellDef>DESPACHO</th><td mat-cell *matCellDef="let f"><button mat-raised-button [class]="f.tipo === 'ALERTA' ? 'btn-peligro' : 'btn-primario'" (click)="accionPrincipal(f)">{{ textoAccion(f) }}</button></td></ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
