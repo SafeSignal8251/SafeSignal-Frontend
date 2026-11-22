@@ -10,6 +10,7 @@
     <button class="chip" [class.activo]="pestana === 'todos'" (click)="cambiarPestana('todos')">Todos los reportes ({{ todos.length }})</button>
     <button class="chip" [class.activo]="pestana === 'mios'" (click)="cambiarPestana('mios')">Mis reportes ({{ mios.length }})</button>
     <a mat-raised-button routerLink="/reportes/nuevo" class="btn-primario">+ Crear Nuevo Reporte</a>
+    <a mat-stroked-button routerLink="/reportes/post-emergencia" class="btn-secundario">Reporte post-emergencia</a>
   </div>
 
   @if (mensaje) {
@@ -51,7 +52,7 @@
         <article class="reporte" [class.activo]="seleccionado?.id_incidente === i.id_incidente" (click)="seleccionar(i)">
           <div class="etiquetas">
             <span class="badge" [class]="'badge ' + clase(i.nivel_riesgo)">{{ i.nivel_riesgo || 'SIN NIVEL' }}</span>
-            <span class="badge badge-gris">{{ i.estado }}</span>
+            <span class="badge" [class]="'badge ' + claseEstadoReporte(i.estado)">{{ textoEstadoReporte(i.estado) }}</span>
             <small>#REP-{{ i.id_incidente }}</small>
           </div>
           <h3>{{ i.tipo_incidente }}</h3>
@@ -59,8 +60,10 @@
           <p class="descripcion">{{ i.descripcion }}</p>
           <div class="pie">
             <a [routerLink]="['/reportes', i.id_incidente]" class="boton-enlace">Ver detalle →</a>
-            @if (i.id_usuario === auth.usuarioId()) {
+            @if (puedeEditar(i)) {
               <a [routerLink]="['/reportes/editar', i.id_incidente]" class="boton-enlace">Editar mi reporte</a>
+            } @else if (esMio(i)) {
+              <small class="gris">Ya validado: no se puede editar</small>
             }
           </div>
         </article>
@@ -104,10 +107,16 @@
         <small class="gris">{{ seleccionado.direccion }} · {{ seleccionado.distrito }}</small>
         <p class="etiqueta">DESCRIPCIÓN DEL SUCESO</p>
         <p class="texto-detalle">{{ seleccionado.descripcion }}</p>
-        <div class="votos">
-          <button mat-raised-button class="btn-verde" (click)="votar('CONFIRMADO')">Confirmar y Validar ({{ votosConfirmados }})</button>
-          <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Falsa Alarma ({{ votosFalsos }})</button>
-        </div>
+        @if (esMio(seleccionado)) {
+          <div class="votos">
+            <small class="gris">Es tu reporte: no puedes validarlo. {{ votosConfirmados }} vecinos lo confirmaron · {{ votosFalsos }} lo marcaron como falsa alarma.</small>
+          </div>
+        } @else {
+          <div class="votos">
+            <button mat-raised-button class="btn-verde" (click)="votar('CONFIRMADO')">Confirmar y Validar ({{ votosConfirmados }})</button>
+            <button mat-stroked-button class="btn-secundario" (click)="votar('FALSA_ALARMA')">Falsa Alarma ({{ votosFalsos }})</button>
+          </div>
+        }
         <p class="etiqueta">ACTUALIZACIONES EN VIVO <span class="badge badge-azul">{{ comentarios.length }} APORTES</span></p>
         @for (c of comentarios; track c.id_comentario) {
           <div class="comentario">
