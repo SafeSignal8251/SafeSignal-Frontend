@@ -41,7 +41,18 @@
 
       <h3><span class="num">3</span> Ubicación del Suceso <button type="button" class="chip" [disabled]="edicion" (click)="usarGps()">Usar mi GPS actual</button></h3>
       <div class="fila">
-        <div class="campo"><label>Dirección o referencia</label><input formControlName="direccion" placeholder="Ej. Av. Javier Prado Este con Calle Las Begonias" /></div>
+        <div class="campo">
+          <label>Dirección o referencia</label>
+          <input formControlName="direccion" placeholder="Escribe la dirección y elige una sugerencia" autocomplete="off" (input)="escribirDireccion()" (blur)="buscador.cerrar()" />
+          @if (buscador.buscando) { <span class="buscando-dir">Buscando direcciones...</span> }
+          @if (buscador.sugerencias.length) {
+            <ul class="sugerencias">
+              @for (s of buscador.sugerencias; track s.lat + ',' + s.lng) {
+                <li><button type="button" (mousedown)="elegirSugerencia(s)">{{ s.texto }}</button></li>
+              }
+            </ul>
+          }
+        </div>
         <div class="campo">
           <label>Distrito</label>
           <select formControlName="distrito">
@@ -69,8 +80,8 @@
       </div>
 
       <div class="pie">
-        <a routerLink="/reportes" class="cancelar">Cancelar</a>
-        <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando">
+        <a routerLink="/reportes" class="cancelar">{{ edicion ? 'Cancelar edición' : 'Cancelar' }}</a>
+        <button type="submit" mat-raised-button class="btn-primario" [disabled]="cargando || bloqueado">
           {{ cargando ? 'Guardando...' : edicion ? 'Guardar mensaje editado' : 'Publicar Reporte y Alertar Comunidad' }}
         </button>
       </div>
