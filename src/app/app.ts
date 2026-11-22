@@ -4,6 +4,7 @@ import { AsyncPipe } from '@angular/common';
 import { MatDrawer, MatDrawerContainer, MatDrawerContent } from '@angular/material/sidenav';
 import { filter } from 'rxjs';
 import { AuthService } from './services/auth-service';
+import { SeguimientoAutomaticoService } from './services/seguimiento-automatico-service';
 import { NavClienteComponent } from './componentes/compartido/nav-cliente-component/nav-cliente-component';
 import { NavAdminComponent } from './componentes/compartido/nav-admin-component/nav-admin-component';
 
@@ -29,8 +30,11 @@ export class App {
   // Al cambiar de pantalla el contenido vuelve arriba, como pasaba antes con el scroll de la ventana.
   contenido = viewChild(MatDrawerContent);
 
+  seguimientoAuto: SeguimientoAutomaticoService = inject(SeguimientoAutomaticoService);
+
   constructor() {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
+      this.seguimientoAuto.actualizar(); // HU-23: seguimiento automático al salir de una zona segura
       this.contenido()?.getElementRef().nativeElement.scrollTo({ top: 0 });
     });
   }
