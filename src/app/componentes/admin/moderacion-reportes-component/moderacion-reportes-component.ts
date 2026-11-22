@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,16 +8,18 @@ import { IncidenteService } from '../../../services/incidente-service';
 import { ComentarioService } from '../../../services/comentario-service';
 import { ValidacionService } from '../../../services/validacion-service';
 import { UsuarioService } from '../../../services/usuario-service';
+import { ZonaRiesgoService } from '../../../services/zona-riesgo-service';
 import { Incidente } from '../../../model/incidente';
 import { Comentario } from '../../../model/comentario';
+import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { Usuario } from '../../../model/usuario';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, hace } from '../../../core/utilidades';
+import { claseEstadoReporte, colorRiesgo, hace, textoEstadoReporte } from '../../../core/utilidades';
 import { MapaComponent } from '../../compartido/mapa-component/mapa-component';
 import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-component/confirmar-dialog-component';
 
 @Component({
-  imports: [MatButton, MatIcon, MapaComponent],
+  imports: [DatePipe, MatButton, MatIcon, MapaComponent],
   selector: 'app-moderacion-reportes-component',
   styleUrl: './moderacion-reportes-component.css',
   templateUrl: './moderacion-reportes-component.html',
@@ -25,13 +29,22 @@ export class ModeracionReportesComponent {
   comentarioService: ComentarioService = inject(ComentarioService);
   validacionService: ValidacionService = inject(ValidacionService);
   usuarioService: UsuarioService = inject(UsuarioService);
+  zonaService: ZonaRiesgoService = inject(ZonaRiesgoService);
   dialog: MatDialog = inject(MatDialog);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  private vistaElegida: boolean = false; // true cuando el admin eligió una pestaña o llegó con ?reporte=ID
+  private reporteAbrir: number | null = null; // llega desde el dashboard con ?reporte=ID
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   hace = hace;
   colorRiesgo = colorRiesgo;
+  claseEstadoReporte = claseEstadoReporte;
+  textoEstadoReporte = textoEstadoReporte;
+  vista: string = 'denunciados'; // denunciados | todos
   denunciados: Incidente[] = [];
+  todos: Incidente[] = [];
   seleccionado: Incidente | null = null;
+  zona: ZonaRiesgo | null = null;
   autor: Usuario | null = null;
   comentarios: Comentario[] = [];
   falsas: number = 0;
@@ -42,6 +55,12 @@ export class ModeracionReportesComponent {
   error: string = '';
 
   ngOnInit() {
+    const id = Number(this.route.snapshot.queryParamMap.get('reporte'));
+    if (id > 0) {
+      this.vista = 'todos';
+      this.vistaElegida = true;
+      this.reporteAbrir = id;
+    }
     this.cargar();
   }
 
@@ -49,28 +68,64 @@ export class ModeracionReportesComponent {
     this.incidenteService.denunciados().subscribe({
       next: (lista) => {
         this.denunciados = lista;
-        const actual = this.seleccionado ? lista.find((i) => i.id_incidente === this.seleccionado?.id_incidente) : null;
-        if (actual) {
-          this.seleccionar(actual);
-        } else if (lista.length > 0) {
-          this.seleccionar(lista[0]);
-        } else {
-          this.seleccionado = null;
+        // Si no hay denunciados, se muestran todos los reportes para que el admin no vea la pantalla vacía
+        if (lista.length === 0 && !this.vistaElegida) {
+          this.vista = 'todos';
+        }
+        if (this.vista === 'denunciados') {
+          this.reseleccionar();
         }
         this.cdr.markForCheck();
       },
       error: (e) => this.fallo(e),
     });
+    // El administrador ve todos los reportes completos, no solo los denunciados
     this.incidenteService.list().subscribe({
       next: (todos) => {
+        this.todos = [...todos].sort((a, b) => (b.fecha_hora ?? '').localeCompare(a.fecha_hora ?? ''));
         this.descartados = todos.filter((i) => i.estado === 'ELIMINADO').length;
         this.verificados = todos.filter((i) => i.estado === 'VERIFICADO').length;
+        if (this.vista === 'todos') {
+          this.reseleccionar();
+        }
         this.cdr.markForCheck();
       },
       error: () => {},
     });
   }
 
+  get lista(): Incidente[] {
+    return this.vista === 'todos' ? this.todos : this.denunciados;
+  }
+
+  cambiarVista(v: string) {
+    this.vistaElegida = true;
+    this.vista = v;
+    this.seleccionado = null;
+    this.reseleccionar();
+  }
+
+  private reseleccionar() {
+    const lista = this.lista;
+    if (this.reporteAbrir !== null) {
+      const pedido = lista.find((i) => i.id_incidente === this.reporteAbrir);
+      if (pedido) {
+        this.reporteAbrir = null;
+        this.seleccionar(pedido);
+        this.cdr.markForCheck();
+        return;
+      }
+    }
+    const actual = this.seleccionado ? lista.find((i) => i.id_incidente === this.seleccionado?.id_incidente) : null;
+    if (actual) {
+      this.seleccionar(actual);
+    } else if (lista.length > 0) {
+      this.seleccionar(lista[0]);
+    } else {
+      this.seleccionado = null;
+    }
+    this.cdr.markForCheck();
+  }
   private fallo(e: any) {
     this.error = mensajeError(e);
     this.mensaje = '';
@@ -85,7 +140,17 @@ export class ModeracionReportesComponent {
   seleccionar(i: Incidente) {
     this.seleccionado = i;
     this.autor = null;
+    this.zona = null;
     this.comentarios = [];
+    if (i.id_zona) {
+      this.zonaService.listId(i.id_zona).subscribe({
+        next: (z) => {
+          this.zona = z;
+          this.cdr.markForCheck();
+        },
+        error: () => {},
+      });
+    }
     this.usuarioService.listId(i.id_usuario).subscribe({
       next: (u) => {
         this.autor = u;
@@ -146,7 +211,8 @@ export class ModeracionReportesComponent {
           icono: 'delete',
           tituloOpciones: 'Motivos administrativos',
           opciones: ['Falsa alarma comprobada en sitio (móvil verificó normalidad)', 'Reporte duplicado o spam', 'Otro motivo administrativo'],
-          textoConfirmar: 'Confirmar descarte de reporte',
+          textoConfirmar: 'Confirmar Descarte de Reporte',
+          textoCancelar: 'Cancelar y Volver',
         },
       })
       .afterClosed()
