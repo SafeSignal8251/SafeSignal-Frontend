@@ -12,8 +12,10 @@ export class SuscripcionZonaService {
   listPorUsuario(id_usuario: number): Observable<SuscripcionZona[]> {
     return this.httpClient.get<SuscripcionZona[]>(this.url + '/usuario/' + id_usuario);
   }
-  insert(id_usuario: number, id_zona: number, suscripcion: Partial<SuscripcionZona>): Observable<SuscripcionZona> {
-    return this.httpClient.post<SuscripcionZona>(this.url, suscripcion, { params: { id_usuario, id_zona } });
+  insert(id_usuario: number, id_zona: number | null, suscripcion: Partial<SuscripcionZona>): Observable<SuscripcionZona> {
+    // Sin zona detectada, el backend usa la más cercana o crea una
+    const params: { [k: string]: number } = id_zona != null ? { id_usuario, id_zona } : { id_usuario };
+    return this.httpClient.post<SuscripcionZona>(this.url, suscripcion, { params });
   }
   update(id: number, suscripcion: Partial<SuscripcionZona>): Observable<SuscripcionZona> {
     return this.httpClient.put<SuscripcionZona>(this.url + '/' + id, suscripcion);
