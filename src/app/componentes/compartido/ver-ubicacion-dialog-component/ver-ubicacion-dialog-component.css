@@ -1,0 +1,26 @@
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.titulo small {
+  font-size: 13px;
+  color: var(--ss-gris);
+  font-weight: 400;
+}
+.direccion {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+.coord {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--ss-gris);
+  font-family: monospace;
+}
+.acciones-dialogo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 14px;
+}
