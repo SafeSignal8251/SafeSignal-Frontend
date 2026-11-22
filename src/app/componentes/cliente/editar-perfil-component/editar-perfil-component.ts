@@ -7,6 +7,7 @@ import { UsuarioService } from '../../../services/usuario-service';
 import { ContactoService } from '../../../services/contacto-service';
 import { ContactoConfianza } from '../../../model/contacto-confianza';
 import { mensajeError } from '../../../core/mensajes';
+import { DISTRITOS_LIMA } from '../../../core/utilidades';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink, MatButton],
@@ -26,11 +27,7 @@ export class EditarPerfilComponent {
   contacto: ContactoConfianza | null = null;
   cargando: boolean = false;
   error: string = '';
-  distritos: string[] = [
-    'Ate', 'Barranco', 'Breña', 'Callao', 'Chorrillos', 'Comas', 'Jesús María', 'La Molina', 'La Victoria', 'Lima Cercado',
-    'Lince', 'Magdalena del Mar', 'Miraflores', 'Pueblo Libre', 'Rímac', 'San Borja', 'San Isidro', 'San Juan de Lurigancho',
-    'San Juan de Miraflores', 'San Miguel', 'Santiago de Surco', 'Surquillo', 'Villa El Salvador',
-  ];
+  distritos: string[] = DISTRITOS_LIMA;
 
   constructor() {
     this.perfilForm = this.fb.group({
