@@ -13,6 +13,10 @@ export class UsuarioService {
   registrar(usuario: Partial<Usuario>): Observable<Usuario> {
     return this.httpClient.post<Usuario>(this.url + '/registrar', usuario);
   }
+  // HU-01 (escenario 2): cuenta de administrador desde el registro, con el código de autorización institucional
+  registrarAdmin(datos: any): Observable<Usuario> {
+    return this.httpClient.post<Usuario>(this.url + '/registrar-institucional', datos);
+  }
   existeCorreo(correo: string): Observable<boolean> {
     return this.httpClient.get<boolean>(this.url + '/existe-correo/' + correo);
   }
