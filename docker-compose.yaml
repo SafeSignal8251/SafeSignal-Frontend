@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build: .
+    container_name: safesignal-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
