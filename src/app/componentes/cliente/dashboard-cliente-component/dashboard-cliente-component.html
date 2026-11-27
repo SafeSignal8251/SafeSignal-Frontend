@@ -58,7 +58,7 @@
           <b>Contactos notificados:</b> {{ accesos.contactos.length }}
         </p>
       </div>
-      <button mat-raised-button class="btn-primario" (click)="cancelarAlerta()">Procederé a cancelar alerta</button>
+      <button mat-raised-button class="btn-primario" (click)="cancelarAlerta()">Proceder a Cancelar Alerta</button>
     </div>
   } @else {
     <div class="banner aviso">
@@ -125,7 +125,7 @@
 
   <div class="accesos">
     <a routerLink="/contactos" class="acceso"><mat-icon>group_add</mat-icon><div><strong>Contactos</strong><small>{{ accesos.contactos.length }} configurados</small></div></a>
-    <a routerLink="/dispositivos" class="acceso"><mat-icon>sensors</mat-icon><div><strong>Dispositivos</strong><small>{{ accesos.dispositivos.length }} configurados</small></div></a>
+    <a routerLink="/dispositivos" class="acceso"><mat-icon>sensors</mat-icon><div><strong>Mis dispositivos</strong><small>{{ accesos.dispositivos.length }} configurados</small></div></a>
     <a routerLink="/seguimiento" class="acceso"><mat-icon>route</mat-icon><div><strong>Seguimiento</strong><small>{{ seguimientoActivo ? 'Activo' : 'Planifica una ruta' }}</small></div></a>
     <a routerLink="/reportes/nuevo" class="acceso"><mat-icon>report</mat-icon><div><strong>Reportar</strong><small>Nuevo incidente</small></div></a>
   </div>
