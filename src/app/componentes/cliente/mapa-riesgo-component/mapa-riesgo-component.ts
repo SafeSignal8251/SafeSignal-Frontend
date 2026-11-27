@@ -14,7 +14,8 @@ import { Incidente } from '../../../model/incidente';
 import { Ruta } from '../../../model/ruta';
 import { ZonaRiesgo } from '../../../model/zona-riesgo';
 import { mensajeError } from '../../../core/mensajes';
-import { colorRiesgo, distanciaMetros, hace, LIMA, leerPref, obtenerUbicacion } from '../../../core/utilidades';
+import { colorRiesgo, distanciaMetros, hace, LIMA, leerPref, obtenerUbicacion, textoOrigenUbicacion } from '../../../core/utilidades';
+import { elegirMasSegura, resumenRuta, trazarRutas } from '../../../services/ruta-calles';
 import { BuscadorDirecciones, Direccion, GeocodificacionService } from '../../../services/geocodificacion-service';
 import { CirculoMapa, MapaComponent, MarcadorMapa } from '../../compartido/mapa-component/mapa-component';
 import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-component/confirmar-dialog-component';
@@ -62,6 +63,10 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
 
   mensaje: string = '';
   error: string = '';
+
+  // HU-17 y HU-19: recorrido por las calles de cada ruta (OSRM) y su resumen
+  private trazados: { [id: number]: [number, number][] } = {};
+  private resumenes: { [id: number]: string } = {};
 
   constructor() {
     this.rutaForm = this.fb.group({
@@ -189,7 +194,8 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
       .map((i) => ({ lat: i.latitud, lng: i.longitud, color: colorRiesgo(i.nivel_riesgo), etiqueta: i.tipo_incidente }));
     const ruta = this.rutaActiva;
     if (ruta && ruta.origen_latitud != null && ruta.destino_latitud != null) {
-      this.linea = [
+      // Si ya se trazó por las calles se dibuja ese camino; si no, una línea recta entre los dos puntos
+      this.linea = this.trazados[ruta.id_ruta] ?? [
         [ruta.origen_latitud, ruta.origen_longitud],
         [ruta.destino_latitud, ruta.destino_longitud],
       ];
@@ -216,7 +222,7 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     obtenerUbicacion().then((u) => {
       this.rutaForm.patchValue({ origen_latitud: u.lat, origen_longitud: u.lng });
       if (!this.rutaForm.value.origen) {
-        this.rutaForm.patchValue({ origen: u.real ? 'Mi ubicación actual' : 'Centro de Lima' });
+        this.rutaForm.patchValue({ origen: textoOrigenUbicacion(u) });
       }
       this.cdr.markForCheck();
       // Dirección real del punto (si no se encuentra, queda el texto anterior)
@@ -262,7 +268,7 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     if (this.rutaForm.get('origen_latitud')?.value == null) {
       this.buscando = true;
       obtenerUbicacion().then((u) => {
-        this.rutaForm.patchValue({ origen_latitud: u.lat, origen_longitud: u.lng, origen: this.rutaForm.value.origen || (u.real ? 'Mi ubicación actual' : 'Centro de Lima') });
+        this.rutaForm.patchValue({ origen_latitud: u.lat, origen_longitud: u.lng, origen: this.rutaForm.value.origen || textoOrigenUbicacion(u) });
         this.buscando = false;
         this.buscarRutas();
       });
@@ -281,9 +287,10 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     const v = this.rutaForm.value;
     const km = distanciaMetros(v.origen_latitud, v.origen_longitud, v.destino_latitud, v.destino_longitud) / 1000;
     const nueva: Partial<Ruta> = {
-      nombre: v.origen + ' → ' + v.destino,
-      origen: v.origen,
-      destino: v.destino,
+      // Las columnas nombre, origen y destino de la base de datos admiten como máximo 100 caracteres
+      nombre: (v.origen + ' → ' + v.destino).slice(0, 100),
+      origen: String(v.origen).slice(0, 100),
+      destino: String(v.destino).slice(0, 100),
       origen_latitud: v.origen_latitud,
       origen_longitud: v.origen_longitud,
       destino_latitud: v.destino_latitud,
@@ -295,6 +302,7 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     this.rutaService.insert(this.auth.usuarioId(), nueva).subscribe({
       next: (ruta) => {
         this.rutaActiva = ruta;
+        this.trazarPorCalles(ruta);
         this.rutaService.evaluarRiesgo(ruta.id_ruta).subscribe({
           next: (r) => {
             this.riesgos[ruta.id_ruta] = r;
@@ -327,6 +335,36 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     this.alternativa = null;
     this.avisoAlternativa = '';
     this.dibujar();
+    this.trazarPorCalles(ruta);
+    this.cdr.markForCheck();
+  }
+
+  // NO VISTO EN CLASE: OSRM (rutas por calles). Se piden varias rutas y se elige la que toca menos zonas
+  // de riesgo. Si el servicio no responde, la pantalla sigue funcionando con la línea recta.
+  private async trazarPorCalles(ruta: Ruta, esDesvio: boolean = false): Promise<void> {
+    if (ruta.origen_latitud == null || ruta.origen_longitud == null || ruta.destino_latitud == null || ruta.destino_longitud == null) {
+      return;
+    }
+    if (!this.trazados[ruta.id_ruta]) {
+      const rutas = await trazarRutas([ruta.origen_latitud, ruta.origen_longitud], [ruta.destino_latitud, ruta.destino_longitud]);
+      if (!rutas) {
+        if (!esDesvio && this.rutaActiva?.id_ruta === ruta.id_ruta) {
+          this.mensaje = 'No se pudo trazar la ruta por las calles; se muestra una línea recta entre los dos puntos.';
+          this.cdr.markForCheck();
+        }
+        return;
+      }
+      const elegida = elegirMasSegura(rutas, this.zonas);
+      this.trazados[ruta.id_ruta] = elegida.ruta.puntos;
+      this.resumenes[ruta.id_ruta] =
+        'Ruta por calles: ' + resumenRuta(elegida.ruta) +
+        (elegida.puntaje.altas > 0 ? ' · cruza ' + elegida.puntaje.altas + ' zona(s) de riesgo alto' : ' · sin zonas de riesgo alto') +
+        (elegida.esAlternativa ? ' · se eligió la más segura de ' + elegida.opciones + ' opciones' : '');
+    }
+    if (!esDesvio && this.rutaActiva?.id_ruta === ruta.id_ruta) {
+      this.mensaje = this.resumenes[ruta.id_ruta];
+      this.dibujar();
+    }
     this.cdr.markForCheck();
   }
 
@@ -347,6 +385,15 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
     this.centro = [(alt.origen_latitud + alt.destino_latitud) / 2, (alt.origen_longitud + alt.destino_longitud) / 2];
     this.mensaje = 'Mostrando el desvío recomendado: ' + alt.nombre;
     this.cdr.markForCheck();
+    // Si se puede, el desvío se dibuja siguiendo las calles
+    this.trazarPorCalles(alt, true).then(() => {
+      const puntos = this.trazados[alt.id_ruta];
+      if (puntos && this.alternativa?.id_ruta === alt.id_ruta) {
+        this.linea = puntos;
+        this.mensaje = 'Mostrando el desvío recomendado: ' + alt.nombre + (this.resumenes[alt.id_ruta] ? ' · ' + this.resumenes[alt.id_ruta] : '');
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   // HU-17: vuelve a elegir el destino
