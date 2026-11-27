@@ -139,7 +139,7 @@ export class ConfiguracionComponent {
     }
     obtenerUbicacion().then((u) => {
       if (!u.real) {
-        this.fallo({ error: { message: 'No se pudo obtener tu ubicación. Activa el permiso de ubicación del navegador.' } });
+        this.fallo({ error: { message: 'No se pudo obtener tu ubicación exacta. El navegador solo da el GPS en páginas seguras (HTTPS o localhost) y con el permiso de ubicación activado.' } });
         return;
       }
       this.lugares = [...this.lugares, { nombre, lat: u.lat, lng: u.lng, radio: Number(this.radioLugar) }];

@@ -123,7 +123,7 @@ export class ReporteNuevoEditComponent {
     obtenerUbicacion().then((u) => {
       this.incidenteForm.patchValue({ latitud: u.lat, longitud: u.lng });
       if (!this.incidenteForm.value.direccion) {
-        this.incidenteForm.patchValue({ direccion: u.real ? 'Ubicación GPS actual' : 'Centro de Lima' });
+        this.incidenteForm.patchValue({ direccion: u.real ? 'Ubicación GPS actual' : u.aproximada ? 'Ubicación aproximada' : 'Centro de Lima' });
       }
       this.ubicar(u.lat, u.lng);
       this.cdr.markForCheck();

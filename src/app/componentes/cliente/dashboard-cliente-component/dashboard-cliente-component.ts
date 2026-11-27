@@ -277,7 +277,7 @@ export class DashboardClienteComponent implements OnDestroy {
       .afterClosed()
       .subscribe((r) => {
         if (r) {
-          this.iniciarSeguimiento('Ubicación compartida en tiempo real (geocerca ' + r.geocerca + ' m)', r.minutos);
+          this.iniciarSeguimiento('Ubicación compartida (geocerca ' + r.geocerca + ' m)', r.minutos);
         }
       });
   }
@@ -300,7 +300,8 @@ export class DashboardClienteComponent implements OnDestroy {
 
   private iniciarSeguimiento(destino: string, minutos: number) {
     obtenerUbicacion().then((u) => {
-      this.seguimientoService.insert(this.auth.usuarioId(), { destino, tiempo_monitoreo: minutos }).subscribe({
+      // La columna destino de la base de datos admite como máximo 50 caracteres
+      this.seguimientoService.insert(this.auth.usuarioId(), { destino: destino.slice(0, 50), tiempo_monitoreo: minutos }).subscribe({
         next: (s) => {
           this.ubicacionService
             .insert(s.id_seguimiento, { latitud: u.lat, longitud: u.lng, precision_metros: 20 })
