@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MatButton } from '@angular/material/button';
@@ -24,7 +24,7 @@ import { ConfirmarDialogComponent } from '../../compartido/confirmar-dialog-comp
   styleUrl: './moderacion-reportes-component.css',
   templateUrl: './moderacion-reportes-component.html',
 })
-export class ModeracionReportesComponent {
+export class ModeracionReportesComponent implements OnInit, OnDestroy {
   incidenteService: IncidenteService = inject(IncidenteService);
   comentarioService: ComentarioService = inject(ComentarioService);
   validacionService: ValidacionService = inject(ValidacionService);
@@ -62,6 +62,49 @@ export class ModeracionReportesComponent {
       this.reporteAbrir = id;
     }
     this.cargar();
+    this.temporizador = setInterval(() => this.refrescar(), 10000);
+  }
+
+  // HU-32: los reportes se actualizan solos cada 10 segundos (NO VISTO EN CLASE: setInterval / ngOnDestroy)
+  private temporizador: any;
+
+  ngOnDestroy() {
+    clearInterval(this.temporizador);
+  }
+
+  // Actualiza las listas sin mover el reporte que el administrador está revisando
+  refrescar() {
+    this.incidenteService.denunciados().subscribe({
+      next: (lista) => {
+        this.denunciados = lista;
+        this.mantenerSeleccion();
+        this.cdr.markForCheck();
+      },
+      error: () => {},
+    });
+    this.incidenteService.list().subscribe({
+      next: (todos) => {
+        this.todos = [...todos].sort((a, b) => (b.fecha_hora ?? '').localeCompare(a.fecha_hora ?? ''));
+        this.descartados = todos.filter((i) => i.estado === 'ELIMINADO').length;
+        this.verificados = todos.filter((i) => i.estado === 'VERIFICADO').length;
+        this.mantenerSeleccion();
+        this.cdr.markForCheck();
+      },
+      error: () => {},
+    });
+  }
+
+  // Si el reporte seleccionado sigue en la lista, solo se actualizan sus datos; si desapareció, se elige otro
+  private mantenerSeleccion() {
+    if (!this.seleccionado) {
+      return;
+    }
+    const actual = this.lista.find((i) => i.id_incidente === this.seleccionado?.id_incidente);
+    if (actual) {
+      this.seleccionado = actual;
+    } else {
+      this.reseleccionar();
+    }
   }
 
   cargar() {
