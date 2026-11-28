@@ -5,6 +5,7 @@
 }
 .lateral {
   width: 250px;
+  max-width: 85vw;
   border-right: 1px solid #e3e8ef;
   background: #ffffff;
 }
@@ -15,4 +16,25 @@
 .contenido {
   height: 100%;
   overflow-y: auto;
+}
+
+/* Barra superior que solo aparece en pantallas pequeñas, con el botón que abre el menú */
+.barra-movil {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 8px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--ss-borde);
+}
+.marca-movil {
+  font-family: Inter, sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--ss-azul-oscuro);
 }

@@ -359,6 +359,49 @@ input[type='checkbox'].interruptor:checked {
 input[type='checkbox'].interruptor:checked::after {
   left: 21px;
 }
+/* ===== Diseño responsivo: celulares ===== */
+img, canvas, svg, video {
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  .pagina {
+    padding: 16px 14px 32px;
+  }
+  .pagina-titulo h1 {
+    font-size: 22px;
+  }
+  .kpis {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .tarjeta-ss {
+    padding: 14px;
+    overflow-x: auto; /* las tablas anchas se desplazan dentro de su tarjeta y no ensanchan la página */
+  }
+  .tabla th, .tabla td {
+    padding: 8px 6px;
+  }
+  .btn-primario, .btn-secundario, .btn-peligro {
+    height: 40px;
+  }
+  /* Tablas de Angular Material (historial, panel y usuarios): celdas compactas para que quepan todas las columnas */
+  .tabla-material .mat-mdc-cell, .tabla-material .mat-mdc-header-cell {
+    padding: 6px 2px;
+    font-size: 12px;
+  }
+  .tabla-material .mat-mdc-header-cell {
+    font-size: 11px;
+  }
+  .tabla-material .mat-mdc-cell:first-child, .tabla-material .mat-mdc-header-cell:first-child {
+    padding-left: 6px;
+  }
+  .tabla-material .badge {
+    white-space: normal;
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
 @media print {
   .lateral, .no-imprimir { display: none !important; }
 }
