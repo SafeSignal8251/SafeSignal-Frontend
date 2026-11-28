@@ -1,6 +1,12 @@
 <mat-drawer-container class="contenedor">
   @if (auth.sesion$ | async; as sesion) {
-    <mat-drawer mode="side" opened class="lateral" [class.lateral-admin]="auth.esAdmin()">
+    <mat-drawer
+      [mode]="esMovil() ? 'over' : 'side'"
+      [opened]="!esMovil() || menuAbierto()"
+      (closedStart)="menuAbierto.set(false)"
+      class="lateral"
+      [class.lateral-admin]="auth.esAdmin()"
+    >
       @if (auth.esAdmin()) {
         <app-nav-admin-component></app-nav-admin-component>
       } @else {
@@ -9,6 +15,14 @@
     </mat-drawer>
   }
   <mat-drawer-content class="contenido">
+    @if (esMovil() && (auth.sesion$ | async)) {
+      <header class="barra-movil">
+        <button mat-icon-button type="button" aria-label="Abrir el menú" (click)="menuAbierto.set(!menuAbierto())">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="marca-movil">SAFESIGNAL</span>
+      </header>
+    }
     <router-outlet />
   </mat-drawer-content>
 </mat-drawer-container>
