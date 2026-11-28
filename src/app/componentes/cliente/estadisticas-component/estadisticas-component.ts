@@ -101,7 +101,9 @@ export class EstadisticasComponent {
       const desde = hasta - semana;
       const total = this.incidentes.filter((i) => {
         const t = new Date(i.fecha_hora).getTime();
-        return t > desde && t <= hasta;
+        // La última semana no tiene tope: la hora del servidor (AWS) puede ir unas horas adelantada
+        // respecto al navegador y un incidente recién creado quedaría "en el futuro" y sin contarse.
+        return t > desde && (n === 0 || t <= hasta);
       }).length;
       return { etiqueta: 'Semana ' + (4 - n), total };
     });
