@@ -360,12 +360,32 @@ export class MapaRiesgoComponent implements OnInit, OnDestroy {
         'Ruta por calles: ' + resumenRuta(elegida.ruta) +
         (elegida.puntaje.altas > 0 ? ' · cruza ' + elegida.puntaje.altas + ' zona(s) de riesgo alto' : ' · sin zonas de riesgo alto') +
         (elegida.esAlternativa ? ' · se eligió la más segura de ' + elegida.opciones + ' opciones' : '');
+      this.actualizarMedidas(ruta, elegida.ruta.distancia_m, elegida.ruta.duracion_s);
     }
     if (!esDesvio && this.rutaActiva?.id_ruta === ruta.id_ruta) {
       this.mensaje = this.resumenes[ruta.id_ruta];
       this.dibujar();
     }
     this.cdr.markForCheck();
+  }
+
+  // La distancia y el tiempo guardados eran una estimación en línea recta; con la ruta por calles se
+  // reemplazan por los valores reales para que la tarjeta, la lista y el resumen digan lo mismo.
+  private actualizarMedidas(ruta: Ruta, distancia_m: number, duracion_s: number) {
+    if (!(distancia_m > 0) || !(duracion_s > 0)) {
+      return;
+    }
+    const distancia = Math.round(distancia_m / 100) / 10;
+    const tiempo = Math.max(1, Math.round(duracion_s / 60));
+    if (ruta.distancia === distancia && ruta.tiempo_estimado === tiempo) {
+      return;
+    }
+    ruta.distancia = distancia;
+    ruta.tiempo_estimado = tiempo;
+    this.rutaService.update(ruta.id_ruta, { distancia, tiempo_estimado: tiempo }).subscribe({
+      next: () => this.cargarRutas(),
+      error: () => {}, // si no se puede guardar, igual se muestran los valores calculados
+    });
   }
 
   // HU-19: muestra el desvío recomendado en el mapa sin aceptarlo todavía

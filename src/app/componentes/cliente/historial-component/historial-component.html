@@ -56,7 +56,13 @@
         </ng-container>
         <ng-container matColumnDef="direccion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>UBICACIÓN REGISTRADA</th>
-          <td mat-cell *matCellDef="let a">{{ a.direccion || 'Sin dirección' }}<br /><small class="mono">GPS: {{ a.latitud | number: '1.4-4' }}, {{ a.longitud | number: '1.4-4' }}</small></td>
+          <td mat-cell *matCellDef="let a">
+            @if (a.latitud != null && a.longitud != null) {
+              {{ a.direccion || 'Sin dirección' }}<br /><small class="mono">GPS: {{ a.latitud | number: '1.4-4' }}, {{ a.longitud | number: '1.4-4' }}</small>
+            } @else {
+              Ubicación no reportada<br /><small class="gris">{{ a.origen === 'DISPOSITIVO' ? 'El dispositivo IoT no envía coordenadas' : 'Sin coordenadas registradas' }}</small>
+            }
+          </td>
         </ng-container>
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</th>
